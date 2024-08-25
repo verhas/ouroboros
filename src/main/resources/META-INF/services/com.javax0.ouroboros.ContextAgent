@@ -1,0 +1,3 @@
+com.javax0.ouroboros.registries.CommandsRegistry
+com.javax0.ouroboros.registries.LexerRegistry
+com.javax0.ouroboros.registries.BlockFetchRegistry
