@@ -1,27 +1,13 @@
 package com.javax0.ouroboros;
 
-import com.javax0.ouroboros.interpreter.SimpleExecutor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
+import static com.javax0.ouroboros.AssertUtils.assertOutput;
+import static com.javax0.ouroboros.AssertUtils.output;
 
 public class TestSimpleExecutor {
-
-
-    private void assertOutput(final String program, final String expected) throws Exception {
-        final var executor = new SimpleExecutor();
-        try (final var baos = new ByteArrayOutputStream();
-             final var out = new PrintStream(baos)) {
-            executor.setOutput(out);
-            executor.execute(program);
-            final var result = baos.toString(StandardCharsets.UTF_8);
-            Assertions.assertEquals(expected, result);
-        }
-    }
 
     @Test
     @DisplayName("Hello world test")
@@ -45,6 +31,12 @@ public class TestSimpleExecutor {
     @DisplayName("add three numbers")
     void addThreeNumbers() throws Exception {
         assertOutput("puts add 1 add 1 1", "3");
+    }
+
+    @Test
+    @DisplayName("add three float numbers")
+    void addThreeFloatNumbers() throws Exception {
+        Assertions.assertTrue(output("puts add 1.2 add 1.3 1.4").startsWith("3.9000"));
     }
 
     @Test
@@ -150,6 +142,156 @@ public class TestSimpleExecutor {
                 "setf a b 3 call b m", "3");
     }
 
+    @Test
+    @DisplayName("test simple eval")
+    void eval() throws Exception {
+        assertOutput("puts eval 1", "1");
+    }
+
+    @Test
+    @DisplayName("test eval string")
+    void evalString() throws Exception {
+        assertOutput("puts eval {\"add 1 1\"}", "2");
+    }
+
+    @Test
+    @DisplayName("test eval string in variable")
+    void evalStringInVar() throws Exception {
+        assertOutput("set a \"b\" set b 3 puts eval a", "3");
+    }
+
+    @Test
+    @DisplayName("test exec block")
+    void exec() throws Exception {
+        assertOutput("{ set q arg exec q exec q } { puts 3 }", "33");
+    }
+
+    @Test
+    @DisplayName("test exec block with shift")
+    void execShift() throws Exception {
+        assertOutput("{ set q arg q 4 q 5 q 6} { puts shift }", "456");
+    }
+
+    @Test
+    @DisplayName("test multipe add")
+    void execMultipleAdd() throws Exception {
+        assertOutput("puts add* 1 2 3 {} puts \" \" puts { add* 1 2 3}", "6 6");
+    }
+
+    @Test
+    @DisplayName("test binary and multipe sub")
+    void execMultipleSub() throws Exception {
+        assertOutput("puts sub* 1 2 3 {} puts \" \" puts { sub* 1 2 3} puts sub 5 2", "-4 -43");
+    }
+
+    @Test
+    @DisplayName("test string sub")
+    void execStringSub() throws Exception {
+        assertOutput("puts sub \"alma ata\" \"ata\"", "alma ");
+    }
+
+    @Test
+    @DisplayName("test binary and multiple multiplication")
+    void execMultipleMul() throws Exception {
+        assertOutput("puts mul* 1 3 3 {} puts \" \" puts { mul* 1 3 3} puts mul 5 2", "9 910");
+    }
+
+    @Test
+    @DisplayName("test string multiplication")
+    void execStringMul() throws Exception {
+        assertOutput("puts mul \"a\" 3", "aaa");
+    }
+
+    @Test
+    @DisplayName("test binary and multiple div")
+    void execMultipleDiv() throws Exception {
+        assertOutput("puts div* 20 2 5 {} puts \" \" puts { div* 20 5 2} puts div 5 2", "2 22");
+    }
+
+    @Test
+    @DisplayName("test eq")
+    void testEq() throws Exception {
+        assertOutput("puts eq* 20 2 5 {} puts { eq* 20 20 20} puts eq 5 5 2", "falsetruetrue");
+    }
+
+    @Test
+    @DisplayName("test lt")
+    void testLt() throws Exception {
+        assertOutput("puts lt* 20 30 19 {} puts { lt* 20 21 22} puts lt 1 2 0", "falsetruetrue");
+    }
+
+    @Test
+    @DisplayName("test le")
+    void testLe() throws Exception {
+        assertOutput("puts le* 20 20 19 {} puts { le* 20 20 21} puts le 20 21 19", "falsetruetrue");
+    }
+
+    @Test
+    @DisplayName("test gt")
+    void testGt() throws Exception {
+        assertOutput("puts gt* 20 19 21 {} puts { gt* 20 19 18} puts gt 5 4 6", "falsetruetrue");
+    }
+
+    @Test
+    @DisplayName("test ge")
+    void testGe() throws Exception {
+        assertOutput("puts ge* 20 2 21 {} puts { ge* 20 20 20} puts ge 5 5 6", "falsetruetrue");
+    }
+
+    @Test
+    @DisplayName("test ne")
+    void testNe() throws Exception {
+        assertOutput("puts ne* 20 20 20 {} puts { ne* 20 2 2} puts ne 5 2 5", "falsetruetrue");
+    }
+
+    @Test
+    @DisplayName("test or")
+    void testOr() throws Exception {
+        // after true skips till {}
+        assertOutput("puts or* true puts 2 {}", "true");
+
+        // after true skips till the block end
+        assertOutput("puts {or* true puts 2}", "true");
+
+        // it one works because the second arument is a block. It is fetched but not evaluated.
+        assertOutput("puts or true {puts 2}", "true");
+
+        // this one does not work, because or will fetch but does not evaluate PUTS as the second argument
+        // after that the result of the block is 2 that 'PUTS' does not fetch as it was not invoked
+        assertOutput("puts {or true puts 2}", "2");
+
+        // after false it evaluates the puts and the resultof it is 2
+        assertOutput("puts or false {puts 2}", "2true");
+
+        assertOutput("puts {or false puts 0}", "0false");
+    }
+
+    @Test
+    @DisplayName("test and")
+    void testAnd() throws Exception {
+        assertOutput("puts and* false puts 2 {}", "false");
+
+        assertOutput("puts {and* false puts 2}", "false");
+
+        // this one works because the second argument is a block. It is fetched but not evaluated.
+        assertOutput("puts and false {puts 2}", "false");
+
+        // this one does not work, because or will fetch but does not evaluate PUTS as the second argument
+        // after that the result of the block is 2 that 'PUTS' does not fetch as it was not invoked
+        assertOutput("puts {and false puts 2}", "2");
+
+        // after false it evaluates the puts and the resultof it is 2
+        assertOutput("puts and true {puts 2}", "2true");
+
+        assertOutput("puts {and true puts 0}", "0false");
+    }
+
+    @Test
+    @DisplayName("test BigInteger")
+    void testBigInteger() throws Exception {
+        final var bigInteger = "200000000000000000000000000000000000000000000000000000000000000000000000000";
+        assertOutput("puts BigInteger \"" + bigInteger + "\"", bigInteger);
+    }
 }
 
 

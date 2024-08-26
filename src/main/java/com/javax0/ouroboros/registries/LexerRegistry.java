@@ -16,6 +16,7 @@ public class LexerRegistry implements ContextAgent {
         lexers.get().add(new SpaceLexer<>());
         lexers.get().add(new BlockLexer<>());
         lexers.get().add(new BlockCloseLexer<>());
+        lexers.get().add(new SymbolLexer<>());
         context.set("$lex", lexers);
         for( final var lexer : lexers.get()){
             lexer.set(interpreter);

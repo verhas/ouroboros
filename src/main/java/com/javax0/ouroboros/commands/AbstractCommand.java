@@ -2,10 +2,7 @@ package com.javax0.ouroboros.commands;
 
 import com.javax0.ouroboros.*;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +14,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target({ElementType.TYPE})
+    @Inherited
     public @interface Arguments {
         int value() default -1;
 
@@ -59,7 +57,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
             final var block = interpreter.pop();
             if (block == null) {
                 if (i < min) {
-                    return null; // TODO error handling
+                    throw new IllegalArgumentException("Not enough arguments for command " + this);
                 } else {
                     break;
                 }
@@ -67,6 +65,29 @@ public abstract class AbstractCommand<T> implements Command<T> {
             arguments.add(block);
         }
         return execute(context, arguments);
+    }
+
+    /**
+     * Get the argument from the interpreter stack. The argument can be a command or a value. If it is a command then
+     * execute it and return the result. If it is a value, then return the value.
+     *
+     * @param context the context used to execute the command
+     * @return the value of the argument
+     * @param <K> the type of the argument
+     */
+    protected <K> Value<K> getArg(Context context) {
+        final var object = interpreter.pop();
+        return eval(context, object);
+    }
+
+    protected  <K> Value<K> eval(Context context, Block object) {
+        if (object instanceof Command<?> command) {
+            return (Value<K>) command.execute(context);
+        } else if (object instanceof Value<?> val) {
+            return (Value<K>) val;
+        } else {
+            return new SimpleValue<>((K) object);
+        }
     }
 
 }

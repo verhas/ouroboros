@@ -1,0 +1,10 @@
+= Ouroboros
+
+image::logo.svg[Ouroboros logo, align="right" width=100]
+
+A minimal interpreter.
+
+This interpreter is executing the simplest syntax possible.
+A program is nothing else than a list of space tokens.
+A bare word can represent a variable or a function.
+When a function is called, it can consume the subsequent tokens.
