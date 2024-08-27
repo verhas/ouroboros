@@ -4,12 +4,7 @@ import com.javax0.ouroboros.Value;
 
 public class StringConstant extends Constant<String> {
     public StringConstant(final String value) {
-        this.value = new Value<>() {
-            @Override
-            public String get() {
-                return value;
-            }
-        };
+        this.value = () -> value;
     }
 
     @Override

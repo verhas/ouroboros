@@ -4,17 +4,15 @@ import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.interpreter.ObjectValue;
 
-import java.util.List;
 
-@AbstractCommand.Arguments(2)
 public class CommandCall<T> extends AbstractCommand<T> {
     public CommandCall(Interpreter interpreter) {
         set(interpreter);
     }
 
     @Override
-    public Value<T> execute(Context context, List<Block> arguments) {
-        final var objectArg = arguments.getFirst();
+    public Value<T> execute(Context context) {
+        final var objectArg = interpreter.pop();
         final ObjectValue object;
         if (objectArg instanceof Command<?> command) {
             final var obj = interpreter.evaluate(context, command).get();
@@ -27,7 +25,7 @@ public class CommandCall<T> extends AbstractCommand<T> {
             throw new IllegalArgumentException("The second argument of 'set' should be an object");
         }
 
-        final var nameArg = arguments.get(1);
+        final var nameArg = interpreter.pop();
         final String name;
         if (nameArg instanceof Value<?> nameValue) {
             name = nameValue.get().toString();
@@ -37,7 +35,7 @@ public class CommandCall<T> extends AbstractCommand<T> {
             throw new IllegalArgumentException("The first argument of 'set' should be a name");
         }
 
-        final var fun = object.get().get(name).get();
+        final var fun = object.get(name).get();
 
         if (fun instanceof Command<?> funCmd) {
             final var oldThis = context.variable("this");

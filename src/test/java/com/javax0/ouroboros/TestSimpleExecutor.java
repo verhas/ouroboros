@@ -292,6 +292,52 @@ public class TestSimpleExecutor {
         final var bigInteger = "200000000000000000000000000000000000000000000000000000000000000000000000000";
         assertOutput("puts BigInteger \"" + bigInteger + "\"", bigInteger);
     }
+
+    @Test
+    @DisplayName("test conditional execution")
+    void testConditionalExecution() throws Exception {
+        assertOutput("puts if true 1 2", "1");
+        assertOutput("puts if add 0 0 1 2", "2");
+        assertOutput("puts {if 0 1}", "null");
+        assertOutput("puts if 0 1 {}", "null");
+    }
+
+    @Test
+    @DisplayName("test while loop")
+    void testWhileLoop() throws Exception {
+        assertOutput("set a 1 " +
+                "while{setf $$ a add field $$ a 1 lt a 10}{puts a}", "23456789");
+    }
+
+    @Test
+    @DisplayName("test quote")
+    void testQuote1() throws Exception {
+        assertOutput("set a 1 " +
+                "set s \"\" " +
+                "set source quote eval " +
+                "puts {source {while{setg a add a 1 lt a 10}{setg s add s \"1\"} s}}", "11111111");
+    }
+
+    @Test
+    @DisplayName("test quote")
+    void testQuote2() throws Exception {
+        assertOutput("setg f 0 " +
+                "set a quote {setg f add f 1 f} " +
+                "puts a " +
+                "puts a " +
+                "puts a " +
+                "puts a " , "1234");
+    }
+
+    @Test
+    @DisplayName("test quote")
+    void testQuote3() throws Exception {
+        assertOutput("set a 1 " +
+                "set b quote a " +
+                "puts b " +
+                "set a 2 " +
+                "puts b" , "12");
+    }
 }
 
 

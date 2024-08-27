@@ -1,5 +1,5 @@
-import com.javax0.ouroboros.registries.CommandsRegistry;
 import com.javax0.ouroboros.registries.BlockFetchRegistry;
+import com.javax0.ouroboros.registries.CommandsRegistry;
 import com.javax0.ouroboros.registries.LexerRegistry;
 
 module com.javax0.ouroboros {

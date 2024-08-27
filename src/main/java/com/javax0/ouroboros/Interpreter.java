@@ -1,5 +1,7 @@
 package com.javax0.ouroboros;
 
+import com.javax0.ouroboros.interpreter.ObjectValue;
+
 import java.util.List;
 
 /**
@@ -40,7 +42,7 @@ public interface Interpreter {
     /**
      * Open a new stack frame to execute a block.
      */
-    void down();
+    ObjectValue down();
 
     /**
      * Open a new stack frame to execute a list of blocks.

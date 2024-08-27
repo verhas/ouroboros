@@ -1,7 +1,6 @@
 package com.javax0.ouroboros.commands.ops;
 
 import com.javax0.ouroboros.Interpreter;
-import com.javax0.ouroboros.commands.AbstractCommand;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

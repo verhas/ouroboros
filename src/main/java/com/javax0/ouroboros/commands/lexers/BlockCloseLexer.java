@@ -4,7 +4,6 @@ import com.javax0.ouroboros.Context;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
-import com.javax0.ouroboros.commands.base.BareWord;
 import com.javax0.ouroboros.commands.pseudo.CommandBlockClose;
 
 public class BlockCloseLexer<T> extends AbstractCommand<CommandBlockClose> {

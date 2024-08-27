@@ -1,5 +1,7 @@
 package com.javax0.ouroboros;
 
+import com.javax0.ouroboros.interpreter.ObjectValue;
+
 import java.util.Optional;
 
 /**
@@ -38,4 +40,6 @@ public interface Context {
      * @param <T> the type of the value
      */
     <T> void setg(String name, Value<T> value);
+
+    ObjectValue bottom();
 }

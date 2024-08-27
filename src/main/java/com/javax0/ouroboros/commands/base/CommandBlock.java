@@ -17,7 +17,9 @@ public class CommandBlock<T> extends AbstractCommand<T> {
     @Override
     public Value<T> execute(Context context) {
         try {
-            interpreter.down();
+            final var variables = interpreter.down();
+            context.set("$$",new SimpleValue<>(variables));
+            context.set("$",new SimpleValue<>(context.bottom()));
             Value<T> result = null;
             interpreter.pushAll(block.subBlocks().reversed());
             Block block;

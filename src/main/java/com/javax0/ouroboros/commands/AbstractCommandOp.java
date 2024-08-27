@@ -1,11 +1,9 @@
-package com.javax0.ouroboros.commands.ops;
-
-import com.javax0.ouroboros.commands.AbstractCommand;
+package com.javax0.ouroboros.commands;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class AbstractCommandOp<T> extends AbstractCommand<T> {
+public abstract class AbstractCommandOp<T> extends AbstractCommand<T> {
 
     protected Boolean toBoolean(Object value) {
         return switch (value) {

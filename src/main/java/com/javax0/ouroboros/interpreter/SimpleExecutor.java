@@ -5,7 +5,6 @@ import com.javax0.ouroboros.*;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.ServiceLoader;
 
 public class SimpleExecutor implements Interpreter {
@@ -80,19 +79,12 @@ public class SimpleExecutor implements Interpreter {
     }
 
     @Override
-    public void down() {
+    public ObjectValue down() {
         stack.add(new ArrayList<>());
-        context.down();
+        return context.down();
     }
 
-    private static class SimpleState implements State {
-        final List<Block> blocks;
-        final Map<String, Value<?>> variables;
-
-        private SimpleState(List<Block> blocks, Map<String, Value<?>> variables) {
-            this.blocks = blocks;
-            this.variables = variables;
-        }
+    private record SimpleState(List<Block> blocks, ObjectValue variables) implements State {
     }
 
     @Override
@@ -139,12 +131,11 @@ public class SimpleExecutor implements Interpreter {
     }
 
     private Command<Block> getFetcher() {
-        final var fetch = context.variable("$fetch")
+        return context.variable("$fetch")
                 .map(Value::get)
                 .filter(it -> it instanceof Command<?>)
                 .map(it -> (Command<Block>) it)
                 .orElseThrow(() -> new IllegalArgumentException("No block fetcher"));
-        return fetch;
     }
 
 }

@@ -1,14 +1,15 @@
 package com.javax0.ouroboros.commands.ops;
 
-import com.javax0.ouroboros.*;
-import com.javax0.ouroboros.commands.AbstractCommand;
-
-import java.util.List;
+import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.Interpreter;
+import com.javax0.ouroboros.SimpleValue;
+import com.javax0.ouroboros.Value;
+import com.javax0.ouroboros.commands.AbstractCommandOp;
 
 /**
  * Command to print the value of the top of the stack.
  */
-@AbstractCommand.Arguments(1)
+
 public class CommandDouble extends AbstractCommandOp<Double> {
 
     public CommandDouble(Interpreter interpreter) {
@@ -16,8 +17,8 @@ public class CommandDouble extends AbstractCommandOp<Double> {
     }
 
     @Override
-    public Value<Double> execute(Context context, List<Block> arguments) {
-        final var value = interpreter.evaluate(context, arguments.getFirst());
+    public Value<Double> execute(Context context) {
+        final var value = interpreter.evaluate(context, interpreter.pop());
         if (value == null) {
             return null;
         }

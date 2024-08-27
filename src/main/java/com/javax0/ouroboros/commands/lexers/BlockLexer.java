@@ -33,12 +33,11 @@ public class BlockLexer<T> extends AbstractCommand<CommandBlock<T>> {
     }
 
     private Command<Block> getFetcher(Context context) {
-        final var fetch = context.variable("$fetch")
+        return context.variable("$fetch")
                 .map(Value::get)
                 .filter(it -> it instanceof Command<?>)
                 .map(it -> (Command<Block>) it)
                 .orElseThrow(() -> new IllegalArgumentException("No block fetcher"));
-        return fetch;
     }
 
 }

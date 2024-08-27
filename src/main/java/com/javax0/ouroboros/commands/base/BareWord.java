@@ -20,7 +20,7 @@ public class BareWord<T> extends AbstractCommand<T> implements Value<String>{
 
     @Override
     public Value<T> execute(Context context) {
-        final var object = context.variable(word).map(Value::get).orElse(null);
+        final var object = context.variable(word).map(Value::get).orElseThrow(() -> new IllegalArgumentException("Variable " + word + " is not defined"));
         if (object instanceof Command<?> command) {
             return (Value<T>) command.execute(context);
         }else if( object instanceof Value<?> value){

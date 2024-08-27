@@ -4,7 +4,6 @@ import com.javax0.ouroboros.Interpreter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.regex.Pattern;
 
 public class CommandMul<T> extends AbstractCommandBinop<T> {
 

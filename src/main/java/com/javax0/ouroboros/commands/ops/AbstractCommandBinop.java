@@ -1,13 +1,13 @@
 package com.javax0.ouroboros.commands.ops;
 
 import com.javax0.ouroboros.*;
-import com.javax0.ouroboros.commands.AbstractCommand;
+import com.javax0.ouroboros.commands.AbstractCommandOp;
 import com.javax0.ouroboros.commands.base.BareWord;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@AbstractCommand.Arguments(2)
+
 public abstract class AbstractCommandBinop<T> extends AbstractCommandOp<T> {
 
     public AbstractCommandBinop(Interpreter interpreter) {
@@ -44,7 +44,7 @@ public abstract class AbstractCommandBinop<T> extends AbstractCommandOp<T> {
         if (first instanceof BareWord<?> bw && "*".equals(bw.get())) {
             first = interpreter.pop();
             T left = (T) interpreter.evaluate(context, first).get();
-            Block second = null;
+            Block second;
             var accumulator = true;
             T retval = null;
             while ((second = interpreter.pop()) != null) {
@@ -54,18 +54,18 @@ public abstract class AbstractCommandBinop<T> extends AbstractCommandOp<T> {
                 }
                 final T right = rightValue.get();
                 var result = binop(left, right);
-                if( result instanceof Boolean bool){
+                if (result instanceof Boolean bool) {
                     accumulator = accumulator && bool;
-                    retval = (T)(Boolean)accumulator;
-                }else{
+                    retval = (T) (Boolean) accumulator;
+                } else {
                     left = result;
                     retval = left;
                 }
             }
             return new SimpleValue<>(retval);
         } else {
-            final var second = interpreter.pop();
             final T left = (T) interpreter.evaluate(context, first).get();
+            final var second = interpreter.pop();
             final T right = (T) interpreter.evaluate(context, second).get();
             return new SimpleValue<>(
                     binop(left, right));

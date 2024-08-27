@@ -2,6 +2,8 @@ package com.javax0.ouroboros.registries;
 
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.base.*;
+import com.javax0.ouroboros.commands.control.CommandIf;
+import com.javax0.ouroboros.commands.control.CommandWhile;
 import com.javax0.ouroboros.commands.ops.*;
 
 public class CommandsRegistry implements ContextAgent {
@@ -20,6 +22,8 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("gt", new SimpleValue<>(new CommandGt(interpreter)));
         context.<Command<?>>set("and", new SimpleValue<>(new CommandAnd(interpreter)));
         context.<Command<?>>set("or", new SimpleValue<>(new CommandOr(interpreter)));
+        context.<Command<?>>set("if", new SimpleValue<>(new CommandIf<>(interpreter)));
+        context.<Command<?>>set("while", new SimpleValue<>(new CommandWhile<>(interpreter)));
         context.<Command<?>>set("set", new SimpleValue<>(new CommandSet(interpreter)));
         context.<Command<?>>set("setg", new SimpleValue<>(new CommandSetg(interpreter)));
         context.<Command<?>>set("setf", new SimpleValue<>(new CommandSetf(interpreter)));
@@ -35,12 +39,14 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("bool", new SimpleValue<>(new CommandBoolean(interpreter)));
         context.<Command<?>>set("not", new SimpleValue<>(new CommandNot(interpreter)));
         context.<Command<?>>set("string", new SimpleValue<>(new CommandString(interpreter)));
+        context.<Command<?>>set("quote", new SimpleValue<>(new CommandQuote<>(interpreter)));
 
         context.<Command<?>>set("shift", new SimpleValue<>(new CommandShift<>(interpreter)));
         context.<Command<?>>set("arg", new SimpleValue<>(new CommandArg<>(interpreter)));
         context.<Command<?>>set("eval", new SimpleValue<>(new CommandEval<>(interpreter)));
         context.<Command<?>>set("object", new SimpleValue<>(new CommandObject(interpreter)));
 
+        context.set("null", new SimpleValue<>(null));
         context.set("true", new SimpleValue<>(true));
         context.set("false", new SimpleValue<>(false));
     }

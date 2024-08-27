@@ -3,10 +3,12 @@ package com.javax0.ouroboros.interpreter;
 import com.javax0.ouroboros.Context;
 import com.javax0.ouroboros.Value;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 class ExecutorContext implements Context {
-    private final List<Map<String, Value<?>>> stack = new ArrayList<>();
+    private final List<ObjectValue> stack = new ArrayList<>();
 
     @Override
     public <T> Optional<Value<T>> variable(String name) {
@@ -23,9 +25,14 @@ class ExecutorContext implements Context {
     }
 
     @Override
+    public ObjectValue bottom() {
+        return stack.getLast();
+    }
+
+    @Override
     public <T> void set(String name, Value<T> value) {
         if (stack.isEmpty()) {
-            stack.add(new HashMap<>());
+            stack.add(new ObjectValue());
         }
         final var variables = stack.getLast();
         variables.put(name, value);
@@ -34,7 +41,7 @@ class ExecutorContext implements Context {
     @Override
     public void remove(String name) {
         if (stack.isEmpty()) {
-            stack.add(new HashMap<>());
+            stack.add(new ObjectValue());
         }
         final var variables = stack.getLast();
         variables.remove(name);
@@ -43,21 +50,23 @@ class ExecutorContext implements Context {
     @Override
     public <T> void setg(String name, Value<T> value) {
         if (stack.isEmpty()) {
-            stack.add(new HashMap<>());
+            stack.add(new ObjectValue());
         }
         final var variables = stack.getFirst();
         variables.put(name, value);
     }
 
-    Map<String, Value<?>> up() {
+    ObjectValue up() {
         return stack.removeLast();
     }
 
-    void down() {
-        stack.add(new HashMap<>());
+    ObjectValue down() {
+        final var variables = stack.getLast();
+        stack.add(new ObjectValue());
+        return variables;
     }
 
-    void down(Map<String, Value<?>> variables) {
+    void down(ObjectValue variables) {
         stack.add(variables);
     }
 

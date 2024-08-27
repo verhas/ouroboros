@@ -1,16 +1,17 @@
 package com.javax0.ouroboros.commands.ops;
 
-import com.javax0.ouroboros.*;
-import com.javax0.ouroboros.commands.AbstractCommand;
+import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.Interpreter;
+import com.javax0.ouroboros.SimpleValue;
+import com.javax0.ouroboros.Value;
+import com.javax0.ouroboros.commands.AbstractCommandOp;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.List;
 
 /**
  * Command to print the value of the top of the stack.
  */
-@AbstractCommand.Arguments(1)
+
 public class CommandBigDecimal extends AbstractCommandOp<BigDecimal> {
 
     public CommandBigDecimal(Interpreter interpreter) {
@@ -18,8 +19,8 @@ public class CommandBigDecimal extends AbstractCommandOp<BigDecimal> {
     }
 
     @Override
-    public Value<BigDecimal> execute(Context context, List<Block> arguments) {
-        final var value = interpreter.evaluate(context, arguments.getFirst());
+    public Value<BigDecimal> execute(Context context) {
+        final var value = interpreter.evaluate(context, interpreter.pop());
         if (value == null) {
             return null;
         }
