@@ -4,13 +4,13 @@ import com.javax0.ouroboros.Context;
 import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
-import com.javax0.ouroboros.commands.AbstractCommandOp;
+import com.javax0.ouroboros.commands.AbstractCommand;
 
 /**
  * Command to print the value of the top of the stack.
  */
 
-public class CommandString extends AbstractCommandOp<String> {
+public class CommandString extends AbstractCommand<String> {
 
     public CommandString(Interpreter interpreter) {
         set(interpreter);

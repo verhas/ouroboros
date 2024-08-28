@@ -1,14 +1,14 @@
 package com.javax0.ouroboros.commands.ops;
 
 import com.javax0.ouroboros.*;
-import com.javax0.ouroboros.commands.AbstractCommandOp;
+import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.commands.base.BareWord;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 
-public abstract class AbstractCommandBinop<T> extends AbstractCommandOp<T> {
+public abstract class AbstractCommandBinop<T> extends AbstractCommand<T> {
 
     public AbstractCommandBinop(Interpreter interpreter) {
         set(interpreter);

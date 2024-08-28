@@ -4,7 +4,7 @@ import com.javax0.ouroboros.Context;
 import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
-import com.javax0.ouroboros.commands.AbstractCommandOp;
+import com.javax0.ouroboros.commands.AbstractCommand;
 
 import java.math.BigInteger;
 
@@ -12,7 +12,7 @@ import java.math.BigInteger;
  * Command to print the value of the top of the stack.
  */
 
-public class CommandBigInteger extends AbstractCommandOp<BigInteger> {
+public class CommandBigInteger extends AbstractCommand<BigInteger> {
 
     public CommandBigInteger(Interpreter interpreter) {
         set(interpreter);
