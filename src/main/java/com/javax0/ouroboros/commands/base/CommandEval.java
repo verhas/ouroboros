@@ -14,7 +14,7 @@ public class CommandEval<T> extends AbstractCommand<T> {
 
     @Override
     public Value<T> execute(Context context) {
-        final var value = getArg(context).get();
+        final var value = nextArgument(context, s -> s).orElse(null);
         if (value == null) {
             return null;
         } else {
