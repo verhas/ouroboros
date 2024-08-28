@@ -163,7 +163,7 @@ public class TestSimpleExecutor {
     @Test
     @DisplayName("test exec block")
     void exec() throws Exception {
-        assertOutput("{ set q arg exec q exec q } { puts 3 }", "33");
+        assertOutput("{ set q arg q q } { puts 3 }", "33");
     }
 
     @Test
