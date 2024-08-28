@@ -18,11 +18,7 @@ public class CommandLong extends AbstractCommand<Long> {
 
     @Override
     public Value<Long> execute(Context context) {
-        final var value = interpreter.evaluate(context, interpreter.pop());
-        if (value == null) {
-            return null;
-        }
-        return new SimpleValue<>(toLong(value.get()));
+        return nextArgument(context).map(o -> new SimpleValue<>(toLong(o))).orElse(null);
     }
 
     @Override

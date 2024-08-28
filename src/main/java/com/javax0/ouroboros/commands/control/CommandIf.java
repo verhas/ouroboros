@@ -14,7 +14,8 @@ public class CommandIf<T> extends AbstractCommand<T> {
 
     @Override
     public Value<T> execute(Context context) {
-        final var condition = toBoolean(interpreter.evaluate(context, interpreter.pop()).get());
+        final var condition = nextArgument(context,this::toBoolean)
+                .orElseThrow(() -> new IllegalArgumentException("Condition is missing"));
         final var then = interpreter.pop();
         final var otherwise = interpreter.pop();
         final var block = condition ? then : otherwise;

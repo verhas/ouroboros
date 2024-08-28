@@ -6,21 +6,19 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-public class CommandCharAt extends AbstractCommand<String> {
+public class CommandIsEmpty extends AbstractCommand<Boolean> {
 
-    public CommandCharAt(Interpreter interpreter) {
+    public CommandIsEmpty(Interpreter interpreter) {
         set(interpreter);
     }
-
     @Override
-    public Value<String> execute(Context context) {
-        final var index = nextArgument(context, this::toLong).orElseThrow(() -> new IllegalArgumentException("Index is missing"));
+    public Value<Boolean> execute(Context context) {
         final var string = nextArgument(context,this::toString).orElseThrow(() -> new IllegalArgumentException("String is missing"));
-        return new SimpleValue<>(string.substring(Math.toIntExact(index),Math.toIntExact(index+1)));
+        return new SimpleValue<>(string.isEmpty());
     }
 
     @Override
     public String toString() {
-        return "CommandCharAt";
+        return "CommandIsEmpty";
     }
 }

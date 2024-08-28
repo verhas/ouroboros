@@ -5,6 +5,7 @@ import com.javax0.ouroboros.commands.base.*;
 import com.javax0.ouroboros.commands.control.CommandIf;
 import com.javax0.ouroboros.commands.control.CommandWhile;
 import com.javax0.ouroboros.commands.ops.*;
+import com.javax0.ouroboros.commands.string.*;
 
 public class CommandsRegistry implements ContextAgent {
     @Override
@@ -31,6 +32,19 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("method", new SimpleValue<>(new CommandMethod(interpreter)));
         context.<Command<?>>set("call", new SimpleValue<>(new CommandCall<>(interpreter)));
         context.<Command<?>>set("fun", new SimpleValue<>(new CommandFun(interpreter)));
+
+
+        context.<Command<?>>set("charAt", new SimpleValue<>(new CommandCharAt(interpreter)));
+        context.<Command<?>>set("isBlank", new SimpleValue<>(new CommandIsBlank(interpreter)));
+        context.<Command<?>>set("isEmpty", new SimpleValue<>(new CommandIsEmpty(interpreter)));
+        context.<Command<?>>set("replace", new SimpleValue<>(new CommandReplace(interpreter)));
+        context.<Command<?>>set("replaceAll", new SimpleValue<>(new CommandReplaceAll(interpreter)));
+        context.<Command<?>>set("replaceFirst", new SimpleValue<>(new CommandReplaceFirst(interpreter)));
+        context.<Command<?>>set("substring", new SimpleValue<>(new CommandSubstring(interpreter)));
+        context.<Command<?>>set("lc", new SimpleValue<>(new CommandTolower(interpreter)));
+        context.<Command<?>>set("uc", new SimpleValue<>(new CommandToupper(interpreter)));
+        context.<Command<?>>set("trim", new SimpleValue<>(new CommandTrim(interpreter)));
+
 
         context.<Command<?>>set("BigInteger", new SimpleValue<>(new CommandBigInteger(interpreter)));
         context.<Command<?>>set("BigDecimal", new SimpleValue<>(new CommandBigDecimal(interpreter)));

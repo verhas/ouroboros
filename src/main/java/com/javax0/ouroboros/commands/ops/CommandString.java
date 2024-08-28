@@ -18,11 +18,7 @@ public class CommandString extends AbstractCommand<String> {
 
     @Override
     public Value<String> execute(Context context) {
-        final var value = interpreter.evaluate(context, interpreter.pop());
-        if (value == null) {
-            return null;
-        }
-        return new SimpleValue<>(toString(value.get()));
+        return nextArgument(context).map(o -> new SimpleValue<>(toString(o))).orElse(null);
     }
 
     @Override

@@ -20,11 +20,7 @@ public class CommandBigInteger extends AbstractCommand<BigInteger> {
 
     @Override
     public Value<BigInteger> execute(Context context) {
-        final var value = interpreter.evaluate(context, interpreter.pop());
-        if (value == null) {
-            return null;
-        }
-        return new SimpleValue<>(toBigInteger(value.get()));
+        return nextArgument(context).map(o -> new SimpleValue<>(toBigInteger(o))).orElse(null);
     }
 
     @Override

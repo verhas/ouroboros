@@ -1,6 +1,9 @@
 package com.javax0.ouroboros.commands.base;
 
-import com.javax0.ouroboros.*;
+import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.Interpreter;
+import com.javax0.ouroboros.SimpleValue;
+import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
 public class CommandShift<T> extends AbstractCommand<T> {
@@ -13,14 +16,7 @@ public class CommandShift<T> extends AbstractCommand<T> {
     public Value<T> execute(Context context) {
         final var savedBlocks = interpreter.up();
         try {
-            final var object = interpreter.pop();
-            if (object instanceof Command<?> command) {
-                return (Value<T>) command.execute(context);
-            } else if (object instanceof Value<?> value) {
-                return (Value<T>) value;
-            } else {
-                return new SimpleValue<>((T) object);
-            }
+            return new SimpleValue<>(this.<T>nextArgument(context).orElse(null));
         } finally {
             interpreter.down(savedBlocks);
         }

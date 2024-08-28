@@ -18,11 +18,7 @@ public class CommandBoolean extends AbstractCommand<Boolean> {
 
     @Override
     public Value<Boolean> execute(Context context) {
-        final var value = interpreter.evaluate(context, interpreter.pop());
-        if (value == null) {
-            return null;
-        }
-        return new SimpleValue<>(toBoolean(value.get()));
+        return nextArgument(context).map(o -> new SimpleValue<>(toBoolean(o))).orElse(null);
     }
 
     @Override

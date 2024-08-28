@@ -118,6 +118,12 @@ public class TestSimpleExecutor {
     }
 
     @Test
+    @DisplayName("creating object setting fields and getting fields object calculated")
+    void objectFieldCalculated() throws Exception {
+        assertOutput("object a {} setf {a} b 1 puts field {a} b", "1");
+    }
+
+    @Test
     @DisplayName("creating object calling methods")
     void objectMethod() throws Exception {
         assertOutput("object a {} method a m { puts field this b } setf a b 3 call a m", "3");
@@ -233,6 +239,12 @@ public class TestSimpleExecutor {
     }
 
     @Test
+    @DisplayName("test not")
+    void testNot() throws Exception {
+        assertOutput("puts not true", "false");
+    }
+
+    @Test
     @DisplayName("test ge")
     void testGe() throws Exception {
         assertOutput("puts ge* 20 2 21 {} puts { ge* 20 20 20} puts ge 5 5 6", "falsetruetrue");
@@ -287,6 +299,31 @@ public class TestSimpleExecutor {
     }
 
     @Test
+    @DisplayName("test Boolean")
+    void testBoolean() throws Exception {
+        assertOutput("puts bool \"true\"", "true");
+    }
+
+    @Test
+    @DisplayName("test Double")
+    void testDouble() throws Exception {
+        assertOutput("puts double \"3.141592674365498\"", "3.141592674365498");
+    }
+
+    @Test
+    @DisplayName("test Long")
+    void testLong() throws Exception {
+        assertOutput("puts long \"3\"", "3");
+    }
+
+    @Test
+    @DisplayName("test BigDecimal")
+    void testBigDecimal() throws Exception {
+        final var bigInteger = "2000000000000.2300000000000000000000000000000000000000000000000000000000000007";
+        assertOutput("puts BigDecimal \"" + bigInteger + "\"", bigInteger);
+    }
+
+    @Test
     @DisplayName("test BigInteger")
     void testBigInteger() throws Exception {
         final var bigInteger = "200000000000000000000000000000000000000000000000000000000000000000000000000";
@@ -326,7 +363,7 @@ public class TestSimpleExecutor {
                 "puts a " +
                 "puts a " +
                 "puts a " +
-                "puts a " , "1234");
+                "puts a ", "1234");
     }
 
     @Test
@@ -336,7 +373,7 @@ public class TestSimpleExecutor {
                 "set b quote a " +
                 "puts b " +
                 "set a 2 " +
-                "puts b" , "12");
+                "puts b", "12");
     }
 }
 

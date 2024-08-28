@@ -18,11 +18,7 @@ public class CommandDouble extends AbstractCommand<Double> {
 
     @Override
     public Value<Double> execute(Context context) {
-        final var value = interpreter.evaluate(context, interpreter.pop());
-        if (value == null) {
-            return null;
-        }
-        return new SimpleValue<>(toDouble(value.get()));
+        return nextArgument(context).map(o -> new SimpleValue<>(toDouble(o))).orElse(null);
     }
 
     @Override

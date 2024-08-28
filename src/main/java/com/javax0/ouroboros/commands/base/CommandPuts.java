@@ -6,6 +6,8 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+import java.util.Objects;
+
 /**
  * Command to print the value of the top of the stack.
  */
@@ -18,8 +20,9 @@ public class CommandPuts extends AbstractCommand<String> {
 
     @Override
     public Value<String> execute(Context context) {
-        final var value = interpreter.evaluate(context, interpreter.pop());
-        String result = "" + (value == null ? null : value.get());
+        final var value = nextArgument(context).orElse(null);
+        //final var value = interpreter.evaluate(context, interpreter.pop());
+        String result = "" + (value == null ? null : value);
         interpreter.output(result);
         return new SimpleValue<>(result);
     }

@@ -20,11 +20,7 @@ public class CommandBigDecimal extends AbstractCommand<BigDecimal> {
 
     @Override
     public Value<BigDecimal> execute(Context context) {
-        final var value = interpreter.evaluate(context, interpreter.pop());
-        if (value == null) {
-            return null;
-        }
-        return new SimpleValue<>(toBigDecimal(value.get()));
+        return nextArgument(context).map(o -> new SimpleValue<>(toBigDecimal(o))).orElse(null);
     }
 
     @Override
