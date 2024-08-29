@@ -23,7 +23,7 @@ public class BareWordLexer<T> extends AbstractCommand<BareWord<T>> {
             final var word = input.substring(0, i);
             final var rest = input.substring(i);
             source.update(rest);
-            return new SimpleValue<>(new BareWord<>(word));
+            return new SimpleValue<>(new BareWord<>(interpreter,word));
         }
         return null;
     }

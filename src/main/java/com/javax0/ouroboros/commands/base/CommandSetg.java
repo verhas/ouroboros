@@ -15,13 +15,8 @@ public class CommandSetg extends AbstractCommand<Void> {
 
     @Override
     public Value<Void> execute(Context context) {
-        final var nameArg = interpreter.pop();
-        final String name;
-        if (nameArg instanceof Value<?> nameValue) {
-            name = nameValue.get().toString();
-        } else {
-            throw new IllegalArgumentException("The first argument of 'set' should be a name");
-        }
+        final String name = getName(context)
+                .orElseThrow(() -> new IllegalArgumentException("The first argument of 'setg' should be a name"));
         final var value = interpreter.evaluate(context, interpreter.pop());
         context.setg(name, value);
         return null;

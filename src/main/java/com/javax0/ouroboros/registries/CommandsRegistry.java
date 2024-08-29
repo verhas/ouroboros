@@ -4,6 +4,7 @@ import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.base.*;
 import com.javax0.ouroboros.commands.control.CommandIf;
 import com.javax0.ouroboros.commands.control.CommandWhile;
+import com.javax0.ouroboros.commands.list.CommandList;
 import com.javax0.ouroboros.commands.ops.*;
 import com.javax0.ouroboros.commands.string.*;
 
@@ -53,11 +54,13 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("string", new SimpleValue<>(new CommandString(interpreter)));
         context.<Command<?>>set("quote", new SimpleValue<>(new CommandQuote<>(interpreter)));
         context.<Command<?>>set("'", new SimpleValue<>(new CommandQuote<>(interpreter)));
+        context.<Command<?>>set("list", new SimpleValue<>(new CommandList<>(interpreter)));
 
         context.<Command<?>>set("shift", new SimpleValue<>(new CommandShift<>(interpreter)));
         context.<Command<?>>set("arg", new SimpleValue<>(new CommandArg<>(interpreter)));
         context.<Command<?>>set("eval", new SimpleValue<>(new CommandEval<>(interpreter)));
         context.<Command<?>>set("object", new SimpleValue<>(new CommandObject(interpreter)));
+        context.<Command<?>>set("copy", new SimpleValue<>(new CommandCopy<>(interpreter)));
 
         context.set("null", new SimpleValue<>(null));
         context.set("true", new SimpleValue<>(true));

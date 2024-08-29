@@ -15,4 +15,13 @@ public class MutableValue<T> implements Value<T>{
     public void set(T value) {
         this.value = value;
     }
+
+    @Override
+    public Value<T> copy() {
+        return
+                switch(value){
+                    case Value<?> v -> new SimpleValue<>((T)v.copy());
+                    default -> new SimpleValue<>(value);
+                };
+    }
 }

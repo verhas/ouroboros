@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
-
 import static com.javax0.ouroboros.AssertUtils.assertOutput;
 import static com.javax0.ouroboros.AssertUtils.output;
 
@@ -472,6 +470,55 @@ public class TestSimpleExecutor {
     @Test
     void testtrim() throws Exception {
         assertOutput("puts trim \"aaaa\"", "aaaa");
+    }
+
+
+    @DisplayName("create a list")
+    @Test
+    void testListCreate() throws Exception {
+        assertOutput("set a list{} puts a", "[]");
+        assertOutput("set a list{1 2 3} puts a", "[1, 2, 3]");
+        // b gets evaluated as {1 2 3}, and that is 3, the last element
+        assertOutput("set b quote{1 2 3} set a list b puts a", "[3]");
+    }
+
+    @DisplayName("fetch the first element of a list")
+    @Test
+    void fetchFirst() throws Exception {
+        assertOutput("set a list{1 2 3} puts call a first", "1");
+    }
+
+    @DisplayName("fetch the n-tn element of a list")
+    @Test
+    void fetchNTh() throws Exception {
+        assertOutput("set a list{1 2 3} puts call a get 1", "2");
+    }
+
+    @DisplayName("get the length of a list")
+    @Test
+    void length() throws Exception {
+        assertOutput("set a list{1 2 3} puts call a length", "3");
+    }
+
+    @DisplayName("split a list")
+    @Test
+    void split() throws Exception {
+        assertOutput("set a list{1 2 3 4} puts call a split 2", "[[1, 2], [3, 4]]");
+    }
+
+    @DisplayName("split a list complex example")
+    @Test
+    void splitComplex() throws Exception {
+        assertOutput("set a list{1 2 3 4} " +
+                "setf a head '{" +
+                "                set index shift " +
+                "                set s call this split index " +
+                "                call s first" +
+                "             }" +
+                "set b copy a " +
+                "call b set 1 99 " +
+                "puts a " +
+                "puts b", "[1, 2, 3, 4][1, 99, 3, 4]");
     }
 }
 

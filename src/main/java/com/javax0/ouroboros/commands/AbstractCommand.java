@@ -2,6 +2,7 @@ package com.javax0.ouroboros.commands;
 
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.base.BareWord;
+import com.javax0.ouroboros.utils.SafeCast;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -24,15 +25,17 @@ public abstract class AbstractCommand<T> implements Command<T> {
 
     protected Optional<String> getName(Context context) {
         final var name = interpreter.pop();
-        if (name instanceof Value<?> nameValue) {
-            return Optional.ofNullable(nameValue.get().toString());
-        } else if (name instanceof Command<?> command) {
-            return Optional.ofNullable(interpreter.evaluate(context, command))
-                    .map(Value::get)
-                    .map(Object::toString);
-        } else {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(Optional.ofNullable(name)
+                .map(SafeCast.to(Value.class))
+                .map(Value::get)
+                .map(Object::toString)
+                .orElseGet(() ->
+                        Optional.ofNullable(name)
+                                .map(SafeCast.to(Command.class))
+                                .map(cmd -> interpreter.evaluate(context, cmd))
+                                .map(Value::get)
+                                .map(Object::toString)
+                                .orElse(null)));
     }
 
     /**
@@ -44,21 +47,16 @@ public abstract class AbstractCommand<T> implements Command<T> {
      * @return the value of the argument
      */
     protected <Q> Optional<Q> nextArgument(Context context, Function<Object, Q> converter) {
-        final var result = interpreter.evaluate(context, interpreter.pop());
-        if (result == null) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(converter.apply(result.get()));
+        return Optional.ofNullable(interpreter.evaluate(context, interpreter.pop()))
+                .map(Value::get)
+                .map(converter);
     }
 
     protected <Q> Optional<Q> nextArgument(Context context) {
         final var object = interpreter.pop();
         if (object instanceof Command<?>) {
-            final var result = interpreter.<T>evaluate(context, object);
-            if (result == null) {
-                return Optional.empty();
-            }
-            return Optional.ofNullable((Q) result.get());
+            return Optional.ofNullable(interpreter.<T>evaluate(context, object))
+                    .map(r -> (Q) r.get());
         } else if (object instanceof Value<?>) {
             return Optional.of((Q) object);
         } else {

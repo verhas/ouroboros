@@ -6,8 +6,6 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-import java.nio.charset.StandardCharsets;
-
 public class CommandTolower extends AbstractCommand<String> {
 
     public CommandTolower(Interpreter interpreter) {

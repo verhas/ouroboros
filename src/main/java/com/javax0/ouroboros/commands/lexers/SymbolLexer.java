@@ -15,7 +15,7 @@ public class SymbolLexer<T> extends AbstractCommand<BareWord<T>> {
             return null;
         }
         final var input = source.execute(context).get();
-        if(startAsANumber(input)){
+        if (startAsANumber(input)) {
             return null;
         }
         int i = 0;
@@ -26,7 +26,7 @@ public class SymbolLexer<T> extends AbstractCommand<BareWord<T>> {
             final var word = input.substring(0, i);
             final var rest = input.substring(i);
             source.update(rest);
-            return new SimpleValue<>(new BareWord<>(word));
+            return new SimpleValue<>(new BareWord<>(interpreter, word));
         }
         return null;
     }

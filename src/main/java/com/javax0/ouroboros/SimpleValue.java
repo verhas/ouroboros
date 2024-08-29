@@ -11,4 +11,13 @@ public class SimpleValue<T> implements Value<T>{
     public T get() {
         return value;
     }
+
+    @Override
+    public Value<T> copy() {
+        return
+        switch(value){
+            case Value<?> v -> new SimpleValue<>((T)v.copy());
+            default -> new SimpleValue<>(value);
+        };
+    }
 }

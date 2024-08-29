@@ -9,6 +9,10 @@ public class CommandBlock<T> extends AbstractCommand<T> {
 
     private final Block block;
 
+    public Block getBlock() {
+        return block;
+    }
+
     public CommandBlock(Interpreter interpreter, Block block) {
         this.interpreter = interpreter;
         this.block = block;

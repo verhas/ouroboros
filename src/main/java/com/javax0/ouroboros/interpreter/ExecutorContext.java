@@ -17,7 +17,7 @@ class ExecutorContext implements Context {
         }
         for (int i = stack.size() - 1; i >= 0; i--) {
             final var variables = stack.get(i);
-            if (variables.containsKey(name)) {
+            if (variables.fields().containsKey(name)) {
                 return Optional.of((Value<T>) variables.get(name));
             }
         }
@@ -32,28 +32,28 @@ class ExecutorContext implements Context {
     @Override
     public <T> void set(String name, Value<T> value) {
         if (stack.isEmpty()) {
-            stack.add(new ObjectValue());
+            stack.add(new ObjectValue.Implementation());
         }
         final var variables = stack.getLast();
-        variables.put(name, value);
+        variables.fields().put(name, value);
     }
 
     @Override
     public void remove(String name) {
         if (stack.isEmpty()) {
-            stack.add(new ObjectValue());
+            stack.add(new ObjectValue.Implementation());
         }
         final var variables = stack.getLast();
-        variables.remove(name);
+        variables.fields().remove(name);
     }
 
     @Override
     public <T> void setg(String name, Value<T> value) {
         if (stack.isEmpty()) {
-            stack.add(new ObjectValue());
+            stack.add(new ObjectValue.Implementation());
         }
         final var variables = stack.getFirst();
-        variables.put(name, value);
+        variables.fields().put(name, value);
     }
 
     ObjectValue up() {
@@ -62,7 +62,7 @@ class ExecutorContext implements Context {
 
     ObjectValue down() {
         final var variables = stack.getLast();
-        stack.add(new ObjectValue());
+        stack.add(new ObjectValue.Implementation());
         return variables;
     }
 

@@ -5,4 +5,5 @@ package com.javax0.ouroboros;
  */
 public interface Value<T> {
     T get();
+    Value<T> copy();
 }

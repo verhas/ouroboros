@@ -16,13 +16,13 @@ public class CommandObject extends AbstractCommand<ObjectValue> {
 
     @Override
     public Value<ObjectValue> execute(Context context) {
-        final var object = new ObjectValue();
+        final ObjectValue object = new ObjectValue.Implementation();
         final var inheritFrom = interpreter.pop();
         if (inheritFrom != null) {
             final var parent = interpreter.<Map<String, Value<?>>>evaluate(context, inheritFrom);
             if (parent != null) {
                 if (parent instanceof ObjectValue parentObject) {
-                    object.putAll(parentObject);
+                    object.fields().putAll(parentObject.fields());
                 } else {
                     throw new IllegalArgumentException("The second argument of 'object' should be a parent object");
                 }

@@ -114,7 +114,8 @@ public class SimpleExecutor implements Interpreter {
         }
         if (block instanceof Command<?> command) {
             command.set(this);
-            return (Value<T>) command.execute(context);
+            final var n=  (Value<T>) command.execute(context);
+            return n;
         } else {
             throw new IllegalArgumentException("Block is not a command: " + block);
         }

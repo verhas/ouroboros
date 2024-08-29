@@ -14,6 +14,11 @@ public abstract class Constant<T> extends AbstractCommand<T> implements Value<T>
     }
 
     @Override
+    public Value<T> copy() {
+        return value.copy();
+    }
+
+    @Override
     public Value<T> execute(Context context) {
         return value;
     }

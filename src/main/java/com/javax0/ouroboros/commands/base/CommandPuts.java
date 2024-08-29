@@ -6,8 +6,6 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-import java.util.Objects;
-
 /**
  * Command to print the value of the top of the stack.
  */

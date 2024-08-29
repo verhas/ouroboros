@@ -3,6 +3,7 @@ package com.javax0.ouroboros.commands.base;
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.interpreter.ObjectValue;
+import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.Optional;
 
@@ -29,12 +30,10 @@ public class CommandCall<T> extends AbstractCommand<T> {
         }
         ObjectValue object;
         if (objectArg instanceof Command<?> command) {
-            final var obj = interpreter.evaluate(context, command).get();
-            if (obj instanceof ObjectValue objectValue) {
-                object = objectValue;
-            } else {
-                throw new IllegalArgumentException("The second argument of 'set' should be an object");
-            }
+            object = Optional.ofNullable(interpreter.evaluate(context, command))
+                    .map(Value::get)
+                    .map(SafeCast.to(ObjectValue.class))
+                    .orElseThrow(() -> new IllegalArgumentException("The first argument of 'call' should be an object"));
         } else {
             throw new IllegalArgumentException("The second argument of 'set' should be an object");
         }
@@ -63,22 +62,17 @@ public class CommandCall<T> extends AbstractCommand<T> {
                     context.set("this", new SimpleValue<>(object));
                     result = (Value<T>) funCmd.execute(context);
                 } finally {
-                    if (oldThis.isPresent()) {
-                        context.set("this", oldThis.get());
-                    } else {
-                        context.remove("this");
-                    }
+                    oldThis.ifPresentOrElse(it-> context.set("this",it), () -> context.remove("this"));
                 }
             } else if (object instanceof Value<?> value) {
                 result = (Value<T>) value;
             } else {
                 result = new SimpleValue<>((T) object);
             }
-            if (result != null && result.get() instanceof ObjectValue objectValue) {
-                object = objectValue;
-            } else {
-                object = null;
-            }
+            object = Optional.ofNullable(result)
+                    .map(Value::get)
+                    .map(SafeCast.to(ObjectValue.class))
+                    .orElse(null);
         } while (vararg);
         return result;
     }

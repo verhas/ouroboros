@@ -2,7 +2,6 @@ package com.javax0.ouroboros.commands.ops;
 
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.AbstractCommand;
-import com.javax0.ouroboros.commands.base.BareWord;
 
 public abstract class AbstractCommandLogicalBinop extends AbstractCommand<Boolean> {
     public AbstractCommandLogicalBinop(Interpreter interpreter) {

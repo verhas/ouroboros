@@ -21,7 +21,7 @@ public class CommandField<T> extends AbstractCommand<T> {
         }
 
         Object object = Optional.ofNullable(switch (objectArg) {
-                    case Command<?> command -> interpreter.evaluate(context, command).get();
+                    case Command<?> command -> Optional.ofNullable(interpreter.evaluate(context, command)).map(Value::get).orElse(null);
                     case Value<?> value -> value.get();
                     default -> null;
                 })
