@@ -14,7 +14,7 @@ public class CommandCharAt extends AbstractCommand<String> {
 
     @Override
     public Value<String> execute(Context context) {
-        final var index = nextArgument(context, this::toLong).orElseThrow(() -> new IllegalArgumentException("Index is missing"));
+        final var index = this.<Long>nextArgument(context, this::toLong).orElseThrow(() -> new IllegalArgumentException("Index is missing"));
         final var string = nextArgument(context,this::toString).orElseThrow(() -> new IllegalArgumentException("String is missing"));
         return new SimpleValue<>(string.substring(Math.toIntExact(index),Math.toIntExact(index+1)));
     }

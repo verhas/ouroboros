@@ -375,6 +375,72 @@ public class TestSimpleExecutor {
                 "set a 2 " +
                 "puts b", "12");
     }
+
+
+    @DisplayName("charAt")
+    @Test
+    void testcharAt() throws Exception {
+        assertOutput("puts charAt 2 \"balaka\"", "l");
+    }
+
+    @DisplayName("isBlank")
+    @Test
+    void testisBlank() throws Exception {
+        assertOutput("puts isBlank \"aaaa\"", "false");
+        assertOutput("puts isBlank \"    \"", "true");
+        assertOutput("puts isBlank \"\"", "true");
+    }
+
+    @DisplayName("isEmpty")
+    @Test
+    void testisEmpty() throws Exception {
+        assertOutput("puts isEmpty \"aaaa\"", "false");
+        assertOutput("puts isEmpty \"    \"", "false");
+        assertOutput("puts isEmpty \"\"", "true");
+    }
+
+    @DisplayName("replace")
+    @Test
+    void testreplace() throws Exception {
+        assertOutput("puts replace \"abbaa\" \"bb\" \"\"", "aaa");
+    }
+
+    @DisplayName("replaceAll")
+    @Test
+    void testreplaceAll() throws Exception {
+        assertOutput("puts replaceAll \"abba booneym beatles pink parton\" \"a.*a\" \"-\"", "-rton");
+    }
+
+    @DisplayName("replaceFirst")
+    @Test
+    void testreplaceFirst() throws Exception {
+        assertOutput("puts replaceFirst  \"abba booneym beatles pink parton\" \"a.*?a\" \"-\"", "- booneym beatles pink parton");
+    }
+
+    @DisplayName("substring")
+    @Test
+    void testsubstring() throws Exception {
+        assertOutput("puts substring 1 5 \"abraka dabra\"", "braka");
+    }
+
+    @DisplayName("lc")
+    @Test
+    void testlc() throws Exception {
+        assertOutput("puts lc \"AAAA\" 2", "aaaa");
+    }
+
+    @DisplayName("uc")
+    @Test
+    void testuc() throws Exception {
+        assertOutput("puts uc \"aaaa\" 2", "AAAA");
+    }
+
+    @DisplayName("trim")
+    @Test
+    void testtrim() throws Exception {
+        assertOutput("puts trim \"aaaa\"", "aaaa");
+    }
+
 }
 
 

@@ -25,8 +25,8 @@ public abstract class AbstractCommand<T> implements Command<T> {
      * @param <Q>     the type of the argument
      * @return the value of the argument
      */
-    protected <Q> Optional<Q> nextArgument(Context context, Function<T, Q> converter) {
-        final var result = interpreter.<T>evaluate(context, interpreter.pop());
+    protected <Q> Optional<Q> nextArgument(Context context, Function<Object, Q> converter) {
+        final var result = interpreter.evaluate(context, interpreter.pop());
         if (result == null) {
             return Optional.empty();
         }
