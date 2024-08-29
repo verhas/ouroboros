@@ -6,6 +6,11 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * Get the argument following the block without evaluation.
+ *
+ * @param <T>
+ */
 public class CommandArg<T> extends AbstractCommand<T> {
 
     public CommandArg(Interpreter interpreter) {
@@ -21,10 +26,5 @@ public class CommandArg<T> extends AbstractCommand<T> {
         } finally {
             interpreter.down(savedBlocks);
         }
-    }
-
-    @Override
-    public String toString() {
-        return "shift";
     }
 }

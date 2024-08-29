@@ -17,9 +17,4 @@ public class CommandQuote<T> extends AbstractCommand<T> {
         final var arg = interpreter.pop();
         return new SimpleValue<>((T) arg);
     }
-
-    @Override
-    public String toString() {
-        return "shift";
-    }
 }

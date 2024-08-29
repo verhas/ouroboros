@@ -6,6 +6,11 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * Get the argument following the block with evaluation.
+ *
+ * @param <T>
+ */
 public class CommandShift<T> extends AbstractCommand<T> {
 
     public CommandShift(Interpreter interpreter) {
@@ -22,8 +27,5 @@ public class CommandShift<T> extends AbstractCommand<T> {
         }
     }
 
-    @Override
-    public String toString() {
-        return "shift";
-    }
+
 }

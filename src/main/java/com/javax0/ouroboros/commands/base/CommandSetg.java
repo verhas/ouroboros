@@ -5,7 +5,9 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-
+/**
+ * Set a global variable in the context.
+ */
 public class CommandSetg extends AbstractCommand<Void> {
     public CommandSetg(Interpreter interpreter) {
         set(interpreter);
@@ -25,8 +27,5 @@ public class CommandSetg extends AbstractCommand<Void> {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "CommandSet";
-    }
+
 }

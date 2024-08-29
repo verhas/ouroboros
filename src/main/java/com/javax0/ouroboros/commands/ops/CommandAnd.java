@@ -18,8 +18,5 @@ public class CommandAnd extends AbstractCommandLogicalBinop {
     }
 
 
-    @Override
-    public String toString() {
-        return "CommandOr";
-    }
+
 }

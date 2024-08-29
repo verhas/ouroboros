@@ -70,4 +70,15 @@ class ExecutorContext implements Context {
         stack.add(variables);
     }
 
+    @Override
+    public String toString() {
+        final var sb = new StringBuilder();
+        sb.append("[\n");
+        for( var variables : stack ){
+            sb.append(variables).append("\n");
+        }
+        sb.append("]\n");
+        return sb.toString();
+    }
+
 }

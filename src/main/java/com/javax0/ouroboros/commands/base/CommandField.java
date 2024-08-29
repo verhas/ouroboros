@@ -1,11 +1,11 @@
 package com.javax0.ouroboros.commands.base;
 
-import com.javax0.ouroboros.Command;
-import com.javax0.ouroboros.Context;
-import com.javax0.ouroboros.Interpreter;
-import com.javax0.ouroboros.Value;
+import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.interpreter.ObjectValue;
+import com.javax0.ouroboros.utils.SafeCast;
+
+import java.util.Optional;
 
 public class CommandField<T> extends AbstractCommand<T> {
     public CommandField(Interpreter interpreter) {
@@ -14,35 +14,35 @@ public class CommandField<T> extends AbstractCommand<T> {
 
     @Override
     public Value<T> execute(Context context) {
-        final var objectArg = interpreter.pop();
-        final ObjectValue object;
-        if (objectArg instanceof Command<?> command) {
-            final var obj = interpreter.evaluate(context, command).get();
-            if (obj instanceof ObjectValue objectValue) {
-                object = objectValue;
+        var objectArg = interpreter.pop();
+        final var vararg = isVararg(objectArg);
+        if (vararg) {
+            objectArg = interpreter.pop();
+        }
+
+        Object object = Optional.ofNullable(switch (objectArg) {
+                    case Command<?> command -> interpreter.evaluate(context, command).get();
+                    case Value<?> value -> value.get();
+                    default -> null;
+                })
+                .map(SafeCast.to(ObjectValue.class))
+                .orElseThrow(() -> new IllegalArgumentException("The first argument of 'field' should be an object"));
+        var done = false;
+        do {
+            final String name = getName(context).orElse(null);
+            if (name != null) {
+                object = Optional.of(object)
+                        .map(SafeCast.to(ObjectValue.class))
+                        .map(o -> o.get(name))
+                        .map(Value::get)
+                        .orElseThrow(() -> new IllegalArgumentException("Field " + name + " is not found or not found or not an object"));
             } else {
-                throw new IllegalArgumentException("The first argument of 'field' should be an object");
+                done = true;
             }
-        } else {
-            throw new IllegalArgumentException("The second argument of 'set' should be an object");
-        }
-
-        final var nameArg = interpreter.pop();
-        final String name;
-        if (nameArg instanceof Value<?> nameValue) {
-            name = nameValue.get().toString();
-        } else if (nameArg instanceof Command<?> cmd) {
-            name = interpreter.evaluate(context, cmd).get().toString();
-        } else {
-            throw new IllegalArgumentException("The second argument of 'field' should be a name");
-        }
-
-
-        return (Value<T>)object.get(name);
-    }
-
-    @Override
-    public String toString() {
-        return "CommandSet";
+        } while (vararg && !done);
+        return switch (object) {
+            case Value<?> value -> (Value<T>) value;
+            default -> new SimpleValue<>((T) object);
+        };
     }
 }

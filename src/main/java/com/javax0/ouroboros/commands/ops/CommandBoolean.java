@@ -21,8 +21,5 @@ public class CommandBoolean extends AbstractCommand<Boolean> {
         return nextArgument(context).map(o -> new SimpleValue<>(toBoolean(o))).orElse(null);
     }
 
-    @Override
-    public String toString() {
-        return "CommandBoolean";
-    }
+
 }

@@ -27,8 +27,5 @@ public class CommandPuts extends AbstractCommand<String> {
         return new SimpleValue<>(result);
     }
 
-    @Override
-    public String toString() {
-        return "CommandPuts";
-    }
+
 }

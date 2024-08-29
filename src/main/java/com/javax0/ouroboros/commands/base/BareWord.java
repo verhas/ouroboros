@@ -21,13 +21,12 @@ public class BareWord<T> extends AbstractCommand<T> implements Value<String>{
     @Override
     public Value<T> execute(Context context) {
         final var object = context.variable(word).map(Value::get).orElseThrow(() -> new IllegalArgumentException("Variable " + word + " is not defined"));
-        if (object instanceof Command<?> command) {
-            return (Value<T>) command.execute(context);
-        }else if( object instanceof Value<?> value){
-            return (Value<T>) value;
-        }else{
-            return new SimpleValue<>((T)object);
-        }
+        return switch(object){
+            case Command<?> command -> (Value<T>) command.execute(context);
+            case Value<?> value -> (Value<T>) value;
+            case null -> throw new IllegalArgumentException("Symbol " + word + " is not defined");
+            default -> new SimpleValue<>((T)object);
+        };
     }
 
     @Override

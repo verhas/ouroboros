@@ -16,7 +16,7 @@ public abstract class AbstractCommandLogicalBinop extends AbstractCommand<Boolea
     @Override
     public Value<Boolean> execute(Context context) {
         var first = interpreter.pop();
-        if (first instanceof BareWord<?> bw && "*".equals(bw.get())) {
+        if (isVararg(first)) {
             first = interpreter.pop();
             var left = toBoolean(interpreter.evaluate(context, first).get());
             Block second;

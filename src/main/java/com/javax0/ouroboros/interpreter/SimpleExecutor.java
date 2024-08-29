@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.interpreter;
 
 import com.javax0.ouroboros.*;
+import com.javax0.ouroboros.utils.SafeCast;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ public class SimpleExecutor implements Interpreter {
         return new SimpleState(stack.removeLast(), context.up());
     }
 
-    // TODO: limit the stack recursion in case there is some hivkup with the tree structure
+    // TODO: limit the stack recursion in case there is some hiccup with the tree structure
     @Override
     public <T> Value<T> evaluate(Context context, Block block) {
         if (block == null) {
@@ -133,8 +134,7 @@ public class SimpleExecutor implements Interpreter {
     private Command<Block> getFetcher() {
         return context.variable("$fetch")
                 .map(Value::get)
-                .filter(it -> it instanceof Command<?>)
-                .map(it -> (Command<Block>) it)
+                .map(SafeCast.to(it -> (Command<Block>) it))
                 .orElseThrow(() -> new IllegalArgumentException("No block fetcher"));
     }
 

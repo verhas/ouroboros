@@ -23,8 +23,5 @@ public class CommandBigInteger extends AbstractCommand<BigInteger> {
         return nextArgument(context).map(o -> new SimpleValue<>(toBigInteger(o))).orElse(null);
     }
 
-    @Override
-    public String toString() {
-        return "CommandBigInteger";
-    }
+
 }

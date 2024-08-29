@@ -41,8 +41,5 @@ public class CommandSub<T> extends AbstractCommandBinop<T> {
         return (T)left;
     }
 
-    @Override
-    public String toString() {
-        return "CommandAdd";
-    }
+
 }

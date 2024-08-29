@@ -22,9 +22,4 @@ public class CommandEval<T> extends AbstractCommand<T> {
             return (Value<T>) command.execute(context);
         }
     }
-
-    @Override
-    public String toString() {
-        return "shift";
-    }
 }

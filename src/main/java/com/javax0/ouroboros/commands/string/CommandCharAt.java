@@ -19,8 +19,5 @@ public class CommandCharAt extends AbstractCommand<String> {
         return new SimpleValue<>(string.substring(Math.toIntExact(index),Math.toIntExact(index+1)));
     }
 
-    @Override
-    public String toString() {
-        return "CommandCharAt";
-    }
+
 }

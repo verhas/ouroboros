@@ -25,4 +25,6 @@ public class CommandWhile<T> extends AbstractCommand<T> {
         return result;
     }
 
+
+
 }

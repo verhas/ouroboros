@@ -38,8 +38,5 @@ public class CommandAdd<T> extends AbstractCommandBinop<T> {
         return (T)(left + right);
     }
 
-    @Override
-    public String toString() {
-        return "CommandAdd";
-    }
+
 }

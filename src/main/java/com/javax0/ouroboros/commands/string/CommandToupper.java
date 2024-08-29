@@ -17,8 +17,5 @@ public class CommandToupper extends AbstractCommand<String> {
         return new SimpleValue<>(string.toUpperCase());
     }
 
-    @Override
-    public String toString() {
-        return "CommandToupper";
-    }
+
 }

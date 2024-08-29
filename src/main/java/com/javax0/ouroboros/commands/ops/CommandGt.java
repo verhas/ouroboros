@@ -36,8 +36,5 @@ public class CommandGt extends AbstractCommandBinop<Boolean> {
         return left.compareTo(right) > 0;
     }
 
-    @Override
-    public String toString() {
-        return "CommandGt";
-    }
+
 }

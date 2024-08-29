@@ -18,8 +18,5 @@ public class CommandIsBlank extends AbstractCommand<Boolean> {
         return new SimpleValue<>(string.isBlank());
     }
 
-    @Override
-    public String toString() {
-        return "CommandIsBlank";
-    }
+
 }

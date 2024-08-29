@@ -19,8 +19,5 @@ public class CommandReplaceAll extends AbstractCommand<String> {
         return new SimpleValue<>(string.replaceAll(target,replacement ));
     }
 
-    @Override
-    public String toString() {
-        return "CommandReplaceAll";
-    }
+
 }

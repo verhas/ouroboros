@@ -7,6 +7,9 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.interpreter.ObjectValue;
 
+/**
+ * Set a field in an object.
+ */
 public class CommandSetf extends AbstractCommand<Void> {
     public CommandSetf(Interpreter interpreter) {
         set(interpreter);
@@ -42,8 +45,5 @@ public class CommandSetf extends AbstractCommand<Void> {
         return null;
     }
 
-    @Override
-    public String toString() {
-        return "CommandSetf";
-    }
+
 }

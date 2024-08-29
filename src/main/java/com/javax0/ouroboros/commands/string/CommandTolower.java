@@ -19,8 +19,5 @@ public class CommandTolower extends AbstractCommand<String> {
         return new SimpleValue<>(string.toLowerCase());
     }
 
-    @Override
-    public String toString() {
-        return "CommandTolower";
-    }
+
 }

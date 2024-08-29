@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.commands;
 
 import com.javax0.ouroboros.*;
+import com.javax0.ouroboros.commands.base.BareWord;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -15,6 +16,23 @@ public abstract class AbstractCommand<T> implements Command<T> {
     @Override
     public void set(Interpreter interpreter) {
         this.interpreter = interpreter;
+    }
+
+    protected boolean isVararg(Block block) {
+        return block instanceof BareWord<?> bw && "*".equals(bw.get());
+    }
+
+    protected Optional<String> getName(Context context) {
+        final var name = interpreter.pop();
+        if (name instanceof Value<?> nameValue) {
+            return Optional.ofNullable(nameValue.get().toString());
+        } else if (name instanceof Command<?> command) {
+            return Optional.ofNullable(interpreter.evaluate(context, command))
+                    .map(Value::get)
+                    .map(Object::toString);
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -46,12 +64,6 @@ public abstract class AbstractCommand<T> implements Command<T> {
         } else {
             return Optional.of((Q) new SimpleValue<>(object));
         }
-
-//        final var result = interpreter.<T>evaluate(context, interpreter.pop());
-//        if( result == null ){
-//            return Optional.empty();
-//        }
-//        return Optional.ofNullable(result.get());
     }
 
     protected Boolean toBoolean(Object value) {
@@ -159,4 +171,10 @@ public abstract class AbstractCommand<T> implements Command<T> {
             case null, default -> "" + value;
         };
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
 }

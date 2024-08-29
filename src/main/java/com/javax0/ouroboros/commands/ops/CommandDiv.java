@@ -2,6 +2,7 @@ package com.javax0.ouroboros.commands.ops;
 
 import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.Value;
+import com.javax0.ouroboros.utils.SafeCast;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -31,7 +32,7 @@ public class CommandDiv<T> extends AbstractCommandBinop<T> {
 
     @Override
     T binop(BigDecimal left, BigDecimal right) {
-        final int scale = context.variable("$scale").map(Value::get).filter(Long.class::isInstance).map(Long.class::cast)
+        final int scale = context.variable("$scale").map(Value::get).map(SafeCast.to(Long.class))
                 .map(Math::toIntExact).orElse(2);
         final RoundingMode roundingMode = context.variable("$round")
                 .map(Value::get)
@@ -42,8 +43,5 @@ public class CommandDiv<T> extends AbstractCommandBinop<T> {
         return (T) left.divide(right, scale, roundingMode);
     }
 
-    @Override
-    public String toString() {
-        return "CommandAdd";
-    }
+
 }

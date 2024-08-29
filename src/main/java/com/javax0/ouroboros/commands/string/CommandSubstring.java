@@ -18,8 +18,5 @@ public class CommandSubstring extends AbstractCommand<String> {
         return new SimpleValue<>(string.substring(Math.toIntExact(start),Math.toIntExact(end+1)));
     }
 
-    @Override
-    public String toString() {
-        return "CommandSubstring";
-    }
+
 }

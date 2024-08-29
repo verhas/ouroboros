@@ -42,8 +42,5 @@ public class CommandMul<T> extends AbstractCommandBinop<T> {
         }
     }
 
-    @Override
-    public String toString() {
-        return "CommandAdd";
-    }
+
 }

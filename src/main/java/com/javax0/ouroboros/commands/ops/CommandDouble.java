@@ -21,8 +21,5 @@ public class CommandDouble extends AbstractCommand<Double> {
         return nextArgument(context).map(o -> new SimpleValue<>(toDouble(o))).orElse(null);
     }
 
-    @Override
-    public String toString() {
-        return "CommandDouble";
-    }
+
 }

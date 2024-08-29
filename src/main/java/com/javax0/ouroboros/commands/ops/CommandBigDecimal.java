@@ -23,8 +23,5 @@ public class CommandBigDecimal extends AbstractCommand<BigDecimal> {
         return nextArgument(context).map(o -> new SimpleValue<>(toBigDecimal(o))).orElse(null);
     }
 
-    @Override
-    public String toString() {
-        return "CommandBigDecimal";
-    }
+
 }

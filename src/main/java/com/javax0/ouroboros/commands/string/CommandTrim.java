@@ -17,8 +17,5 @@ public class CommandTrim extends AbstractCommand<String> {
         return new SimpleValue<>(string.trim());
     }
 
-    @Override
-    public String toString() {
-        return "CommandTrim";
-    }
+
 }

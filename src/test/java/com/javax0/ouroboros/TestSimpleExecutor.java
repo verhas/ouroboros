@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static com.javax0.ouroboros.AssertUtils.assertOutput;
 import static com.javax0.ouroboros.AssertUtils.output;
 
@@ -102,48 +104,79 @@ public class TestSimpleExecutor {
     @Test
     @DisplayName("test function definition and calling")
     void functionCall() throws Exception {
-        assertOutput("fun a { puts shift } a { shift } 3", "3");
+        assertOutput("set a quote{ puts shift } a { shift } 3", "3");
     }
 
     @Test
     @DisplayName("test function local variables")
     void functionLocalVariables() throws Exception {
-        assertOutput("set k 1 fun a { set k 2 puts shift puts k } a k ", "12");
+        assertOutput("set k 1 set a '{ set k 2 puts shift puts k } a k ", "12");
     }
 
     @Test
     @DisplayName("creating object setting fields and getting fields")
     void objectField() throws Exception {
-        assertOutput("object a {} setf a b 1 puts field a b", "1");
+        assertOutput("set a object {} setf a b 1 puts field a b", "1");
+    }
+
+    @Test
+    @DisplayName("creating object setting fields and getting fields vararg")
+    void objectFieldVararg() throws Exception {
+        assertOutput("set a object {} " +
+                "setf a b object {} " +
+                "setf field a b c 1 " +
+                "puts field* a b c {}", "1");
+        assertOutput("set a object {} " +
+                "setf a b object {} " +
+                "setf field a b c 1 " +
+                "{puts field* a b c}", "1");
     }
 
     @Test
     @DisplayName("creating object setting fields and getting fields object calculated")
     void objectFieldCalculated() throws Exception {
-        assertOutput("object a {} setf {a} b 1 puts field {a} b", "1");
+        assertOutput("set a object{} setf {a} b 1 puts field {a} b", "1");
     }
 
     @Test
     @DisplayName("creating object calling methods")
-    void objectMethod() throws Exception {
-        assertOutput("object a {} method a m { puts field this b } setf a b 3 call a m", "3");
+    void objectMethod1() throws Exception {
+        assertOutput("set a object {} setf a m quote{ puts field this b } setf a b 3 call a m", "3");
+    }
+
+    @Test
+    @DisplayName("creating object calling methods through fields")
+    void objectMethod2() throws Exception {
+        assertOutput("set a object {} " +
+                "setf a b object {} " +
+                "setf field a b m quote { puts field this c } " +
+                "setf field a b c 3 " +
+                "call field a b m", "3");
+    }
+
+    @Test
+    @DisplayName("creating object calling* methods")
+    void objectMethod3() throws Exception {
+        assertOutput("set a object {} " +
+                "setf a b quote{set x object {} setf x m quote{ puts field this c } setf x c 3 x} " +
+                "call* a b m", "3");
     }
 
     @Test
     @DisplayName("creating object calling methods nesting")
     void objectMethodNesting() throws Exception {
-        assertOutput("object a {} object b {} " +
-                "method a m { puts field this b } " +
-                "method b m { call a m } " +
+        assertOutput("set a object {} set b object {} " +
+                "setf a m quote{ puts field this b } " +
+                "setf b m quote{ call a m } " +
                 "setf a b 3 call b m", "3");
     }
 
     @Test
     @DisplayName("creating object calling methods nesting")
     void objectMethodNestingThis() throws Exception {
-        assertOutput("object a {} object b {} " +
-                "method a m { puts field this b } " +
-                "method b m { call a {field this z} } " +
+        assertOutput("set a object{} set b object{} " +
+                "setf a m quote{ puts field this b } " +
+                "setf b m quote{ call a {field this z} } " +
                 "setf b z \"m\"" +
                 "setf a b 3 call b m", "3");
     }
@@ -440,7 +473,6 @@ public class TestSimpleExecutor {
     void testtrim() throws Exception {
         assertOutput("puts trim \"aaaa\"", "aaaa");
     }
-
 }
 
 

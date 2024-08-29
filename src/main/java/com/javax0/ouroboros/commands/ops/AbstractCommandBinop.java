@@ -41,7 +41,7 @@ public abstract class AbstractCommandBinop<T> extends AbstractCommand<T> {
     public Value<T> execute(Context context) {
         this.context = context;
         var first = interpreter.pop();
-        if (first instanceof BareWord<?> bw && "*".equals(bw.get())) {
+        if (isVararg(first)) {
             first = interpreter.pop();
             T left = (T) interpreter.evaluate(context, first).get();
             Block second;

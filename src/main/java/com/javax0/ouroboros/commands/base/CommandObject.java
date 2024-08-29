@@ -9,20 +9,13 @@ import com.javax0.ouroboros.interpreter.ObjectValue;
 
 import java.util.Map;
 
-public class CommandObject extends AbstractCommand<Void> {
+public class CommandObject extends AbstractCommand<ObjectValue> {
     public CommandObject(Interpreter interpreter) {
         set(interpreter);
     }
 
     @Override
-    public Value<Void> execute(Context context) {
-        final var nameArg = interpreter.pop();
-        final String name;
-        if (nameArg instanceof Value<?> nameValue) {
-            name = nameValue.get().toString();
-        } else {
-            throw new IllegalArgumentException("The first argument of 'set' should be a name");
-        }
+    public Value<ObjectValue> execute(Context context) {
         final var object = new ObjectValue();
         final var inheritFrom = interpreter.pop();
         if (inheritFrom != null) {
@@ -35,7 +28,6 @@ public class CommandObject extends AbstractCommand<Void> {
                 }
             }
         }
-        context.set(name, new SimpleValue<>(object));
-        return null;
+        return new SimpleValue<>(object);
     }
 }

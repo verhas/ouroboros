@@ -4,6 +4,7 @@ import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.commands.base.CommandBlock;
 import com.javax0.ouroboros.commands.pseudo.CommandBlockClose;
+import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.ArrayList;
 
@@ -35,8 +36,7 @@ public class BlockLexer<T> extends AbstractCommand<CommandBlock<T>> {
     private Command<Block> getFetcher(Context context) {
         return context.variable("$fetch")
                 .map(Value::get)
-                .filter(it -> it instanceof Command<?>)
-                .map(it -> (Command<Block>) it)
+                .map(SafeCast.to(it -> (Command<Block>)it))
                 .orElseThrow(() -> new IllegalArgumentException("No block fetcher"));
     }
 

@@ -37,8 +37,5 @@ public class CommandEq extends AbstractCommandBinop<Boolean> {
         return left.equals(right);
     }
 
-    @Override
-    public String toString() {
-        return "CommandEq";
-    }
+
 }

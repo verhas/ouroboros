@@ -21,8 +21,5 @@ public class CommandString extends AbstractCommand<String> {
         return nextArgument(context).map(o -> new SimpleValue<>(toString(o))).orElse(null);
     }
 
-    @Override
-    public String toString() {
-        return "CommandLong";
-    }
+
 }

@@ -20,8 +20,5 @@ public class CommandMatch extends AbstractCommand<Boolean> {
         return new SimpleValue<>(pattern.matcher(string).matches());
     }
 
-    @Override
-    public String toString() {
-        return "CommandIsBlank";
-    }
+
 }

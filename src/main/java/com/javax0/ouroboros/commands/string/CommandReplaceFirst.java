@@ -19,8 +19,5 @@ public class CommandReplaceFirst extends AbstractCommand<String> {
         return new SimpleValue<>(string.replaceFirst(target,replacement ));
     }
 
-    @Override
-    public String toString() {
-        return "CommandReplaceFirst";
-    }
+
 }

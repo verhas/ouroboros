@@ -36,8 +36,5 @@ public class CommandLe extends AbstractCommandBinop<Boolean> {
         return left.compareTo(right) <= 0;
     }
 
-    @Override
-    public String toString() {
-        return "CommandLe";
-    }
+
 }
