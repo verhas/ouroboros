@@ -60,4 +60,21 @@ setf a name "World"
 call a b "Hello, "
 end snippet
 --------------------------------
+snippet metho1.oro
+set a object{}
+set g '{puts shift puts field this name puts "!"}
+setf a b 'g
+puts field a b
+setf a name "World"
+call a b "Hello, "
+end snippet
+--------------------------------
+snippet lexNewLine.oro
+call $lex insert 0 '{
+if { eq charAt 0 source "\n"}
+   {sets add "{}" substring 1 length source source}}
+set q add* 3 2
+puts q
+end snippet
+--------------------------------
 

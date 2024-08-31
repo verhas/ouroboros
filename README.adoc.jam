@@ -1,10 +1,22 @@
-= Ouroboros
+= Ouroboros (ur)
 
 image::logo.svg[Ouroboros logo, align="left" width=100]
 
+A minimal interpreter for a minimal language inspired by TCL, LISP and Forth.
+Ouroboros or 'ur' for short, has no syntax at all.
+It is just a list of tokens.
+The tokens represent commands, constants or variables which are executed from left to right.
+Whenever a command is executed, it can, at its discretion, consume subsequent tokens.
 
-A minimal interpreter for a minimal language.
-Ouroboros was inspired by TCL, LISP and Forth.
+The lexical analysis is performed on demand.
+It means that only the code to be executed is tokenized.
+The rest of the source code is just a string and it is available to read and to modify for the running code.
+It means that the program can define new commands, new syntax or even new data types.
+
+The programming language can define itself, hence the name Ouroboros, the snake that eats its own tail.
+At the same time the language is minimalistic, hence the abbreviation 'ur', meaning original, quintessential.
+
+The language was developed as research and was not meant for practical use.
 
 {%@snip:collect from=src/test/resources/samples%}
 {%@define sample($X)=
@@ -26,10 +38,10 @@ Ouroboros was inspired by TCL, LISP and Forth.
 
 This interpreter is executing the simplest syntax possible.
 A program is nothing else than a list of tokens.
-A bare word can represent a variable or a function.
-When a function is called, it can consume the subsequent tokens.
+A bare word can represent a variable or a command.
+When a command is called, it can consume the subsequent tokens.
 
-=== `puts` writing the output
+=== `puts` Writing the Output
 
 For example:
 
@@ -39,11 +51,14 @@ will result in:
 
 {%output%}
 
-`puts` is a function that prints its argument as a string.
+`puts` is a command that prints its argument as a string.
 The argument is the string "Hello, World!".
 In this case this is a literal, but it can also be more complex, something to evaluate before outputting.
 
-=== String concatenation
+=== Expressions
+
+There are no expressions in the language.
+Commands just fetch the next token and interpret it.
 
 For example, the following sample:
 
@@ -55,7 +70,7 @@ will result again in:
 
 In this case the expression is the concatenation of two strings.
 As `puts` starts to execute it takes one argument.
-Taking this argument recognizes `add` as a function.
+Taking this argument recognizes `add` as a command.
 `add` takes two arguments and if they are strings, it concatenates them.
 Finally, the result is printed.
 
@@ -103,7 +118,7 @@ Blocks are explained in the section "Blocks".
 Then we set the field `name` of the object to `"Hello, "`.
 Finally, we print the field `name` of the object using the command `field` and `"World!"`.
 
-==== Data types
+=== Data types
 
 The language handles any data type that commands can handle.
 The commands that come with the interpreter build in handle `Long`, `Double`, `String` and `Boolean`, objects and lists off the shelf.
@@ -139,7 +154,7 @@ You can call a function by the name, and then it will evaluate the block.
 
 However, you have to be careful.
 If you assign a block to a variable, make sure that you assign the block and not the evaluated result of the block.
-For example the following code will not work:
+For example, the following code will not work:
 
 {%sample/unquoted%}
 
@@ -173,7 +188,7 @@ It will result in:
 {%output%}
 
 The program defines an object and sets the variable `a` to the object.
-Then it sets the field `b` of the object to a function.
+Then it sets the field `b` of the object to a block.
 After that is sets the field `name` of the object to `"World"`.
 Finally, it calls the method `b` of the object `a` with the arguments `"Hello, "`.
 
@@ -191,4 +206,36 @@ The fields of these objects are the variables of the block.
 Ouroboros comes with built-in commands.
 The command set is minimal, but it can be extended.
 
+
+== Redefining the Language
+
+The language can redefine itself.
+Since the end of the code is not tokenized and is available as a string, you can write code that modifies the source extending the original syntax.
+The following example will treat every new line as a command closing empty block.
+
+The operator commands, like `add`, `mult`, `div` and so on can either take two arguments or multiple arguments.
+If their first argument is  `*` they will take all the remaining arguments until the end of the block or until an empty block is the next argument.
+
+Writing `{}` many times at the end of the operands following an `add` or `mult` may be cumbersome.
+To avoid this, the following program alters the syntax analysis process to treat every new line as a command closing an empty block.
+
+{%sample/lexNewLine%}
+
+The variable `$lex` is a list that contains all the lexical analyzers.
+Lexical analyzers are commands that get the source and either
+
+* return a single token and swallow the characters corresponding to that token from the source, or
+
+* leave the source intack and return `null`.
+
+The code inserts a new lexical analyzer.
+This analyzer looks at the start of the source.
+If it is a new line, it removes that and inserts an empty block instead.
+After that it returns `null`, like if it did not find anything.
+
+The new lexical analyzer is inserted at the beginning of the list.
+After this the command `add* 3 2\n` will be treated as `add* 3 2 {}`.
+That way this program will result in:
+
+{%output%}
 
