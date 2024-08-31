@@ -66,6 +66,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
 
     protected Boolean toBoolean(Object value) {
         return switch (value) {
+            case Integer i -> i != 0;
             case Long l -> l != 0;
             case Double v -> !v.equals(0.0);
             case BigInteger bigInteger -> !bigInteger.equals(BigInteger.ZERO);
@@ -80,6 +81,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
 
     protected Long toLong(Object value) {
         return switch (value) {
+            case Integer i -> (long) i;
             case Long l -> l;
             case Double v -> v.longValue();
             case BigInteger bigInteger -> bigInteger.longValue();
@@ -100,6 +102,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
 
     protected Double toDouble(Object value) {
         return switch (value) {
+            case Integer i -> i.doubleValue();
             case Long l -> l.doubleValue();
             case Double v -> v;
             case BigInteger bigInteger -> bigInteger.doubleValue();
@@ -120,6 +123,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
 
     protected BigInteger toBigInteger(Object value) {
         return switch (value) {
+            case Integer i -> BigInteger.valueOf(i);
             case Long l -> BigInteger.valueOf(l);
             case Double v -> BigInteger.valueOf(v.longValue());
             case BigInteger bigInteger -> bigInteger;
@@ -140,6 +144,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
 
     protected BigDecimal toBigDecimal(Object value) {
         return switch (value) {
+            case Integer i -> BigDecimal.valueOf(i);
             case Long l -> BigDecimal.valueOf(l);
             case Double v -> BigDecimal.valueOf(v);
             case BigInteger bigInteger -> new BigDecimal(bigInteger);
@@ -160,6 +165,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
 
     protected String toString(Object value) {
         return switch (value) {
+            case Integer i -> Integer.toString(i);
             case Long l -> Long.toString(l);
             case Double v -> Double.toString(v);
             case BigInteger bigInteger -> bigInteger.toString();

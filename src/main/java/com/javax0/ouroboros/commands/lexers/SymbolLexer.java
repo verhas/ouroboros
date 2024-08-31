@@ -44,6 +44,7 @@ public class SymbolLexer<T> extends AbstractCommand<BareWord<T>> {
                 !Character.isUnicodeIdentifierPart(ch) &&
                 !Character.isWhitespace(ch) &&
                 !Character.isDigit(ch) &&
-                ch != '{';
+                ch != '{' &&
+                ch != '}' ;
     }
 }

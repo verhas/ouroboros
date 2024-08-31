@@ -15,7 +15,7 @@ public class CommandSubstring extends AbstractCommand<String> {
         final var start = nextArgument(context, this::toLong).orElseThrow(() -> new IllegalArgumentException("Start is missing"));
         final var end = nextArgument(context, this::toLong).orElseThrow(() -> new IllegalArgumentException("End is missing"));
         final var string = nextArgument(context,this::toString).orElseThrow(() -> new IllegalArgumentException("String is missing"));
-        return new SimpleValue<>(string.substring(Math.toIntExact(start),Math.toIntExact(end+1)));
+        return new SimpleValue<>(string.substring(Math.toIntExact(start),Math.toIntExact(end)));
     }
 
 

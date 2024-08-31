@@ -6,6 +6,7 @@ import com.javax0.ouroboros.utils.SafeCast;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ServiceLoader;
 
 public class SimpleExecutor implements Interpreter {
@@ -31,10 +32,12 @@ public class SimpleExecutor implements Interpreter {
     @Override
     public Source source() {
         purgeStack();
-        if (stack.isEmpty() || stack.getLast().isEmpty()) {
-            return null;
-        }
-        return (Source) stack.getLast().getLast();
+        return Optional.of(stack)
+                .filter(it -> !it.isEmpty())
+                .map(List::getLast)
+                .filter(it -> !it.isEmpty())
+                .map(List::getLast)
+                .map(SafeCast.to(Source.class)).orElse(null);
     }
 
     @Override

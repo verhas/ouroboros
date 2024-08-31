@@ -26,13 +26,17 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("or", new SimpleValue<>(new CommandOr(interpreter)));
         context.<Command<?>>set("if", new SimpleValue<>(new CommandIf<>(interpreter)));
         context.<Command<?>>set("while", new SimpleValue<>(new CommandWhile<>(interpreter)));
+
         context.<Command<?>>set("set", new SimpleValue<>(new CommandSet(interpreter)));
         context.<Command<?>>set("setg", new SimpleValue<>(new CommandSetg(interpreter)));
         context.<Command<?>>set("setf", new SimpleValue<>(new CommandSetf(interpreter)));
+        context.<Command<?>>set("sets", new SimpleValue<>(new CommandSets(interpreter)));
+
         context.<Command<?>>set("field", new SimpleValue<>(new CommandField<>(interpreter)));
         context.<Command<?>>set("call", new SimpleValue<>(new CommandCall<>(interpreter)));
+        context.<Command<?>>set("source", new SimpleValue<>(new CommandSource(interpreter)));
 
-
+        context.<Command<?>>set("length", new SimpleValue<>(new CommandLength(interpreter)));
         context.<Command<?>>set("charAt", new SimpleValue<>(new CommandCharAt(interpreter)));
         context.<Command<?>>set("isBlank", new SimpleValue<>(new CommandIsBlank(interpreter)));
         context.<Command<?>>set("isEmpty", new SimpleValue<>(new CommandIsEmpty(interpreter)));

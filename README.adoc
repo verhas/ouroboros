@@ -6,21 +6,8 @@ image::logo.svg[Ouroboros logo, align="left" width=100]
 A minimal interpreter for a minimal language.
 Ouroboros was inspired by TCL, LISP and Forth.
 
-{%@snip:collect from=src/test/resources/samples%}
-{%@define sample($X)=
-.oro source
-[source]
-----
-{%@snip $X.oro %}
-----
-{%@define output=
-.Output
-[source]
-----
-{%@include [verbatim] target/generated-output/$X.oro %}
-----
-%}
-%}
+
+
 
 == Introduction
 
@@ -33,11 +20,25 @@ When a function is called, it can consume the subsequent tokens.
 
 For example:
 
-{%sample/puts%}
+
+.oro source
+[source]
+----
+puts "Hello, World!"
+
+----
+
+
 
 will result in:
 
-{%output%}
+
+.Output
+[source]
+----
+Hello, World!
+----
+
 
 `puts` is a function that prints its argument as a string.
 The argument is the string "Hello, World!".
@@ -47,11 +48,25 @@ In this case this is a literal, but it can also be more complex, something to ev
 
 For example, the following sample:
 
-{%sample/putsadd%}
+
+.oro source
+[source]
+----
+puts add "Hello, " "World!"
+
+----
+
+
 
 will result again in:
 
-{%output%}
+
+.Output
+[source]
+----
+Hello, World!
+----
+
 
 In this case the expression is the concatenation of two strings.
 As `puts` starts to execute it takes one argument.
@@ -74,11 +89,39 @@ It is detailed later.
 
 Example for the commands `set`, `setg` and `setf`:
 
-{%sample/set%}
+
+.oro source
+[source]
+----
+set a "Hello, "
+{
+  puts a
+  puts "\n"
+  set a "World!"
+  puts a
+  puts "\n"
+  setg a "Gruetzi, "
+  puts a
+  puts "\n"
+}
+puts a
+
+----
+
+
 
 will result in:
 
-{%output%}
+
+.Output
+[source]
+----
+Hello, 
+World!
+World!
+Gruetzi, 
+----
+
 
 The first `puts` command prints "Hello, " using the global variabel `a`.
 The second `puts` command prints "World!" using the local variable `a`.
@@ -89,11 +132,30 @@ Finally, stepping out of the block the last `puts` command prints "Gruetzi, ".
 To set a field of an object is done using `setf`.
 To do that, we need to have an object, that can be sone with the `object` command.
 
-{%sample/object%}
+
+.oro source
+[source]
+----
+set obj object {}
+setf obj name "Hello, "
+{
+  puts field obj name
+  puts "World!"
+}
+
+----
+
+
 
 will result in:
 
-{%output%}
+
+.Output
+[source]
+----
+Hello, World!
+----
+
 
 We set the variable `obj` to an object.
 The argument of the command `object` is the parent object to inherit from.
@@ -114,11 +176,28 @@ The commands that come with the interpreter build in handle `Long`, `Double`, `S
 A block is a series of commands one after the other surrounded by curly braces.
 For example:
 
-{%sample/block%}
+
+.oro source
+[source]
+----
+puts {
+  puts "Hello, "
+  puts "World!"
+}
+
+----
+
+
 
 will result in:
 
-{%output%}
+
+.Output
+[source]
+----
+Hello, World!World!
+----
+
 
 The commands in the blocks are evaluated one ofter the other, and the value of the block is the value of the last command.
 In this case the starting the first `puts` command it evaluates the block.
@@ -141,11 +220,26 @@ However, you have to be careful.
 If you assign a block to a variable, make sure that you assign the block and not the evaluated result of the block.
 For example the following code will not work:
 
-{%sample/unquoted%}
+
+.oro source
+[source]
+----
+set a { puts shift }
+a "Hello, World!"
+
+----
+
+
 
 It will result in an exception:
 
-{%output%}
+
+.Output
+[source]
+----
+Variable a is not defined
+----
+
 
 The reason is that the block is evaluated before it is assigned to the variable `a`.
 During the evaluation it tries to get the next argument calling `shift` and that is `a`.
@@ -153,11 +247,26 @@ At this point `a` is not defined yet.
 
 The correct example is:
 
-{%sample/quoted%}
+
+.oro source
+[source]
+----
+set a '{ puts shift }
+a "Hello, World!"
+
+----
+
+
 
 that results in
 
-{%output%}
+
+.Output
+[source]
+----
+Hello, World!
+----
+
 
 The command `quote` also abbreviated as `'` will fetch the next element without evaluating it.
 It will be assigned as a block that will be evaluated when the variable is used as a command.
@@ -166,11 +275,28 @@ Methods are functions that are assigned to an object field.
 They cannot be called directly.
 To call a method, you need the command `call`.
 
-{%sample/method%}
+
+.oro source
+[source]
+----
+set a object{}
+setf a b '{puts shift puts field this name puts "!"}
+setf a name "World"
+call a b "Hello, "
+
+----
+
+
 
 It will result in:
 
-{%output%}
+
+.Output
+[source]
+----
+Hello, World!
+----
+
 
 The program defines an object and sets the variable `a` to the object.
 Then it sets the field `b` of the object to a function.
@@ -190,5 +316,3 @@ The fields of these objects are the variables of the block.
 
 Ouroboros comes with built-in commands.
 The command set is minimal, but it can be extended.
-
-

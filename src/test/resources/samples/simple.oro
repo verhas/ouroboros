@@ -1,0 +1,63 @@
+This file contains sample programs executed by TestRunSamples.java in the src/test/java directory.
+The file is also collected by the README.adoc.jam file to generate the documentation.
+
+The output of each program is saved to the file target/generated-output/XXX where XXX is the name of the snippet.
+
+--------------------------------
+snippet puts.oro
+puts "Hello, World!"
+end snippet
+--------------------------------
+snippet putsadd.oro
+puts add "Hello, " "World!"
+end snippet
+--------------------------------
+snippet block.oro
+puts {
+  puts "Hello, "
+  puts "World!"
+}
+end snippet
+--------------------------------
+snippet set.oro
+set a "Hello, "
+{
+  puts a
+  puts "\n"
+  set a "World!"
+  puts a
+  puts "\n"
+  setg a "Gruetzi, "
+  puts a
+  puts "\n"
+}
+puts a
+end snippet
+--------------------------------
+snippet object.oro
+set obj object {}
+setf obj name "Hello, "
+{
+  puts field obj name
+  puts "World!"
+}
+end snippet
+--------------------------------
+snippet unquoted.oro
+set a { puts shift }
+a "Hello, World!"
+end snippet
+--------------------------------
+snippet quoted.oro
+set a '{ puts shift }
+a "Hello, World!"
+end snippet
+--------------------------------
+snippet method.oro
+set a object{}
+setf a b '{puts shift puts field this name puts "!"}
+setf a name "World"
+call a b "Hello, "
+end snippet
+--------------------------------
+

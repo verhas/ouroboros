@@ -15,9 +15,9 @@ public class BareWordLexer<T> extends AbstractCommand<BareWord<T>> {
             return null;
         }
         final var input = source.execute(context).get();
-        if (!input.isEmpty() && Character.isUnicodeIdentifierStart(input.charAt(0))) {
+        if (!input.isEmpty() && Character.isJavaIdentifierStart(input.charAt(0))) {
             int i = 1;
-            while (i < input.length() && Character.isUnicodeIdentifierPart(input.charAt(i))) {
+            while (i < input.length() && Character.isJavaIdentifierPart(input.charAt(i))) {
                 i++;
             }
             final var word = input.substring(0, i);

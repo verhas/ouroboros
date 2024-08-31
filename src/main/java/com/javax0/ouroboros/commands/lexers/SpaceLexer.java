@@ -15,7 +15,7 @@ public class SpaceLexer<T> extends AbstractCommand<BareWord<T>> {
             return null;
         }
         final var input = source.execute(context).get();
-        if (!input.isEmpty() && Character.isSpaceChar(input.charAt(0))) {
+        if (!input.isEmpty() && Character.isWhitespace(input.charAt(0))) {
             int i = 1;
             while (i < input.length() && Character.isSpaceChar(input.charAt(i))) {
                 i++;

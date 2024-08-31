@@ -451,7 +451,7 @@ public class TestSimpleExecutor {
     @DisplayName("substring")
     @Test
     void testsubstring() throws Exception {
-        assertOutput("puts substring 1 5 \"abraka dabra\"", "braka");
+        assertOutput("puts substring 1 5 \"abraka dabra\"", "brak");
     }
 
     @DisplayName("lc")
@@ -520,6 +520,57 @@ public class TestSimpleExecutor {
                 "puts a " +
                 "puts b", "[1, 2, 3, 4][1, 99, 3, 4]");
     }
+
+    @DisplayName("split a list complex example inserting into it")
+    @Test
+    void splitComplexInserting() throws Exception {
+        assertOutput("set a list{1 2 3 4} " +
+                "setf a head '{" +
+                "                set index shift " +
+                "                set s call this split index " +
+                "                call s first" +
+                "             }" +
+                "set b copy a " +
+                "call b insert 1 99 " +
+                "puts a " +
+                "puts b", "[1, 2, 3, 4][1, 99, 2, 3, 4]");
+    }
+
+    @DisplayName("Fetch the source")
+    @Test
+    void fetchTheSource() throws Exception {
+        assertOutput("set a 3 " +
+                "set b 1 " +
+                // no matter how many {{{}}} .. source goes up to the first level where there is source
+                "puts {set b 2 set a {{{{source}}}} " +
+                "      puts a " +
+                "      puts b}" +
+                " puts b{} \"alma\"", " puts b{} \"alma\"221");
+    }
+
+    @DisplayName("modify the source")
+    @Test
+    void modifyTheSource() throws Exception {
+        assertOutput("set a 3 " +
+                "set b 1 " +
+                "{sets \"puts \\\"Hello, World!\\\"\"} " +
+                "puts a " +
+                "puts b", "Hello, World!");
+    }
+
+    @DisplayName("modify the lexers")
+    @Test
+    void modifyLexers() throws Exception {
+        assertOutput(
+                "call $lex insert 3 '{" +
+                        "if { eq charAt 0 source \"\\n\"}" +
+                        "   {sets add \"{}\" substring 1 length source source}}" +
+                        "set q add* 3 2 \n" +
+                        "puts q", "5");
+
+    }
+
+
 }
 
 

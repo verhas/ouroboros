@@ -22,6 +22,7 @@ public class ListValue<T> extends AbstractList<Value<T>> implements ObjectValue 
         fields().put("rest", new SimpleValue<>(new CommandListRest<>(interpreter)));
         fields().put("get", new SimpleValue<>(new CommandListGet<>(interpreter)));
         fields().put("set", new SimpleValue<>(new CommandListSet<>(interpreter)));
+        fields().put("insert", new SimpleValue<>(new CommandListInsert<>(interpreter)));
         fields().put("length", new SimpleValue<>(new CommandListLength(interpreter)));
         fields().put("split", new SimpleValue<>(new CommandListSplit<>(interpreter)));
     }
