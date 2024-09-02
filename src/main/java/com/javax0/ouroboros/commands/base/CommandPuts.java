@@ -10,6 +10,11 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * Command to print the value of the top of the stack.
  */
 
+/**snippet command_puts
+ * {%COMMAND puts%}
+ * Print the value as a string.
+ * end snippet
+ */
 public class CommandPuts extends AbstractCommand<String> {
 
     public CommandPuts(Interpreter interpreter) {

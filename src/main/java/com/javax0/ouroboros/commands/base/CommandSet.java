@@ -5,8 +5,12 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-/**
+/**snippet command_set
+ * {%COMMAND set%}
  * Set a variable in the context.
+ *
+ * The first argument is the name of the variable and the second argument is the value.
+ * end snippet
  */
 public class CommandSet extends AbstractCommand<Void> {
     public CommandSet(Interpreter interpreter) {

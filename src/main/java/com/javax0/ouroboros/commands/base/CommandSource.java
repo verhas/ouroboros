@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
+ * snippet command_source
+ * {%COMMAND source%}
  * Get the remaining source that was not processed yet.
+ * end snippet
  */
 public class CommandSource extends AbstractCommand<Source> {
 
@@ -18,7 +21,7 @@ public class CommandSource extends AbstractCommand<Source> {
 
     @Override
     public Value<Source> execute(Context context) {
-            return new SimpleValue<>(getSource(interpreter));
+        return new SimpleValue<>(getSource(interpreter));
     }
 
     static Source getSource(Interpreter interpreter) {

@@ -7,7 +7,20 @@ import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.Optional;
 
-
+/**
+ * snippet command_call
+ * {%COMMAND call%}
+ * Call a method.
+ *
+ * The first argument is the object that has the method.
+ * The second argument is the name of the method.
+ *
+ * During the execution, the method can consume further arguments just like a function call.
+ * During the execution of the method, the `this` variable is set to the object that has the method.
+ *
+ * end snippet
+ * @param <T>
+ */
 public class CommandCall<T> extends AbstractCommand<T> {
     public CommandCall(Interpreter interpreter) {
         set(interpreter);

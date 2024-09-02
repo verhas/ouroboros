@@ -566,7 +566,19 @@ public class TestSimpleExecutor {
                         "if { eq charAt 0 source \"\\n\"}" +
                         "   {sets add \"{}\" substring 1 length source source}}" +
                         "set q add* 3 2 \n" +
-                        "puts q", "5");
+                        "1 {} puts q", "5");
+
+    }
+
+    @DisplayName("modify the lexers after fixup")
+    @Test
+    void modifyLexersFixup() throws Exception {
+        assertOutput(
+                "fixup call $lex insert 3 '{" +
+                        "if { eq charAt 0 source \"\\n\"}" +
+                        "   {sets add \"{}\" substring 1 length source source}}" +
+                        "set q add* 3 2 \n" +
+                        "1 {} puts q", "6");
 
     }
 

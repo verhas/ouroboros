@@ -7,6 +7,15 @@ import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.Optional;
 
+/**
+ * snippet command_field
+ * {%COMMAND field%}
+ * Get the value of a field of an object.
+ * The fist argument is the object and the second argument is the name of the field.
+ * end snippet
+ *
+ * @param <T>
+ */
 public class CommandField<T> extends AbstractCommand<T> {
     public CommandField(Interpreter interpreter) {
         set(interpreter);
@@ -21,7 +30,8 @@ public class CommandField<T> extends AbstractCommand<T> {
         }
 
         Object object = Optional.ofNullable(switch (objectArg) {
-                    case Command<?> command -> Optional.ofNullable(interpreter.evaluate(context, command)).map(Value::get).orElse(null);
+                    case Command<?> command ->
+                            Optional.ofNullable(interpreter.evaluate(context, command)).map(Value::get).orElse(null);
                     case Value<?> value -> value.get();
                     default -> null;
                 })

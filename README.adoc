@@ -21,6 +21,9 @@ The language was developed as research and was not meant for practical use.
 
 
 
+
+
+
 == Introduction
 
 This interpreter is executing the simplest syntax possible.
@@ -333,6 +336,128 @@ Ouroboros comes with built-in commands.
 The command set is minimal, but it can be extended.
 
 
+=== copy
+
+Create a deep copy of and object.
+
+=== arg
+Get the argument following the block without evaluation.
+
+This command is similar to the command `shift`, but it does not evaluate the argument.
+It has the similar effect as quoting the argument and then calling shift.
+
+This command can be used to create commands (functions, methods) that evaluate some of the arguments conditionally.
+
+
+=== BareWord
+
+Bare word is an internal command that is used to execute a bare word.
+You will not use this command in the language.
+This is the command created by the lexical analysis when a bare word is found.
+In turn, then this command will look up the actual command associated with that bare word at the time and location of the execution.
+It will consult the context and the variables and execute the command that is found.
+
+
+=== Block
+This command is used to execute a block.
+A block is not represented by a bareword, rather it is represented by a `{` and `}` pair.
+The block is a sequence of commands that are executed one after the other.
+The block can contain other blocks.
+
+The block is executed in a new context.
+The variables that are defined in the block are not visible outside the block.
+The block can access the variables defined outside the block.
+The special variable `$` is set to the value of the context object when the block is executed.
+The special variable `$$` is set to the variables defined in the context object surrounding block.
+
+The context object is an object that has the local variables as fields.
+
+
+=== call
+Call a method.
+
+The first argument is the object that has the method.
+The second argument is the name of the method.
+
+During the execution, the method can consume further arguments just like a function call.
+During the execution of the method, the `this` variable is set to the object that has the method.
+
+
+=== eval
+Evaluate the argument string as program code using the current syntax setup.
+
+=== field
+Get the value of a field of an object.
+The fist argument is the object and the second argument is the name of the field.
+
+=== fixup
+
+Fix up the source converting all remaining characters of the current source to tokens.
+After this command is executed, the lexical analyzer changes are not applied to the source anymore.
+The actual execution of the code is not affected by the command.
+This command can be used to signal that the part of the code redefining the syntax is over.
+Other implementations may override the default implementation of this command and do something else, like converting the remaining tokens to some target language.
+
+
+=== if
+
+If the first argument is true then the second argument is executed, otherwise the third argument is executed.
+
+The command returns the value of the executed block.
+
+The third argument may be missing, or be `{}`.
+Note that it can only be missing if the `if` command is the last command of the program or a block.
+
+
+=== object
+
+Create a new object.
+The argument is the parent object.
+The new object will inherit all the fields from the parent object.
+The inheritance happens using shallow copy.
+
+If the arument is `{}` then the new object will be empty at the creation.
+
+=== puts
+Print the value as a string.
+
+=== quote
+
+Return the argument as a value without evaluating it.
+The command can be used as `quote` but it is also abbreviated as `'`.
+
+=== set
+Set a variable in the context.
+
+The first argument is the name of the variable and the second argument is the value.
+
+=== setf
+Set a field in an object.
+The first argument is the object, the second argument is the name of the field, and the third argument is the value.
+
+=== setg
+Set a global variable in the context.
+The first argument is the name of the variable, and the second argument is the value.
+
+=== sets
+
+Set the remaining source that was not processed yet.
+
+=== shift
+
+Get the argument following the block with evaluation.
+
+
+=== source
+Get the remaining source that was not processed yet.
+
+=== while
+
+The first argument is the condition and the second argument is the block.
+The command executes the two blocks one after the other while the result of the first block is true.
+
+
+
 == Redefining the Language
 
 The language can redefine itself.
@@ -353,7 +478,7 @@ call $lex insert 0 '{
 if { eq charAt 0 source "\n"}
    {sets add "{}" substring 1 length source source}}
 set q add* 3 2
-puts q
+1 {} puts q
 
 ----
 
@@ -364,7 +489,7 @@ Lexical analyzers are commands that get the source and either
 
 * return a single token and swallow the characters corresponding to that token from the source, or
 
-* leave the source intack and return `null`.
+* leave the source intact and return `null`.
 
 The code inserts a new lexical analyzer.
 This analyzer looks at the start of the source.

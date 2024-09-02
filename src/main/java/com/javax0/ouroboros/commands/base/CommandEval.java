@@ -6,6 +6,12 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 import java.util.ArrayList;
 import java.util.List;
 
+/**snippet command_eval
+ * {%COMMAND eval%}
+ * Evaluate the argument string as program code using the current syntax setup.
+ * end snippet
+ * @param <T>
+ */
 public class CommandEval<T> extends AbstractCommand<T> {
 
     public CommandEval(Interpreter interpreter) {

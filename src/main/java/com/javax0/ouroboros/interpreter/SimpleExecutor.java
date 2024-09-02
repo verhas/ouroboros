@@ -50,7 +50,7 @@ public class SimpleExecutor implements Interpreter {
         final var last = local.getLast();
         if (last instanceof Source) {
             final var fetch = getFetcher();
-            return fetch.execute(context).get();
+            return Optional.ofNullable(fetch.execute(context)).map(Value::get).orElse(null);
         }
         return local.removeLast();
     }
@@ -129,9 +129,9 @@ public class SimpleExecutor implements Interpreter {
         push(source);
         source.set(this);
         final var fetch = getFetcher();
-        Value<Block> result;
-        while ((result = fetch.execute(context)) != null) {
-            evaluate(context, result.get());
+        Block result;
+        while ((result = pop()) != null) {
+            evaluate(context, result);
         }
     }
 

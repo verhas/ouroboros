@@ -4,22 +4,22 @@ The file is also collected by the README.adoc.jam file to generate the documenta
 The output of each program is saved to the file target/generated-output/XXX where XXX is the name of the snippet.
 
 --------------------------------
-snippet puts.oro
+snippet puts.ur
 puts "Hello, World!"
 end snippet
 --------------------------------
-snippet putsadd.oro
+snippet putsadd.ur
 puts add "Hello, " "World!"
 end snippet
 --------------------------------
-snippet block.oro
+snippet block.ur
 puts {
   puts "Hello, "
   puts "World!"
 }
 end snippet
 --------------------------------
-snippet set.oro
+snippet set.ur
 set a "Hello, "
 {
   puts a
@@ -34,7 +34,7 @@ set a "Hello, "
 puts a
 end snippet
 --------------------------------
-snippet object.oro
+snippet object.ur
 set obj object {}
 setf obj name "Hello, "
 {
@@ -43,24 +43,24 @@ setf obj name "Hello, "
 }
 end snippet
 --------------------------------
-snippet unquoted.oro
+snippet unquoted.ur
 set a { puts shift }
 a "Hello, World!"
 end snippet
 --------------------------------
-snippet quoted.oro
+snippet quoted.ur
 set a '{ puts shift }
 a "Hello, World!"
 end snippet
 --------------------------------
-snippet method.oro
+snippet method.ur
 set a object{}
 setf a b '{puts shift puts field this name puts "!"}
 setf a name "World"
 call a b "Hello, "
 end snippet
 --------------------------------
-snippet metho1.oro
+snippet metho1.ur
 set a object{}
 set g '{puts shift puts field this name puts "!"}
 setf a b 'g
@@ -69,12 +69,20 @@ setf a name "World"
 call a b "Hello, "
 end snippet
 --------------------------------
-snippet lexNewLine.oro
+snippet lexNewLine.ur
 call $lex insert 0 '{
 if { eq charAt 0 source "\n"}
    {sets add "{}" substring 1 length source source}}
 set q add* 3 2
-puts q
+1 {} puts q
+end snippet
+--------------------------------
+snippet fixup.ur
+fixup call $lex insert 0 '{
+if { eq charAt 0 source "\n"}
+   {sets add "{}" substring 1 length source source}}
+set q add* 3 2
+1 {} puts q
 end snippet
 --------------------------------
 

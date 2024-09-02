@@ -19,17 +19,20 @@ At the same time the language is minimalistic, hence the abbreviation 'ur', mean
 The language was developed as research and was not meant for practical use.
 
 {%@snip:collect from=src/test/resources/samples%}
+{%@snip:collect from=src/main/java%}
+
+
 {%@define sample($X)=
 .oro source
 [source]
 ----
-{%@snip $X.oro %}
+{%@snip $X.ur %}
 ----
 {%@define output=
 .Output
 [source]
 ----
-{%@include [verbatim] target/generated-output/$X.oro %}
+{%@include [verbatim] target/generated-output/$X.ur %}
 ----
 %}
 %}
@@ -202,9 +205,13 @@ There are two special variables that are always available inside a block: `$` an
 The fields of these objects are the variables of the block.
 
 == Commands
-
+{%@define COMMAND(X)=
+=== X%}
 Ouroboros comes with built-in commands.
 The command set is minimal, but it can be extended.
+
+{%!#replaceLines replace="^\\s*\\*\\s*(<p>)?"
+{%@snip (poly) command.*%}%}
 
 
 == Redefining the Language
@@ -226,7 +233,7 @@ Lexical analyzers are commands that get the source and either
 
 * return a single token and swallow the characters corresponding to that token from the source, or
 
-* leave the source intack and return `null`.
+* leave the source intact and return `null`.
 
 The code inserts a new lexical analyzer.
 This analyzer looks at the start of the source.

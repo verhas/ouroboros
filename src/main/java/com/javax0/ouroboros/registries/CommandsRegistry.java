@@ -48,6 +48,8 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("uc", new SimpleValue<>(new CommandToupper(interpreter)));
         context.<Command<?>>set("trim", new SimpleValue<>(new CommandTrim(interpreter)));
 
+        context.<Command<?>>set("fixup", new SimpleValue<>(new CommandFixup(interpreter)));
+
 
         context.<Command<?>>set("BigInteger", new SimpleValue<>(new CommandBigInteger(interpreter)));
         context.<Command<?>>set("BigDecimal", new SimpleValue<>(new CommandBigDecimal(interpreter)));

@@ -5,7 +5,15 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
-
+/**snippet command_quote
+ * {%COMMAND quote%}
+ *
+ * Return the argument as a value without evaluating it.
+ * The command can be used as `quote` but it is also abbreviated as `'`.
+ * end snippet
+ *
+ * @param <T> the type of the value
+ */
 public class CommandQuote<T> extends AbstractCommand<T> {
 
     public CommandQuote(Interpreter interpreter) {

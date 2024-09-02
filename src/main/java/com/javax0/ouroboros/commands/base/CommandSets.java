@@ -6,8 +6,11 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 import java.util.ArrayList;
 import java.util.Optional;
 
-/**
+/**snippet command_sets
+ * {%COMMAND sets%}
+ *
  * Set the remaining source that was not processed yet.
+ * end snippet
  */
 public class CommandSets extends AbstractCommand<Void> {
 
