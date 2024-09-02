@@ -6,22 +6,23 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 import java.util.stream.Collectors;
 
 /**
- * snippet command_block
+ * command_block
  * {%COMMAND Block%}
  * This command is used to execute a block.
- * A block is not represented by a bareword, rather it is represented by a `{` and `}` pair.
+ * A block is not represented by a bareword; rather, it is represented by a `{` and `}` pair.
  * The block is a sequence of commands that are executed one after the other.
  * The block can contain other blocks.
  * <p>
  * The block is executed in a new context.
- * The variables that are defined in the block are not visible outside the block.
- * The block can access the variables defined outside the block.
+ * Variables defined within the block are not visible outside the block.
+ * However, the block can access variables defined outside of it.
  * The special variable `$` is set to the value of the context object when the block is executed.
- * The special variable `$$` is set to the variables defined in the context object surrounding block.
+ * The special variable `$$` is set to the variables defined in the context object of the surrounding block.
  * <p>
  * The context object is an object that has the local variables as fields.
  * <p>
- * end snippet
+ * {%EXAMPLE/block%}
+ * end
  *
  * @param <T>
  */

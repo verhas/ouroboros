@@ -5,6 +5,14 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * command_list_get
+ * {%COMMAND list.get%}
+ * A list method that gets an element of a list from a given position.
+ * The position is zero based.
+ * end
+ * @param <T>
+ */
 public class CommandListGet<T> extends AbstractCommand<T> {
     public CommandListGet(Interpreter interpreter) {
         set(interpreter);

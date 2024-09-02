@@ -8,17 +8,20 @@ import com.javax0.ouroboros.utils.SafeCast;
 import java.util.Optional;
 
 /**
- * snippet command_call
+ * command_call
  * {%COMMAND call%}
- * Call a method.
+ * Calls a method on an object.
+ * <p>
+ * The first argument is the object that contains the method.
+ * The second argument is the name of the method to be called.
+ * <p>
+ * During execution, the method can accept additional arguments, similar to a function call.
+ * The `this` variable is set to the object that contains the method during its execution.
+ * <p>
+ * {%EXAMPLE/call%}
  *
- * The first argument is the object that has the method.
- * The second argument is the name of the method.
+ * end
  *
- * During the execution, the method can consume further arguments just like a function call.
- * During the execution of the method, the `this` variable is set to the object that has the method.
- *
- * end snippet
  * @param <T>
  */
 public class CommandCall<T> extends AbstractCommand<T> {
@@ -75,7 +78,7 @@ public class CommandCall<T> extends AbstractCommand<T> {
                     context.set("this", new SimpleValue<>(object));
                     result = (Value<T>) funCmd.execute(context);
                 } finally {
-                    oldThis.ifPresentOrElse(it-> context.set("this",it), () -> context.remove("this"));
+                    oldThis.ifPresentOrElse(it -> context.set("this", it), () -> context.remove("this"));
                 }
             } else if (object instanceof Value<?> value) {
                 result = (Value<T>) value;

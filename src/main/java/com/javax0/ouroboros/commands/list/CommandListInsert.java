@@ -7,6 +7,14 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.utils.SafeCast;
 
+/**
+ * command_list_insert
+ * {%COMMAND list.insert%}
+ * A list method that inserts an element into a list at a given position.
+ * The position is zero based.
+ * end
+ * @param <T>
+ */
 public class CommandListInsert<T> extends AbstractCommand<T> {
     public CommandListInsert(Interpreter interpreter) {
         set(interpreter);

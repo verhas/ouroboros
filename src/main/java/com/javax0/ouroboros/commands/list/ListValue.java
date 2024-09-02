@@ -17,6 +17,7 @@ public class ListValue<T> extends AbstractList<Value<T>> implements ObjectValue 
 
     public ListValue(Interpreter interpreter) {
         this.interpreter = interpreter;
+        // snippet list_methods
         fields().put("first", new SimpleValue<>(new CommandListFirst<>(interpreter)));
         fields().put("last", new SimpleValue<>(new CommandListLast<>(interpreter)));
         fields().put("rest", new SimpleValue<>(new CommandListRest<>(interpreter)));
@@ -25,6 +26,7 @@ public class ListValue<T> extends AbstractList<Value<T>> implements ObjectValue 
         fields().put("insert", new SimpleValue<>(new CommandListInsert<>(interpreter)));
         fields().put("length", new SimpleValue<>(new CommandListLength(interpreter)));
         fields().put("split", new SimpleValue<>(new CommandListSplit<>(interpreter)));
+        // end snippet
     }
 
 

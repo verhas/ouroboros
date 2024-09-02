@@ -9,8 +9,7 @@ import com.javax0.ouroboros.interpreter.ObjectValue;
 
 import java.util.Map;
 
-/**
- * snippet command_object
+/** command_object
  * {%COMMAND object%}
  *
  * Create a new object.
@@ -19,7 +18,7 @@ import java.util.Map;
  * The inheritance happens using shallow copy.
  *
  * If the arument is `{}` then the new object will be empty at the creation.
- * end snippet
+ * end
  */
 public class CommandObject extends AbstractCommand<ObjectValue> {
     public CommandObject(Interpreter interpreter) {

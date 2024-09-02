@@ -6,6 +6,14 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * command_list_length
+ * {%COMMAND list.length%}
+ * A list method that returns the length of the list.
+ *
+ * end
+ */
+
 public class CommandListLength extends AbstractCommand<Long> {
     public CommandListLength(Interpreter interpreter) {
         set(interpreter);

@@ -8,13 +8,12 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 
 import java.util.Optional;
 
-/**
- * snippet command_while
+/** command_while
  * {%COMMAND while%}
  * <p>
  * The first argument is the condition and the second argument is the block.
  * The command executes the two blocks one after the other while the result of the first block is true.
- * end snippet
+ * end
  *
  * @param <T>
  */

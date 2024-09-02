@@ -24,6 +24,8 @@ The language was developed as research and was not meant for practical use.
 
 
 
+
+
 == Introduction
 
 This interpreter is executing the simplest syntax possible.
@@ -36,7 +38,7 @@ When a command is called, it can consume the subsequent tokens.
 For example:
 
 
-.oro source
+.puts.ur source
 [source]
 ----
 puts "Hello, World!"
@@ -48,7 +50,7 @@ puts "Hello, World!"
 will result in:
 
 
-.Output
+.puts.ur output
 [source]
 ----
 Hello, World!
@@ -67,7 +69,7 @@ Commands just fetch the next token and interpret it.
 For example, the following sample:
 
 
-.oro source
+.putsadd.ur source
 [source]
 ----
 puts add "Hello, " "World!"
@@ -79,7 +81,7 @@ puts add "Hello, " "World!"
 will result again in:
 
 
-.Output
+.putsadd.ur output
 [source]
 ----
 Hello, World!
@@ -108,7 +110,7 @@ It is detailed later.
 Example for the commands `set`, `setg` and `setf`:
 
 
-.oro source
+.set.ur source
 [source]
 ----
 set a "Hello, "
@@ -131,7 +133,7 @@ puts a
 will result in:
 
 
-.Output
+.set.ur output
 [source]
 ----
 Hello, 
@@ -151,7 +153,7 @@ To set a field of an object is done using `setf`.
 To do that, we need to have an object, that can be sone with the `object` command.
 
 
-.oro source
+.object.ur source
 [source]
 ----
 set obj object {}
@@ -168,7 +170,7 @@ setf obj name "Hello, "
 will result in:
 
 
-.Output
+.object.ur output
 [source]
 ----
 Hello, World!
@@ -195,12 +197,12 @@ A block is a series of commands one after the other surrounded by curly braces.
 For example:
 
 
-.oro source
+.block.ur source
 [source]
 ----
 puts {
   puts "Hello, "
-  puts "World!"
+  "World!"
 }
 
 ----
@@ -210,16 +212,16 @@ puts {
 will result in:
 
 
-.Output
+.block.ur output
 [source]
 ----
-Hello, World!World!
+Hello, World!
 ----
 
 
 The commands in the blocks are evaluated one ofter the other, and the value of the block is the value of the last command.
-In this case the starting the first `puts` command it evaluates the block.
-During the block evaluation the two `puts` commands are executed, and the result is the value of the last `puts` command.
+In this case, the first `puts` command evaluates the block.
+During the block evaluation the `puts` commands is executed first, and the result is the value of the string, which is the last command.
 
 `puts` results the string it printed out.
 
@@ -239,7 +241,7 @@ If you assign a block to a variable, make sure that you assign the block and not
 For example, the following code will not work:
 
 
-.oro source
+.unquoted.ur source
 [source]
 ----
 set a { puts shift }
@@ -252,7 +254,7 @@ a "Hello, World!"
 It will result in an exception:
 
 
-.Output
+.unquoted.ur output
 [source]
 ----
 Variable a is not defined
@@ -266,7 +268,7 @@ At this point `a` is not defined yet.
 The correct example is:
 
 
-.oro source
+.quoted.ur source
 [source]
 ----
 set a '{ puts shift }
@@ -279,7 +281,7 @@ a "Hello, World!"
 that results in
 
 
-.Output
+.quoted.ur output
 [source]
 ----
 Hello, World!
@@ -294,7 +296,7 @@ They cannot be called directly.
 To call a method, you need the command `call`.
 
 
-.oro source
+.method.ur source
 [source]
 ----
 set a object{}
@@ -309,7 +311,7 @@ call a b "Hello, "
 It will result in:
 
 
-.Output
+.method.ur output
 [source]
 ----
 Hello, World!
@@ -332,13 +334,10 @@ The fields of these objects are the variables of the block.
 
 == Commands
 
+
 Ouroboros comes with built-in commands.
 The command set is minimal, but it can be extended.
 
-
-=== copy
-
-Create a deep copy of and object.
 
 === arg
 Get the argument following the block without evaluation.
@@ -360,35 +359,198 @@ It will consult the context and the variables and execute the command that is fo
 
 === Block
 This command is used to execute a block.
-A block is not represented by a bareword, rather it is represented by a `{` and `}` pair.
+A block is not represented by a bareword; rather, it is represented by a `{` and `}` pair.
 The block is a sequence of commands that are executed one after the other.
 The block can contain other blocks.
 
 The block is executed in a new context.
-The variables that are defined in the block are not visible outside the block.
-The block can access the variables defined outside the block.
+Variables defined within the block are not visible outside the block.
+However, the block can access variables defined outside of it.
 The special variable `$` is set to the value of the context object when the block is executed.
-The special variable `$$` is set to the variables defined in the context object surrounding block.
+The special variable `$$` is set to the variables defined in the context object of the surrounding block.
 
 The context object is an object that has the local variables as fields.
 
+ * Example:
+
+
+.block.ur source
+[source]
+----
+puts {
+  puts "Hello, "
+  "World!"
+}
+
+----
+
+
+
+will result in
+
+
+.block.ur output
+[source]
+----
+Hello, World!
+----
+
 
 === call
-Call a method.
+Calls a method on an object.
 
-The first argument is the object that has the method.
-The second argument is the name of the method.
+The first argument is the object that contains the method.
+The second argument is the name of the method to be called.
 
-During the execution, the method can consume further arguments just like a function call.
-During the execution of the method, the `this` variable is set to the object that has the method.
+During execution, the method can accept additional arguments, similar to a function call.
+The `this` variable is set to the object that contains the method during its execution.
+
+ * Example:
+
+
+.call.ur source
+[source]
+----
+set obj object{}
+setf obj method '{
+   puts field this greeting
+   puts shift
+}
+setf obj greeting "Hello, "
+call obj method "World!"
+
+----
+
+
+
+will result in
+
+
+.call.ur output
+[source]
+----
+Hello, World!
+----
+
+
+
+=== copy
+
+Create a deep copy of and object.
+
+ * Example:
+
+
+.copy.ur source
+[source]
+----
+set A object{}
+setf A f1 "racecar"
+setf A f2 "tacocat"
+set B 'A
+set C copy A
+setf B f1 "trabant"
+setf C f2 "gulash"
+puts field A f1
+puts "\n"
+puts field A f2
+
+----
+
+
+
+will result in
+
+
+.copy.ur output
+[source]
+----
+trabant
+tacocat
+----
+
+
+
+The program creates an object `A` with two fields `f1` and `f2`.
+Then it creates a block `B` that references the object `A`.
+The program also creates a copy of the object `A` and assigns it to the variable `C`.
+After that, it sets the field `f1` of the object `B` to `"trabant"` and the field `f2` of the object `C` to `"gulash"`.
+Finally, it prints the values of the fields `f1` and `f2` of the object `A`.
+Since the variable `B` references the object `A`, the field `f1` of the object `A` is changed to `"trabant"`.
+On the other hands, when we change the field `f2` of the object `C`, the object `A` remains unchanged because the variable `C` is a copy of the object `A`.
+
 
 
 === eval
 Evaluate the argument string as program code using the current syntax setup.
+Note that the lexical analysers can be modified during the code execution.
+This evaluation uses the lexical analysers that are currentlyin use at the execution level.
+
+ * Example:
+
+
+.eval.ur source
+[source]
+----
+eval puts """{
+    puts "Hello, "
+    puts "World!"
+  }
+  "will print out"
+"""
+
+----
+
+
+
+will result in
+
+
+.eval.ur output
+[source]
+----
+{
+    puts "Hello, "
+    puts "World!"
+  }
+  "will print out"
+Hello, World!
+----
+
+
+
 
 === field
-Get the value of a field of an object.
-The fist argument is the object and the second argument is the name of the field.
+Get an object's field's value.
+The fist argument is the object, and the second argument is the name of the field.
+
+ * Example:
+
+
+.field.ur source
+[source]
+----
+set A object {}
+setf A f1 "racecar"
+setf A f2 "tacocat"
+puts field A f1
+puts "\n"
+puts field A f2
+
+----
+
+
+
+will result in
+
+
+.field.ur output
+[source]
+----
+racecar
+tacocat
+----
+
 
 === fixup
 
@@ -397,6 +559,85 @@ After this command is executed, the lexical analyzer changes are not applied to 
 The actual execution of the code is not affected by the command.
 This command can be used to signal that the part of the code redefining the syntax is over.
 Other implementations may override the default implementation of this command and do something else, like converting the remaining tokens to some target language.
+
+ * Example:
+
+
+.fixup.ur source
+[source]
+----
+fixup call $lex insert 0 '{
+if { eq charAt 0 source "\n"}
+   {sets add "{}" substring 1 length source source}}
+set q add* 3 2
+1 {} puts q
+
+----
+
+
+
+will result in
+
+
+.fixup.ur output
+[source]
+----
+6
+----
+
+
+ * Example:
+
+
+.nofixup.ur source
+[source]
+----
+call $lex insert 0 '{
+if { eq charAt 0 source "\n"}
+   {sets add "{}" substring 1 length source source}}
+set q add* 3 2
+1 {} puts q
+
+----
+
+
+
+will result in
+
+
+.nofixup.ur output
+[source]
+----
+5
+----
+
+
+
+
+The sample `fixup.ur` first executes the `fixup` command.
+The command then reads all the remaiing source code as input and replaces the input string with the list of the tokens.
+After that the program inserts a new lexical analyser into the list `$lex` at the beginning.
+This lexical analyser is NEVER invoked since the code is already tokenized.
+Because of that the addition command presented as `add*`, which means it will read all the arguments until the end of the block, or an `{}` is found will add `3`, `2`, and `1`.
+
+In the second case there is no `fixup`.
+The syntax analyser fetches only as far from the input source string as needed and no more.
+First the command `call` is identified by the built-in lexical analyser as a bare word and since it is a command it will be executed.
+The command `call` will fetch the next two arguments to get the object and the method.
+When it fetches the arguments the interpreter invokes the lexical analysers to get the arguments.
+The rest of the input is not tokenized and is available as a string including and following the space before `0 '{`.
+The arguments for the call are are `$lex` and `insert`.
+Invoking `insert` on the list object advances the lexical analysis further.
+The next argument is the position to insert a new value in the list, this is `0`.
+The element to insert is a quoted block, which will be also tokenized and as a block command gets inserted into the list.
+
+At this point the source code string contains the part that starts with `set q add* ...`.
+As the execution advances it reads on but this time -- without detailing the intermediate steps -- it will also use the inserted lexical analyser.
+When this analyser sees the new line it will replace it with an empty block in the source.
+That was the source will be transformed on the fly to `set q add* 3 2 {}`.
+The commands `1` and `{}` are executed and ignored.
+Finally the result of the addition is printed.
+
 
 
 === if
@@ -408,6 +649,71 @@ The command returns the value of the executed block.
 The third argument may be missing, or be `{}`.
 Note that it can only be missing if the `if` command is the last command of the program or a block.
 
+
+=== list
+
+Creates a list object.
+
+The argument can be a block or a command.
+When it is a block, then the commands in the block are evaluated individually and the results are added to the list.
+If the argument is a single command, then the command is evaluated and the result is the initial single element of the list.
+
+The list is also an object and has methods:
+
+
+* first
+* last
+* rest
+* get
+* set
+* insert
+* length
+* split
+
+
+These are documented as commands, but you can invoke them as methods of the list object using the command `call`.
+
+=== list.first
+
+A method defined on every list object that returns the first element of the list.
+
+
+
+=== list.get
+A list method that gets an element of a list from a given position.
+The position is zero based.
+
+=== list.insert
+A list method that inserts an element into a list at a given position.
+The position is zero based.
+
+=== list.last
+
+A method defined on every list object that returns the last element of the list.
+If the list is empty, then the command throws an exception.
+The command is defined on the list object.
+The command does not have any argument.
+The command returns the last element of the list.
+
+=== list.length
+A list method that returns the length of the list.
+
+
+=== list.rest
+A list method that returns a new list that contains all the elements of the original list except the first one.
+If the list is empty, then the command throws an exception.
+The command is defined on the list object.
+The command does not have any argument.
+
+=== list.set
+A list method that sets an element of a list at a given position.
+The position is zero-based.
+
+=== list.split
+A list method that splits the list into two lists at a given index.
+The index is zero-based.
+The method returns a list of two lists.
+The first list contains the elements from the beginning of the list up to the index.
 
 === object
 
@@ -471,7 +777,7 @@ Writing `{}` many times at the end of the operands following an `add` or `mult` 
 To avoid this, the following program alters the syntax analysis process to treat every new line as a command closing an empty block.
 
 
-.oro source
+.lexNewLine.ur source
 [source]
 ----
 call $lex insert 0 '{
@@ -501,7 +807,7 @@ After this the command `add* 3 2\n` will be treated as `add* 3 2 {}`.
 That way this program will result in:
 
 
-.Output
+.lexNewLine.ur output
 [source]
 ----
 5

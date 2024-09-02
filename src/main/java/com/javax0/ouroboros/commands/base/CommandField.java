@@ -7,12 +7,13 @@ import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.Optional;
 
-/**
- * snippet command_field
+/** command_field
  * {%COMMAND field%}
- * Get the value of a field of an object.
- * The fist argument is the object and the second argument is the name of the field.
- * end snippet
+ * Get an object's field's value.
+ * The fist argument is the object, and the second argument is the name of the field.
+ *
+ * {%EXAMPLE/field%}
+ * end
  *
  * @param <T>
  */

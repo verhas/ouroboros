@@ -7,6 +7,14 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.utils.SafeCast;
 
+/**
+ * command_list_set
+ * {%COMMAND list.set%}
+ * A list method that sets an element of a list at a given position.
+ * The position is zero-based.
+ * end
+ * @param <T>
+ */
 public class CommandListSet<T> extends AbstractCommand<T> {
     public CommandListSet(Interpreter interpreter) {
         set(interpreter);

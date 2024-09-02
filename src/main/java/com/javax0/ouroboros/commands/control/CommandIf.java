@@ -5,8 +5,7 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-/**
- * snippet command_if
+/** command_if
  * {%COMMAND if%}
  * <p>
  * If the first argument is true then the second argument is executed, otherwise the third argument is executed.
@@ -16,7 +15,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * The third argument may be missing, or be `{}`.
  * Note that it can only be missing if the `if` command is the last command of the program or a block.
  * <p>
- * end snippet
+ * end
  *
  * @param <T>
  */

@@ -6,6 +6,16 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * command_list_split
+ * {%COMMAND list.split%}
+ * A list method that splits the list into two lists at a given index.
+ * The index is zero-based.
+ * The method returns a list of two lists.
+ * The first list contains the elements from the beginning of the list up to the index.
+ * end
+ * @param <T>
+ */
 public class CommandListSplit<T> extends AbstractCommand<ListValue<ListValue<T>>> {
     public CommandListSplit(Interpreter interpreter) {
         set(interpreter);

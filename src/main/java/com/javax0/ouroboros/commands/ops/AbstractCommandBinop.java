@@ -6,6 +6,11 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+/**
+ * Abstract class for binary operations.
+ *
+ * @param <T>
+ */
 
 public abstract class AbstractCommandBinop<T> extends AbstractCommand<T> {
 

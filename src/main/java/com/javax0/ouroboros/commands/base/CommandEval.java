@@ -6,10 +6,18 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 import java.util.ArrayList;
 import java.util.List;
 
-/**snippet command_eval
+/**
+ * command_eval
  * {%COMMAND eval%}
  * Evaluate the argument string as program code using the current syntax setup.
- * end snippet
+ * Note that the lexical analysers can be modified during the code execution.
+ * This evaluation uses the lexical analysers that are currentlyin use at the execution level.
+ * <p>
+ * {%EXAMPLE/eval%}
+ * <p>
+ * <p>
+ * end
+ *
  * @param <T>
  */
 public class CommandEval<T> extends AbstractCommand<T> {

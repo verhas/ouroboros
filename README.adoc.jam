@@ -19,22 +19,26 @@ At the same time the language is minimalistic, hence the abbreviation 'ur', mean
 The language was developed as research and was not meant for practical use.
 
 {%@snip:collect from=src/test/resources/samples%}
+{%@snip:collect from=src/main/java start="\\*\\s*(command_\\w+)" stop="^\\s*\\*\\s*end\\s*"%}
 {%@snip:collect from=src/main/java%}
 
 
 {%@define sample($X)=
-.oro source
+.$X.ur source
 [source]
 ----
 {%@snip $X.ur %}
 ----
 {%@define output=
-.Output
+.$X.ur output
 [source]
 ----
 {%@include [verbatim] target/generated-output/$X.ur %}
 ----
 %}
+%}
+{%@define EXPLANATION($X)=
+{%@include [verbatim top] target/generated-output/$X.ur %}
 %}
 
 == Introduction
@@ -139,8 +143,8 @@ will result in:
 {%output%}
 
 The commands in the blocks are evaluated one ofter the other, and the value of the block is the value of the last command.
-In this case the starting the first `puts` command it evaluates the block.
-During the block evaluation the two `puts` commands are executed, and the result is the value of the last `puts` command.
+In this case, the first `puts` command evaluates the block.
+During the block evaluation the `puts` commands is executed first, and the result is the value of the string, which is the last command.
 
 `puts` results the string it printed out.
 
@@ -205,12 +209,19 @@ There are two special variables that are always available inside a block: `$` an
 The fields of these objects are the variables of the block.
 
 == Commands
+{%@define EXAMPLE(X)= * Example:
+
+{%sample/X%}
+
+will result in
+
+{%output%}%}
 {%@define COMMAND(X)=
 === X%}
 Ouroboros comes with built-in commands.
 The command set is minimal, but it can be extended.
 
-{%!#replaceLines replace="^\\s*\\*\\s*(<p>)?"
+{%!#replaceLines replace="/^\\s*\\*\\s*(<p>)?//"
 {%@snip (poly) command.*%}%}
 
 

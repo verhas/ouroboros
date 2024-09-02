@@ -6,8 +6,7 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-/**
- * snippet command_arg
+/**command_arg
  * {%COMMAND arg%}
  * Get the argument following the block without evaluation.
  * <p>
@@ -16,7 +15,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * <p>
  * This command can be used to create commands (functions, methods) that evaluate some of the arguments conditionally.
  * <p>
- * end snippet
+ * end
  *
  * @param <T>
  */

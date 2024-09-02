@@ -7,11 +7,15 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.utils.SafeCast;
 
-/** snippet command copy
+/**
+ * command_copy
  * {%COMMAND copy%}
- *
+ * <p>
  * Create a deep copy of and object.
- * end snippet
+ * <p>
+ * {%EXAMPLE/copy%}
+ * {%EXPLANATION/copy_explanation%}
+ * end
  *
  * @param <T> the type of the value
  */

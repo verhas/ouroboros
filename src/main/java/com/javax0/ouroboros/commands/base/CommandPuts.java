@@ -6,14 +6,10 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-/**
- * Command to print the value of the top of the stack.
- */
-
-/**snippet command_puts
+/** command_puts
  * {%COMMAND puts%}
  * Print the value as a string.
- * end snippet
+ * end
  */
 public class CommandPuts extends AbstractCommand<String> {
 

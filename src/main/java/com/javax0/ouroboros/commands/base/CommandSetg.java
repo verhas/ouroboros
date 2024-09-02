@@ -5,11 +5,11 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-/**snippet command_setg
+/**command_setg
  * {%COMMAND setg%}
  * Set a global variable in the context.
  * The first argument is the name of the variable, and the second argument is the value.
- * end snippet
+ * end
  */
 public class CommandSetg extends AbstractCommand<Void> {
     public CommandSetg(Interpreter interpreter) {

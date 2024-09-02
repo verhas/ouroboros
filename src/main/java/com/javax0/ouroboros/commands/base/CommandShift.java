@@ -6,13 +6,12 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-/**
- * snippet command_shift
+/** command_shift
  * {%COMMAND shift%}
  * <p>
  * Get the argument following the block with evaluation.
  * <p>
- * end snippet
+ * end
  *
  * @param <T>
  */

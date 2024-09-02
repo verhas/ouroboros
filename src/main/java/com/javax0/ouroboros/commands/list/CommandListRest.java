@@ -6,6 +6,16 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * command_list_rest
+ * {%COMMAND list.rest%}
+ * A list method that returns a new list that contains all the elements of the original list except the first one.
+ * If the list is empty, then the command throws an exception.
+ * The command is defined on the list object.
+ * The command does not have any argument.
+ * end
+ * @param <T>
+ */
 public class CommandListRest<T> extends AbstractCommand<ListValue<T>> {
     public CommandListRest(Interpreter interpreter) {
         set(interpreter);
