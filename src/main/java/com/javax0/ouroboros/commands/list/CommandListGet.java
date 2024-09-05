@@ -9,8 +9,12 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * command_list_get
  * {%COMMAND list.get%}
  * A list method that gets an element of a list from a given position.
- * The position is zero based.
+ * The position is zero-based.
+ * <p>
+ * {%EXAMPLE/list_get%}
+ * <p>
  * end
+ *
  * @param <T>
  */
 public class CommandListGet<T> extends AbstractCommand<T> {
@@ -20,13 +24,13 @@ public class CommandListGet<T> extends AbstractCommand<T> {
 
     @Override
     public Value<T> execute(Context context) {
-        final var index = nextArgument(context,this::toLong).map(Math::toIntExact)
+        final var index = nextArgument(context, this::toLong).map(Math::toIntExact)
                 .orElseThrow(() -> new IllegalArgumentException("The index is missing"));
         final var list = context.variable("this").map(Value::get)
                 .orElseThrow(() -> new IllegalArgumentException("There is no argument to the command 'first"));
-        switch(list){
+        switch (list) {
             case ListValue<?> lv -> {
-                if( lv.values().isEmpty() ){
+                if (lv.values().isEmpty()) {
                     throw new IllegalArgumentException("The list is empty");
                 }
                 return (Value<T>) lv.values().get(index);

@@ -4,6 +4,14 @@ import com.javax0.ouroboros.Interpreter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+/**
+ * command_lt
+ * {%COMMAND lt%}
+ * Compare two values for less.
+ * The command compares two values and returns true if the first is less than the second, and optionally the further arguments.
+ * <p>
+ * end
+ */
 
 public class CommandLt extends AbstractCommandBinop<Boolean> {
 

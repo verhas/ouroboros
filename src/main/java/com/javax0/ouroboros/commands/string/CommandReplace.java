@@ -6,6 +6,13 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * command_replace
+ * {%COMMAND replace%}
+ * Replace the target string with the replacement string in the string.
+ * The command returns the string where the target string is replaced with the replacement string.
+ * end
+ */
 public class CommandReplace extends AbstractCommand<String> {
 
     public CommandReplace(Interpreter interpreter) {

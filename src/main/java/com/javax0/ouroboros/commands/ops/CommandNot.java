@@ -7,9 +7,12 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
 /**
- * Command to print the value of the top of the stack.
+ * command_not
+ * {%COMMAND not%}
+ * Negate the value.
+ * The command negates the value. If the value is true then the result is false and if the value is false then the result is true.
+ * end
  */
-
 public class CommandNot extends AbstractCommand<Boolean> {
 
     public CommandNot(Interpreter interpreter) {

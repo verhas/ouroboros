@@ -6,8 +6,17 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.commands.constant.StringConstant;
 
+/**
+ * command_lexer_string
+ * {%COMMAND lexer: string%}
+ * <p>
+ * Fetches a string constant from the input.
+ * It can be a simple string or a multi-line string.
+ * <p>
+ * Multi-line strings start with three `"` characters and they so not need escaping for single `"` quotes
+ * end
+ */
 public class StringLexer extends AbstractCommand<StringConstant> {
-    // TODO: implement complex string parsing
 
     public static final String MULTI_LINE_STRING_DELIMITER = "\"\"\"";
     private static final int MLSD_LENGTH = MULTI_LINE_STRING_DELIMITER.length();
@@ -24,7 +33,7 @@ public class StringLexer extends AbstractCommand<StringConstant> {
 
     private static String getMultiLineString(StringBuilder input) {
         final var output = new StringBuilder();
-        input.delete(0,MLSD_LENGTH);
+        input.delete(0, MLSD_LENGTH);
         while (input.length() >= MLSD_LENGTH && !input.subSequence(0, MLSD_LENGTH).equals(MULTI_LINE_STRING_DELIMITER)) {
             final char ch = input.charAt(0);
             if (ch == '\\') {
@@ -33,8 +42,9 @@ public class StringLexer extends AbstractCommand<StringConstant> {
                 handleNormalMultiLineStringCharacter(input, output);
             }
         }
-        if(input.length() < MLSD_LENGTH)throw new IllegalArgumentException( "Multi-line string is not terminated before eof");
-        input.delete(0,MLSD_LENGTH);
+        if (input.length() < MLSD_LENGTH)
+            throw new IllegalArgumentException("Multi-line string is not terminated before eof");
+        input.delete(0, MLSD_LENGTH);
         return output.toString();
     }
 
@@ -47,6 +57,7 @@ public class StringLexer extends AbstractCommand<StringConstant> {
             input.deleteCharAt(0);
         }
     }
+
     /**
      * <p>Convert many subsequent {@code \n} and {@code \r} characters to {@code \n} only. There will be as many {@code
      * \n} characters in the output as many there were in the input and the {@code \r} characters are simply ignored.
@@ -78,6 +89,7 @@ public class StringLexer extends AbstractCommand<StringConstant> {
         }
         output.append("\n".repeat(countNewLines));
     }
+
     private static String getSimpleString(StringBuilder input) {
         final var output = new StringBuilder();
         input.deleteCharAt(0);
@@ -89,18 +101,20 @@ public class StringLexer extends AbstractCommand<StringConstant> {
                 handleNormalCharacter(input, output);
             }
         }
-        if(input.isEmpty())throw new IllegalArgumentException( "String is not terminated before eol");
+        if (input.isEmpty()) throw new IllegalArgumentException("String is not terminated before eol");
         input.deleteCharAt(0);
         return output.toString();
     }
 
-    static void handleNormalCharacter(StringBuilder input, StringBuilder output)  {
+    static void handleNormalCharacter(StringBuilder input, StringBuilder output) {
         final char ch = input.charAt(0);
-        if(ch == '\n' || ch == '\r') throw new IllegalArgumentException( String.format("String not terminated before eol:\n%s...",
-                input.substring(1, Math.min(input.length(), 60))));
+        if (ch == '\n' || ch == '\r')
+            throw new IllegalArgumentException(String.format("String not terminated before eol:\n%s...",
+                    input.substring(1, Math.min(input.length(), 60))));
         output.append(ch);
         input.deleteCharAt(0);
     }
+
     private static final String escapes = "btnfr\"'\\";
     private static final String escaped = "\b\t\n\f\r\"'\\";
 
@@ -134,6 +148,7 @@ public class StringLexer extends AbstractCommand<StringConstant> {
 
         }
     }
+
     private static char octal(StringBuilder input, int maxLen) {
         int i = maxLen;
         int occ = 0;
@@ -144,6 +159,7 @@ public class StringLexer extends AbstractCommand<StringConstant> {
         }
         return (char) occ;
     }
+
     @Override
     public Value<StringConstant> execute(Context context) {
         final var source = interpreter.source();

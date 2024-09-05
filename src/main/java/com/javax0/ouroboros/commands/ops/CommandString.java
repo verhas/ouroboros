@@ -7,9 +7,12 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
 /**
- * Command to print the value of the top of the stack.
+ * command_string
+ * {%COMMAND string%}
+ * Convert the argument to string.
+ * The command converts the argument to string.
+ * end
  */
-
 public class CommandString extends AbstractCommand<String> {
 
     public CommandString(Interpreter interpreter) {

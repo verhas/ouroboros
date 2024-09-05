@@ -3,6 +3,16 @@ package com.javax0.ouroboros.commands;
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.list.ListValue;
 
+/**
+ * command_fetch
+ * {%COMMAND $fetch%}
+ *
+ * This command reads the source code of the application and returns the next token invoking the registered lexers.
+ * This command is invoked by the interpreter, and it is not expected to be used in the application code.
+ * It can be overridden by the application code to provide a custom code reader.
+ * end
+ *
+ */
 public class BlockFetch extends AbstractCommand<Block> {
 
     public BlockFetch(Interpreter interpreter) {

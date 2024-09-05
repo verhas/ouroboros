@@ -6,6 +6,13 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * command_toupper
+ * {%COMMAND toupper%}
+ * Convert the string to upper-case.
+ * The command returns the string converted to upper-case.
+ * end
+ */
 public class CommandToupper extends AbstractCommand<String> {
     public CommandToupper(Interpreter interpreter) {
         set(interpreter);
@@ -13,7 +20,7 @@ public class CommandToupper extends AbstractCommand<String> {
 
     @Override
     public Value<String> execute(Context context) {
-        final var string = nextArgument(context,this::toString).orElseThrow(() -> new IllegalArgumentException("String is missing"));
+        final var string = nextArgument(context, this::toString).orElseThrow(() -> new IllegalArgumentException("String is missing"));
         return new SimpleValue<>(string.toUpperCase());
     }
 

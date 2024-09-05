@@ -12,7 +12,10 @@ import com.javax0.ouroboros.utils.SafeCast;
  * {%COMMAND list.set%}
  * A list method that sets an element of a list at a given position.
  * The position is zero-based.
+ * <p>
+ * {%EXAMPLE/list_set%}
  * end
+ *
  * @param <T>
  */
 public class CommandListSet<T> extends AbstractCommand<T> {
@@ -33,9 +36,9 @@ public class CommandListSet<T> extends AbstractCommand<T> {
                 .map(SafeCast.to(ListValue.class))
                 .map(ListValue::values)
                 .orElseThrow(() -> new IllegalArgumentException("There is bad second argument to the command 'set'"));
-                if (list.isEmpty()) {
-                    throw new IllegalArgumentException("The list is empty");
-                }
-                return (Value<T>) list.set(index,value);
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("The list is empty");
+        }
+        return (Value<T>) list.set(index, value);
     }
 }

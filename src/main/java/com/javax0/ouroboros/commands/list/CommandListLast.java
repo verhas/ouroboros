@@ -14,6 +14,9 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * The command is defined on the list object.
  * The command does not have any argument.
  * The command returns the last element of the list.
+ * <p>
+ * {%EXAMPLE/list_last%}
+ * <p>
  * end
  *
  * @param <T>

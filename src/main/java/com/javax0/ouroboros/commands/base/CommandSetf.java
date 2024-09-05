@@ -10,7 +10,8 @@ import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.Optional;
 
-/** command_setf
+/**
+ * command_setf
  * {%COMMAND setf%}
  * Set a field in an object.
  * The first argument is the object, the second argument is the name of the field, and the third argument is the value.

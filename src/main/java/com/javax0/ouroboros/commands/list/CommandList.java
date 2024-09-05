@@ -23,6 +23,8 @@ import java.util.Map;
  * {%@snip list_methods%}%}
  * <p>
  * These are documented as commands, but you can invoke them as methods of the list object using the command `call`.
+ *
+ * {%EXAMPLE/list%}
  * end
  *
  * @param <T>

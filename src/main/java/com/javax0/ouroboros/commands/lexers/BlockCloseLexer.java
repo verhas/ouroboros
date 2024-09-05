@@ -6,6 +6,18 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.commands.pseudo.CommandBlockClose;
 
+/**
+ * command_lexer_block_close
+ * {%COMMAND lexer: block close%}
+ * <p>
+ * A lexer that consumes the closing block character '}'.
+ * It returns a CommandBlockClose command, which should and will never execute.
+ * It is a technical placeholder.
+ * <p>
+ * end
+ *
+ * @param <T>
+ */
 public class BlockCloseLexer<T> extends AbstractCommand<CommandBlockClose> {
 
     private static final Value<CommandBlockClose> instance = new SimpleValue<>(new CommandBlockClose());

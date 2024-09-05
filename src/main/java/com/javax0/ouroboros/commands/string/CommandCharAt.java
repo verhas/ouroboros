@@ -6,6 +6,13 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * command_charAt
+ * {%COMMAND charAt%}
+ * Get the character at the given index.
+ * The command returns the character at the given index.
+ * end
+ */
 public class CommandCharAt extends AbstractCommand<String> {
 
     public CommandCharAt(Interpreter interpreter) {

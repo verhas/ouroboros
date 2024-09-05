@@ -5,6 +5,14 @@ import com.javax0.ouroboros.Interpreter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+/**
+ * command_ge
+ * {%COMMAND ge%}
+ * Compare two values for greater or equal.
+ * The command compares two values and returns true if the first is greater or equal than the second, and optionally the further arguments.
+ * <p>
+ * end
+ */
 public class CommandGe extends AbstractCommandBinop<Boolean> {
 
     public CommandGe(Interpreter interpreter) {

@@ -13,6 +13,8 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * The index is zero-based.
  * The method returns a list of two lists.
  * The first list contains the elements from the beginning of the list up to the index.
+ *
+ * {%EXAMPLE/list_split%}
  * end
  * @param <T>
  */

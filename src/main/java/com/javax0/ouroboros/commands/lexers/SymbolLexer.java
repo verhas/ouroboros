@@ -6,6 +6,19 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.commands.base.BareWord;
 
+/**
+ * command_lexer_symbol
+ * {%COMMAND lexers: symbol%}
+ * <p>
+ * Fetches one or more symbol characters from the input.
+ * It returns a BareWord that is a symbol.
+ * <p>
+ * A symbol is a character or a sequence of characters that are not a valid Java identifier, and do not contain whitespace or digits or the characters '{' and '}'.
+ * <p>
+ * end
+ *
+ * @param <T>
+ */
 public class SymbolLexer<T> extends AbstractCommand<BareWord<T>> {
 
     @Override
@@ -40,11 +53,11 @@ public class SymbolLexer<T> extends AbstractCommand<BareWord<T>> {
             return false;
         }
         final var ch = input.charAt(i);
-        return !Character.isUnicodeIdentifierStart(ch) &&
-                !Character.isUnicodeIdentifierPart(ch) &&
+        return !Character.isJavaIdentifierStart(ch) &&
+                !Character.isJavaIdentifierPart(ch) &&
                 !Character.isWhitespace(ch) &&
                 !Character.isDigit(ch) &&
                 ch != '{' &&
-                ch != '}' ;
+                ch != '}';
     }
 }

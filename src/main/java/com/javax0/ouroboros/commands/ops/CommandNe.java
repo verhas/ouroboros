@@ -5,7 +5,14 @@ import com.javax0.ouroboros.Interpreter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
-
+/**
+ * command_ne
+ * {%COMMAND ne%}
+ * Compare two values for not equal.
+ * The command compares two values and returns true if the first is not equal to the second, and optionally the further arguments.
+ * <p>
+ * end
+ */
 public class CommandNe extends AbstractCommandBinop<Boolean> {
 
     public CommandNe(Interpreter interpreter) {

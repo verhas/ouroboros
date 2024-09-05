@@ -8,6 +8,20 @@ import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.ArrayList;
 
+/**
+ * command_lexer_block
+ * {%COMMAND lexer: block%}
+ * <p>
+ * A lexer that consumes a block of commands.
+ * <p>
+ * The block of commands starts with a `{` character and ends with a `}` character.
+ * When the parser finds the opening `{` character it starts to read the commands with a recursive call until the next command is a CommandBlockClose.
+ * That way blocks can be nested.
+ * <p>
+ * end
+ *
+ * @param <T>
+ */
 public class BlockLexer<T> extends AbstractCommand<CommandBlock<T>> {
 
     @Override
@@ -21,14 +35,14 @@ public class BlockLexer<T> extends AbstractCommand<CommandBlock<T>> {
         if (!input.isEmpty() && input.charAt(0) == '{') {
             source.update(input.substring(1));
             final var fetch = getFetcher(context);
-            while (!source.get().isEmpty() ) {
+            while (!source.get().isEmpty()) {
                 final var block = fetch.execute(context).get();
-                if( block instanceof CommandBlockClose){
+                if (block instanceof CommandBlockClose) {
                     break;
                 }
                 blocks.add(block);
             }
-        return new SimpleValue<>(new CommandBlock<>(interpreter, new SimpleBlock(blocks)));
+            return new SimpleValue<>(new CommandBlock<>(interpreter, new SimpleBlock(blocks)));
         }
         return null;
     }
@@ -36,7 +50,7 @@ public class BlockLexer<T> extends AbstractCommand<CommandBlock<T>> {
     private Command<Block> getFetcher(Context context) {
         return context.variable("$fetch")
                 .map(Value::get)
-                .map(SafeCast.to(it -> (Command<Block>)it))
+                .map(SafeCast.to(it -> (Command<Block>) it))
                 .orElseThrow(() -> new IllegalArgumentException("No block fetcher"));
     }
 

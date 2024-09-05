@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.interpreter;
 
 import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 
 import java.util.ArrayList;
@@ -9,6 +10,11 @@ import java.util.Optional;
 
 class ExecutorContext implements Context {
     private final List<ObjectValue> stack = new ArrayList<>();
+
+    ExecutorContext() {
+        stack.add(new ObjectValue.Implementation());
+        stack.getFirst().fields().put("$", new SimpleValue<>(stack.getFirst()));
+    }
 
     @Override
     public <T> Optional<Value<T>> variable(String name) {

@@ -6,16 +6,28 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+/**
+ * command_substring
+ * {%COMMAND substring%}
+ * Get the substring of the string.
+ * The command returns the substring of the string.
+ * <p>
+ * The first argument is the start index, the second argument is the end index.
+ * The third argument is the string.
+ * <p>
+ * end
+ */
 public class CommandSubstring extends AbstractCommand<String> {
     public CommandSubstring(Interpreter interpreter) {
         set(interpreter);
     }
+
     @Override
     public Value<String> execute(Context context) {
         final var start = nextArgument(context, this::toLong).orElseThrow(() -> new IllegalArgumentException("Start is missing"));
         final var end = nextArgument(context, this::toLong).orElseThrow(() -> new IllegalArgumentException("End is missing"));
-        final var string = nextArgument(context,this::toString).orElseThrow(() -> new IllegalArgumentException("String is missing"));
-        return new SimpleValue<>(string.substring(Math.toIntExact(start),Math.toIntExact(end)));
+        final var string = nextArgument(context, this::toString).orElseThrow(() -> new IllegalArgumentException("String is missing"));
+        return new SimpleValue<>(string.substring(Math.toIntExact(start), Math.toIntExact(end)));
     }
 
 

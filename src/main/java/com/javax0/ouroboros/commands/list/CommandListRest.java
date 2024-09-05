@@ -13,7 +13,11 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * If the list is empty, then the command throws an exception.
  * The command is defined on the list object.
  * The command does not have any argument.
+ * <p>
+ * {%EXAMPLE/list_rest%}
+ * <p>
  * end
+ *
  * @param <T>
  */
 public class CommandListRest<T> extends AbstractCommand<ListValue<T>> {
@@ -24,15 +28,15 @@ public class CommandListRest<T> extends AbstractCommand<ListValue<T>> {
     @Override
     public Value<ListValue<T>> execute(Context context) {
         final var list = context.variable("this").map(Value::get)
-                .orElseThrow(() -> new IllegalArgumentException("There is no argument to the command 'first"));
-        switch(list){
+                .orElseThrow(() -> new IllegalArgumentException("There is no argument to the command 'rest"));
+        switch (list) {
             case ListValue<?> lv -> {
-                if( lv.values().isEmpty() ){
+                if (lv.values().isEmpty()) {
                     throw new IllegalArgumentException("The list is empty");
                 }
                 final var newList = new ListValue<T>(interpreter);
-                for( int i = 1; i < lv.values().size(); i++ ){
-                    newList.add((Value<T>) lv.values().get(i));
+                for (int i = 1; i < lv.values().size(); i++) {
+                    newList.values().add((Value<T>) lv.values().get(i));
                 }
                 return new SimpleValue<>(newList);
             }

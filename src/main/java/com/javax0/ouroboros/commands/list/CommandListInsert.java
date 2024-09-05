@@ -11,7 +11,9 @@ import com.javax0.ouroboros.utils.SafeCast;
  * command_list_insert
  * {%COMMAND list.insert%}
  * A list method that inserts an element into a list at a given position.
- * The position is zero based.
+ * The position is zero-based.
+ *
+ * {%EXAMPLE/list_insert%}
  * end
  * @param <T>
  */

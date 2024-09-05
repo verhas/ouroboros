@@ -7,7 +7,13 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
 import java.util.regex.Pattern;
-
+/**
+ * command_match
+ * {%COMMAND match%}
+ * Check if the string matches the regular expression.
+ * The command returns true if the string matches the regular expression.
+ * end
+ */
 public class CommandMatch extends AbstractCommand<Boolean> {
     public CommandMatch(Interpreter interpreter) {
         set(interpreter);

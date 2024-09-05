@@ -5,7 +5,13 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
-
+/**
+ * command_trim
+ * {%COMMAND trim%}
+ * Trim the string.
+ * The command returns the string trimmed.
+ * end
+ */
 public class CommandTrim extends AbstractCommand<String> {
 
     public CommandTrim(Interpreter interpreter) {

@@ -117,13 +117,13 @@ public class SimpleExecutor implements Interpreter {
         }
         if (block instanceof Command<?> command) {
             command.set(this);
-            final var n=  (Value<T>) command.execute(context);
-            return n;
+            return  (Value<T>) command.execute(context);
         } else {
             throw new IllegalArgumentException("Block is not a command: " + block);
         }
     }
 
+    @Override
     public void execute(String input) {
         final var source = new Source(this, input);
         push(source);

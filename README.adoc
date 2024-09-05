@@ -73,6 +73,14 @@ For example, the following sample:
 [source]
 ----
 puts add "Hello, " "World!"
+puts "\n"
+puts add 2 2
+puts "\n"
+puts add "2" 2
+puts "\n"
+puts add BigDecimal "2222222222222222222222222222" 2
+puts "\n"
+puts add 2.3 5
 
 ----
 
@@ -85,6 +93,10 @@ will result again in:
 [source]
 ----
 Hello, World!
+4
+22
+2222222222222222222222222224
+7.3
 ----
 
 
@@ -357,6 +369,126 @@ In turn, then this command will look up the actual command associated with that 
 It will consult the context and the variables and execute the command that is found.
 
 
+=== BigDecimal
+Create a big decimal value.
+The argument the command uses is the value and converts it to big decimal.
+The argument can be integer, float, boolean, string, or even BigInteger and BigDecimal.
+
+The argument is usually a string.
+
+
+=== BigInteger
+Create a big decimal value.
+The argument the command uses is the value and converts it to big integer.
+The argument can be integer, float, boolean, string, or even BigInteger and BigDecimal.
+
+The argument is usually a string.
+
+
+=== binop: binary operations
+
+Binary operations are operations that take two arguments and return a value.
+Each of the operations can also be used having the `*` as the first argument.
+In this case the operation is applied to all the arguments in the stack till the end of the input or until an `{}` is found.
+The first case, when all the arguments are processed can be used when this command is the last one in the command list in the mail level or inside a block.
+
+In the case of logical operators, like `and` and `or` the operation is NOT short circuit.
+This means that all the arguments are evaluated.
+
+=== binop: add
+
+Add values.
+The values can be numbers or strings.
+If the values are numbers, then the result is the sum of the numbers.
+If the values are strings, then the result is the concatenation of the strings.
+
+ * Example:
+
+
+.putsadd.ur source
+[source]
+----
+puts add "Hello, " "World!"
+puts "\n"
+puts add 2 2
+puts "\n"
+puts add "2" 2
+puts "\n"
+puts add BigDecimal "2222222222222222222222222222" 2
+puts "\n"
+puts add 2.3 5
+
+----
+
+
+
+will result in
+
+
+.putsadd.ur output
+[source]
+----
+Hello, World!
+4
+22
+2222222222222222222222222224
+7.3
+----
+
+
+
+=== binop: div
+
+Divide values.
+The values can only be numbers.
+
+ * Example:
+
+
+.putsdiv.ur source
+[source]
+----
+puts div 55 13
+puts "\n"
+puts div 55.0 13
+puts "\n"
+puts div BigDecimal 10 3
+puts "\n"
+set $scale 10
+set $round "CEILING"
+puts div BigDecimal 10 3
+
+----
+
+
+
+will result in
+
+
+.putsdiv.ur output
+[source]
+----
+4
+4.230769230769231
+3.33
+3.3333333334
+----
+
+
+When dividing BigDecimal values the scale and the rounding is defined by the local variables `$scale` and `$round`.
+The default scale is 2 and the default rounding is `HALF_UP`.
+
+Rounding modes are
+
+* `UP`
+* `DOWN`
+* `CEILING`
+* `FLOOR`
+* `HALF_UP`
+* `HALF_DOWN`
+* `HALF_EVEN`, and
+* `UNNECESSARY`
+
 === Block
 This command is used to execute a block.
 A block is not represented by a bareword; rather, it is represented by a `{` and `}` pair.
@@ -396,6 +528,12 @@ Hello, World!
 ----
 
 
+=== boolean
+Create a boolean value.
+
+The argument the command uses is the value and converts it to boolean.
+The argument can be an integer, a floating point number, BigInteger, BigDecimal, string, boolean, or null.
+
 === call
 Calls a method on an object.
 
@@ -433,6 +571,10 @@ Hello, World!
 ----
 
 
+
+=== charAt
+Get the character at the given index.
+The command returns the character at the given index.
 
 === copy
 
@@ -481,6 +623,22 @@ On the other hands, when we change the field `f2` of the object `C`, the object 
 
 
 
+=== double
+Create a double value.
+The argument the command uses is the value and converts it to double.
+The argument can be integer, float, boolean, string, or even BigInteger and BigDecimal.
+
+
+=== double_constant
+A number that conforms to the Java double type.
+If a floating number literal is present in the code, the lexical analyzers will create a double constant from it.
+The double constant is a constant that holds a double value.
+
+=== eq
+Compare two values.
+The command compares two values and returns true if they are equal.
+
+
 === eval
 Evaluate the argument string as program code using the current syntax setup.
 Note that the lexical analysers can be modified during the code execution.
@@ -520,9 +678,18 @@ Hello, World!
 
 
 
+=== fetch
+
+This command reads the source code of the application and returns the next token invoking the registered lexers.
+This command is invoked by the interpreter, and it is not expected to be used in the application code.
+It can be overridden by the application code to provide a custom code reader.
+
 === field
+
 Get an object's field's value.
 The fist argument is the object, and the second argument is the name of the field.
+When the first argument is `*` then the command will fetch the subsequent arguments and navigate alon g the path of fields in the object structure.
+The navigation stops when there are no more fields, or a `{}`.
 
  * Example:
 
@@ -615,39 +782,158 @@ will result in
 
 
 The sample `fixup.ur` first executes the `fixup` command.
-The command then reads all the remaiing source code as input and replaces the input string with the list of the tokens.
-After that the program inserts a new lexical analyser into the list `$lex` at the beginning.
-This lexical analyser is NEVER invoked since the code is already tokenized.
-Because of that the addition command presented as `add*`, which means it will read all the arguments until the end of the block, or an `{}` is found will add `3`, `2`, and `1`.
+The command then reads all the remaining source code as input and replaces the input string with a list of tokens.
+After that, the program inserts a new lexical analyzer into the list `$lex` at the beginning.
+This lexical analyzer is NEVER invoked since the code is already tokenized.
+Because of that, the addition command presented as `add*`, which means it will read all the arguments until the end of the block, or until `{}` is found, and will add `3`, `2`, and `1`.
 
-In the second case there is no `fixup`.
-The syntax analyser fetches only as far from the input source string as needed and no more.
-First the command `call` is identified by the built-in lexical analyser as a bare word and since it is a command it will be executed.
+In the second case, there is no `fixup`.
+The syntax analyzer fetches only as much from the input source string as needed and no more.
+First, the command `call` is identified by the built-in lexical analyzer as a bare word, and since it is a command, it will be executed.
 The command `call` will fetch the next two arguments to get the object and the method.
-When it fetches the arguments the interpreter invokes the lexical analysers to get the arguments.
-The rest of the input is not tokenized and is available as a string including and following the space before `0 '{`.
-The arguments for the call are are `$lex` and `insert`.
+When it fetches the arguments, the interpreter invokes the lexical analyzers to get the arguments.
+The rest of the input is not tokenized and is available as a string, including and following the space before `0 '{`.
+The arguments for the call are `$lex` and `insert`.
 Invoking `insert` on the list object advances the lexical analysis further.
-The next argument is the position to insert a new value in the list, this is `0`.
-The element to insert is a quoted block, which will be also tokenized and as a block command gets inserted into the list.
+The next argument is the position to insert a new value in the list; this is `0`.
+The element to insert is a quoted block, which will also be tokenized and, as a block command, gets inserted into the list.
+The block does not execute at this point.
 
-At this point the source code string contains the part that starts with `set q add* ...`.
-As the execution advances it reads on but this time -- without detailing the intermediate steps -- it will also use the inserted lexical analyser.
-When this analyser sees the new line it will replace it with an empty block in the source.
-That was the source will be transformed on the fly to `set q add* 3 2 {}`.
+Now, the source code string contains the part that starts with `set q add* ...`.
+As the execution advances, it reads on, but this time -- without detailing the intermediate steps -- it will also use the inserted lexical analyzer.
+When this analyzer encounters the new line, it will replace it with an empty block in the source.
+That way, the source will be transformed on the fly to `set q add* 3 2 {} 1 {} ...`.
+The addition is performed and the value is assigned to the variable `q`.
 The commands `1` and `{}` are executed and ignored.
-Finally the result of the addition is printed.
+Finally, the result of the addition is printed.
 
+
+
+
+=== ge
+Compare two values for greater or equal.
+The command compares two values and returns true if the first is greater or equal than the second, and optionally the further arguments.
+
+
+=== gt
+Compare two values for greater.
+The command compares two values and returns true if the first is greater than the second, and optionally the further arguments.
 
 
 === if
 
-If the first argument is true then the second argument is executed, otherwise the third argument is executed.
+If the first argument is `true`, the second argument is executed, otherwise the third one.
 
 The command returns the value of the executed block.
 
-The third argument may be missing, or be `{}`.
-Note that it can only be missing if the `if` command is the last command of the program or a block.
+The third argument may be missing or be `{}`.
+Note that it can only be missing if the `if` command is the last command of the program or in a block.
+
+ * Example:
+
+
+.if.ur source
+[source]
+----
+set i 0
+while { lt i 10 } {
+  if { mod i 2 } {
+    puts i
+  }{}
+  setg i add i 1
+}
+
+----
+
+
+
+will result in
+
+
+.if.ur output
+[source]
+----
+13579
+----
+
+
+=== isBlank
+Check if the string is blank.
+The command returns true if the string is blank.
+
+=== isEmpty
+Check if the string is empty.
+The command returns true if the string is empty.
+
+=== le
+Compare two values for less or equal.
+The command compares two values and returns true if the first is less or equal than the second, and optionally the further arguments.
+
+
+=== length
+Get the length of the string.
+The command returns the length of the string.
+
+=== lexers
+
+Lexical analysers are also commands in the interpreter.
+They read the source code and decide if they can read a token from the source.
+If they can, they read the token and return it after modifying the source, chopping off the consumed part.
+
+The lexical analysers are called one after the other until one of them can read a token.
+
+When a lexical analyser returns a null value (not null, but a Value that contains null) it means that the analysis did eat some token, but it is to be ignored.
+Typically, the space lexer returns a null value when it reads a space character.
+
+When this happens, the lexical analysis starts over with the first lexer.
+
+
+=== lexer: bare word
+
+Get the next word from the source that is formally a valid Java identifier.
+It will be a bare word that may represent a command or a value based on the context.
+
+
+=== lexer: block
+
+A lexer that consumes a block of commands.
+
+The block of commands starts with a `{` character and ends with a `}` character.
+When the parser finds the opening `{` character it starts to read the commands with a recursive call until the next command is a CommandBlockClose.
+That way blocks can be nested.
+
+
+=== lexer: block close
+
+A lexer that consumes the closing block character '}'.
+It returns a CommandBlockClose command, which should and will never execute.
+It is a technical placeholder.
+
+
+=== lexer: numeric
+
+Fetches a numeric constant from the input.
+It can be decimal or hexadecimal, integer or double.
+Also note that the lexer handles the Java hexadecimal floating point, because why not.
+
+=== lexers: space
+
+Fetches one or more white space from the input.
+It returns `null` so that the white spaces are simple token separators and no command is created from them.
+
+=== lexer: string
+
+Fetches a string constant from the input.
+It can be a simple string or a multi-line string.
+
+Multi-line strings start with three `"` characters and they so not need escaping for single `"` quotes
+
+=== lexers: symbol
+
+Fetches one or more symbol characters from the input.
+It returns a BareWord that is a symbol.
+
+A symbol is a character or a sequence of characters that are not a valid Java identifier, and do not contain whitespace or digits or the characters '{' and '}'.
 
 
 === list
@@ -673,19 +959,112 @@ The list is also an object and has methods:
 
 These are documented as commands, but you can invoke them as methods of the list object using the command `call`.
 
+ * Example:
+
+
+.list.ur source
+[source]
+----
+set i list {1 2 3 4 5}
+puts i
+
+----
+
+
+
+will result in
+
+
+.list.ur output
+[source]
+----
+[1, 2, 3, 4, 5]
+----
+
+
 === list.first
 
-A method defined on every list object that returns the first element of the list.
+This method is defined on every list object that returns the first element of the list.
+
+ * Example:
+
+
+.list_first.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts call i first
+
+----
+
+
+
+will result in
+
+
+.list_first.ur output
+[source]
+----
+0
+----
 
 
 
 === list.get
 A list method that gets an element of a list from a given position.
-The position is zero based.
+The position is zero-based.
+
+ * Example:
+
+
+.list_get.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts call i get 1
+
+----
+
+
+
+will result in
+
+
+.list_get.ur output
+[source]
+----
+1
+----
+
+
 
 === list.insert
 A list method that inserts an element into a list at a given position.
-The position is zero based.
+The position is zero-based.
+
+ * Example:
+
+
+.list_insert.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+call i insert 1 99
+puts i
+
+----
+
+
+
+will result in
+
+
+.list_insert.ur output
+[source]
+----
+[0, 99, 1, 2, 3, 4, 5]
+----
+
 
 === list.last
 
@@ -695,8 +1074,54 @@ The command is defined on the list object.
 The command does not have any argument.
 The command returns the last element of the list.
 
+ * Example:
+
+
+.list_last.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts call i last
+
+----
+
+
+
+will result in
+
+
+.list_last.ur output
+[source]
+----
+5
+----
+
+
+
 === list.length
 A list method that returns the length of the list.
+
+ * Example:
+
+
+.list_length.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts call i length
+
+----
+
+
+
+will result in
+
+
+.list_length.ur output
+[source]
+----
+6
+----
 
 
 === list.rest
@@ -705,15 +1130,131 @@ If the list is empty, then the command throws an exception.
 The command is defined on the list object.
 The command does not have any argument.
 
+ * Example:
+
+
+.list_rest.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts call i rest
+
+----
+
+
+
+will result in
+
+
+.list_rest.ur output
+[source]
+----
+[1, 2, 3, 4, 5]
+----
+
+
+
 === list.set
 A list method that sets an element of a list at a given position.
 The position is zero-based.
+
+ * Example:
+
+
+.list_set.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+call i set 1 99
+puts i
+
+----
+
+
+
+will result in
+
+
+.list_set.ur output
+[source]
+----
+[0, 99, 2, 3, 4, 5]
+----
+
 
 === list.split
 A list method that splits the list into two lists at a given index.
 The index is zero-based.
 The method returns a list of two lists.
 The first list contains the elements from the beginning of the list up to the index.
+
+ * Example:
+
+
+.list_split.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts call i split 2
+
+----
+
+
+
+will result in
+
+
+.list_split.ur output
+[source]
+----
+[[0, 1], [2, 3, 4, 5]]
+----
+
+
+=== binop: and
+
+Logical and operation.
+
+
+=== long
+Create a long value.
+The argument the command uses is the value and converts it to long.
+The argument can be integer, float, boolean, string, or even BigInteger and BigDecimal.
+
+
+=== long_constant
+A number that conforms to the Java long type.
+If an integer number literal is present in the code, the lexical analyzers will create a long constant from it.
+The long constant is a constant that holds a long value.
+
+=== lt
+Compare two values for less.
+The command compares two values and returns true if the first is less than the second, and optionally the further arguments.
+
+
+=== match
+Check if the string matches the regular expression.
+The command returns true if the string matches the regular expression.
+
+=== mod
+Calculate the modulus of two numbers.
+
+The command calculates the modulus of the two numbers. The modulus is the remainder of the division of the first number by the second.
+
+
+=== mul
+Multiply two or more values.
+The command multiplies two or more values and returns the result.
+
+
+=== ne
+Compare two values for not equal.
+The command compares two values and returns true if the first is not equal to the second, and optionally the further arguments.
+
+
+=== not
+Negate the value.
+The command negates the value. If the value is true then the result is false and if the value is false then the result is true.
 
 === object
 
@@ -722,20 +1263,181 @@ The argument is the parent object.
 The new object will inherit all the fields from the parent object.
 The inheritance happens using shallow copy.
 
-If the arument is `{}` then the new object will be empty at the creation.
+If the argument is `{}` then the new object will be empty at the creation.
+
+ * Example:
+
+
+.object_complex.ur source
+[source]
+----
+set A object {}
+set B object {}
+setf B f "tacocat"
+setf A b B
+set C object A
+setf field C b f "gulash"
+puts field* A b f {}
+setf field C b object {}
+puts add "\n" field* A b f {}
+
+----
+
+
+
+will result in
+
+
+.object_complex.ur output
+[source]
+----
+gulash
+gulash
+----
+
+
+
+
+We create two objects `A` and `B`.
+The object `B` has a field `f` with the value `"tacocat"`.
+The object `A` has a field `b` that references the object `B`.
+Then we create an object `C` that inherits the fields of `A`.
+If we set the field `f` of the object `B` to `"gulash"` through the object `C`, the field `f` of the object `B` will be changed to `"gulash"`.
+It is the same and only instance of `B`.
+
+Now if we set the field `b` of the object `C` to an empty object, the field `b` of object `A` does not change.
+`C` only inherits the fields from `A` and the change there does not affect `A`.
+
+
+
+
+=== or
+Logical OR.
+The command calculates the logical OR of the two boolean values.
+The evaluation is NOT short-circuiting.
+
 
 === puts
 Print the value as a string.
+
+ * Example:
+
+
+.puts.ur source
+[source]
+----
+puts "Hello, World!"
+
+----
+
+
+
+will result in
+
+
+.puts.ur output
+[source]
+----
+Hello, World!
+----
+
 
 === quote
 
 Return the argument as a value without evaluating it.
 The command can be used as `quote` but it is also abbreviated as `'`.
 
+ * Example:
+
+
+.quote.ur source
+[source]
+----
+set hi quote { puts shift puts shift}
+hi "Hello, " "World!"
+
+----
+
+
+
+will result in
+
+
+.quote.ur output
+[source]
+----
+Hello, World!
+----
+
+
+=== replace
+Replace the target string with the replacement string in the string.
+The command returns the string where the target string is replaced with the replacement string.
+
+=== replaceAll
+Replace the target string with the replacement string in the string.
+The first argument is the source string, the second argument is a regular expression, and the third argument is the replacement string.
+The command returns the string where all matching occurrence of the regular expression is replaced with the replacement string.
+
+=== replaceFirst
+Replace the target string with the replacement string in the string.
+The first argument is the source string, the second argument is a regular expression, and the third argument is the replacement string.
+The command returns the string where the first matching occurrence of the regular expression is replaced with the replacement string.
+
 === set
 Set a variable in the context.
 
-The first argument is the name of the variable and the second argument is the value.
+The first argument is the name of the variable, and the second argument is the value.
+
+ * Example:
+
+
+.set1.ur source
+[source]
+----
+set A "Hello "
+{ puts A set A "World!" } puts A
+puts "\n"
+set A "Hello "
+{ puts A setg A "Gruetzi" } puts A
+puts "\n"
+setf $ A "Hello "
+{ puts A setf $$ A "Ciao" } puts A
+
+----
+
+
+
+will result in
+
+
+.set1.ur output
+[source]
+----
+Hello Hello 
+Hello Gruetzi
+Hello Ciao
+----
+
+
+
+
+The program sets the variable `A` to `"Hello "`.
+Then it prints the value of `A` and sets `A` to `"World!"`.
+This setting, however, is only valid within the block.
+After the block, the value of `A` is still `"Hello "`.
+
+In the next section we set `A` to `"Hello "` again.
+This time we use the `setg` command to set the global variable `A` to `"Gruetzi"`.
+After the block, the value of `A` is `"Gruetzi"`.
+
+Tne next section sets the variable `A` as a field of the object `$`.
+This variable is available in all environments and it is the object that has all the variables on that level as fields.
+Then it prints the value of `A` and sets the variable `A` to `"Ciao"`.
+This time it sets this variable as the field of the object `$$`.
+This variable is only available in side blocks and they represent the object that has all the variables on the enclosing level as fields.
+
+
 
 === setf
 Set a field in an object.
@@ -756,6 +1458,40 @@ Get the argument following the block with evaluation.
 
 === source
 Get the remaining source that was not processed yet.
+
+=== string
+Convert the argument to string.
+The command converts the argument to string.
+
+=== string_constant
+A string value.
+If a string literal is present in the code, the lexical analyzers will create a string constant from it.
+The string constant is a constant that holds a string value.
+
+=== sub
+Subtract two values.
+The command subtracts the second and optionally the further values from the first and returns the result.
+
+
+=== substring
+Get the substring of the string.
+The command returns the substring of the string.
+
+The first argument is the start index, the second argument is the end index.
+The third argument is the string.
+
+
+=== tolower
+Convert the string to lower-case.
+The command returns the string converted to lower-case.
+
+=== toupper
+Convert the string to upper-case.
+The command returns the string converted to upper-case.
+
+=== trim
+Trim the string.
+The command returns the string trimmed.
 
 === while
 

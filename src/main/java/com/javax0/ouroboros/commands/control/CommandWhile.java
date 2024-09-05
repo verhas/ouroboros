@@ -8,7 +8,8 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 
 import java.util.Optional;
 
-/** command_while
+/**
+ * command_while
  * {%COMMAND while%}
  * <p>
  * The first argument is the condition and the second argument is the block.

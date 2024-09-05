@@ -4,6 +4,14 @@ import com.javax0.ouroboros.Interpreter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+/**
+ * command_gt
+ * {%COMMAND gt%}
+ * Compare two values for greater.
+ * The command compares two values and returns true if the first is greater than the second, and optionally the further arguments.
+ * <p>
+ * end
+ */
 
 public class CommandGt extends AbstractCommandBinop<Boolean> {
 

@@ -5,7 +5,14 @@ import com.javax0.ouroboros.Interpreter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.regex.Pattern;
-
+/**
+ * command_sub
+ * {%COMMAND sub%}
+ * Subtract two values.
+ * The command subtracts the second and optionally the further values from the first and returns the result.
+ * <p>
+ * end
+ */
 public class CommandSub<T> extends AbstractCommandBinop<T> {
 
     public CommandSub(Interpreter interpreter) {

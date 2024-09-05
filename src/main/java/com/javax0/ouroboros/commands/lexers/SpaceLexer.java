@@ -6,12 +6,22 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.commands.base.BareWord;
 
+/**
+ * command_lexer_space
+ * {%COMMAND lexers: space%}
+ * <p>
+ * Fetches one or more white space from the input.
+ * It returns `null` so that the white spaces are simple token separators and no command is created from them.
+ * end
+ *
+ * @param <T>
+ */
 public class SpaceLexer<T> extends AbstractCommand<BareWord<T>> {
 
     @Override
     public Value<BareWord<T>> execute(Context context) {
         final var source = interpreter.source();
-        if( source == null ){
+        if (source == null) {
             return null;
         }
         final var input = source.execute(context).get();

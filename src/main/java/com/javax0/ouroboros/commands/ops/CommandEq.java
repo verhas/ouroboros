@@ -6,6 +6,14 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
 
+/**
+ * command_eq
+ * {%COMMAND eq%}
+ * Compare two values.
+ * The command compares two values and returns true if they are equal.
+ * <p>
+ * end
+ */
 public class CommandEq extends AbstractCommandBinop<Boolean> {
 
     public CommandEq(Interpreter interpreter) {
@@ -24,17 +32,17 @@ public class CommandEq extends AbstractCommandBinop<Boolean> {
 
     @Override
     Boolean binop(BigInteger left, BigInteger right) {
-        return left.equals(right);
+        return Objects.equals(left,right);
     }
 
     @Override
     Boolean binop(BigDecimal left, BigDecimal right) {
-        return left.equals(right);
+        return Objects.equals(left,right);
     }
 
     @Override
     Boolean binop(String left, String right) {
-        return left.equals(right);
+        return Objects.equals(left,right);
     }
 
 

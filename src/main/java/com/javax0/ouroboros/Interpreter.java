@@ -20,6 +20,14 @@ public interface Interpreter {
     Block pop();
 
     /**
+     * Execute the program that is the input.
+     * This is the main entry of the interpreter.
+     *
+     * @param input the command to execute
+     */
+    void execute(String input);
+
+    /**
      * Push a block on the stack. Commands usually call this method when they fetched too many blocks from the stack.
      * For example an 'if' command may fetch the condition block and the then block from the stack. After that it
      * fetches the next block, which may be an 'else' or 'elseif' string, but if it is not, then the command has to

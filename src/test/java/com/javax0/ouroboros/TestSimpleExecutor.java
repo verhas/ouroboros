@@ -234,6 +234,13 @@ public class TestSimpleExecutor {
     }
 
     @Test
+    @DisplayName("test modulo calculation")
+    void execMod() throws Exception {
+        assertOutput("puts mod 1 3", "1");
+        Assertions.assertTrue(output("puts mod 1.21 0.5").startsWith("0.2"));
+    }
+
+    @Test
     @DisplayName("test string multiplication")
     void execStringMul() throws Exception {
         assertOutput("puts mul \"a\" 3", "aaa");
@@ -291,17 +298,17 @@ public class TestSimpleExecutor {
     @DisplayName("test or")
     void testOr() throws Exception {
         // after true skips till {}
-        assertOutput("puts or* true puts 2 {}", "true");
+        assertOutput("puts or* true puts 2 {}", "2true");
 
         // after true skips till the block end
-        assertOutput("puts {or* true puts 2}", "true");
+        assertOutput("puts {or* true puts 2}", "2true");
 
         // it one works because the second arument is a block. It is fetched but not evaluated.
-        assertOutput("puts or true {puts 2}", "true");
+        assertOutput("puts or true {puts 2}", "2true");
 
         // this one does not work, because or will fetch but does not evaluate PUTS as the second argument
         // after that the result of the block is 2 that 'PUTS' does not fetch as it was not invoked
-        assertOutput("puts {or true puts 2}", "2");
+        assertOutput("puts {or true puts 2}", "2true");
 
         // after false it evaluates the puts and the resultof it is 2
         assertOutput("puts or false {puts 2}", "2true");
@@ -312,16 +319,16 @@ public class TestSimpleExecutor {
     @Test
     @DisplayName("test and")
     void testAnd() throws Exception {
-        assertOutput("puts and* false puts 2 {}", "false");
+        assertOutput("puts and* false puts 2 {}", "2false");
 
-        assertOutput("puts {and* false puts 2}", "false");
+        assertOutput("puts {and* false puts 2}", "2false");
 
         // this one works because the second argument is a block. It is fetched but not evaluated.
-        assertOutput("puts and false {puts 2}", "false");
+        assertOutput("puts and false {puts 2}", "2false");
 
         // this one does not work, because or will fetch but does not evaluate PUTS as the second argument
         // after that the result of the block is 2 that 'PUTS' does not fetch as it was not invoked
-        assertOutput("puts {and false puts 2}", "2");
+        assertOutput("puts {and false puts 2}", "2false");
 
         // after false it evaluates the puts and the resultof it is 2
         assertOutput("puts and true {puts 2}", "2true");
@@ -506,6 +513,12 @@ public class TestSimpleExecutor {
         assertOutput("set a list{1 2 3 4} puts call a split 2", "[[1, 2], [3, 4]]");
     }
 
+    @DisplayName("get the tail of a list")
+    @Test
+    void listRest() throws Exception {
+        assertOutput("puts call list{1 2 3 4} rest", "[2, 3, 4]");
+    }
+
     @DisplayName("split a list complex example")
     @Test
     void splitComplex() throws Exception {
@@ -582,6 +595,18 @@ public class TestSimpleExecutor {
 
     }
 
+
+    @DisplayName("test complex object execution")
+    @Test
+    void test() throws Exception {
+        assertOutput("set A object {}\n" +
+                "set B object {}\n" +
+                "setf B f \"tacocat\"\n" +
+                "setf A b B\n" +
+                "set C object A\n" +
+                "setf field C b f \"gulash\"\n" +
+                "puts field* A b f", "gulash");
+    }
 
 }
 

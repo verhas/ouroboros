@@ -20,4 +20,8 @@ public class SimpleValue<T> implements Value<T>{
             default -> new SimpleValue<>(value);
         };
     }
+    @Override
+    public String toString(){
+        return ""+value;
+    }
 }

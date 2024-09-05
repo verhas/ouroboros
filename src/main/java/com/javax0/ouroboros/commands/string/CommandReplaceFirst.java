@@ -5,7 +5,14 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
-
+/**
+ * command_replaceFirst
+ * {%COMMAND replaceFirst%}
+ * Replace the target string with the replacement string in the string.
+ * The first argument is the source string, the second argument is a regular expression, and the third argument is the replacement string.
+ * The command returns the string where the first matching occurrence of the regular expression is replaced with the replacement string.
+ * end
+ */
 public class CommandReplaceFirst extends AbstractCommand<String> {
     public CommandReplaceFirst(Interpreter interpreter) {
         set(interpreter);

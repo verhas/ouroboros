@@ -9,7 +9,15 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 import java.math.BigDecimal;
 
 /**
- * Command to print the value of the top of the stack.
+ * command_bigdecimal
+ * {%COMMAND BigDecimal%}
+ * Create a big decimal value.
+ * The argument the command uses is the value and converts it to big decimal.
+ * The argument can be integer, float, boolean, string, or even BigInteger and BigDecimal.
+ * <p>
+ * The argument is usually a string.
+ * <p>
+ * end
  */
 
 public class CommandBigDecimal extends AbstractCommand<BigDecimal> {

@@ -8,16 +8,23 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.interpreter.ObjectValue;
 
 import java.util.Map;
+import java.util.Optional;
 
-/** command_object
+/**
+ * command_object
  * {%COMMAND object%}
- *
+ * <p>
  * Create a new object.
  * The argument is the parent object.
  * The new object will inherit all the fields from the parent object.
  * The inheritance happens using shallow copy.
+ * <p>
+ * If the argument is `{}` then the new object will be empty at the creation.
  *
- * If the arument is `{}` then the new object will be empty at the creation.
+ * {%EXAMPLE/object_complex%}
+ *
+ * {%EXPLANATION/object_complex_explanation%}
+ *
  * end
  */
 public class CommandObject extends AbstractCommand<ObjectValue> {
@@ -30,7 +37,8 @@ public class CommandObject extends AbstractCommand<ObjectValue> {
         final ObjectValue object = new ObjectValue.Implementation();
         final var inheritFrom = interpreter.pop();
         if (inheritFrom != null) {
-            final var parent = interpreter.<Map<String, Value<?>>>evaluate(context, inheritFrom);
+            final var parent = Optional.ofNullable(interpreter.<Map<String, Value<?>>>evaluate(context, inheritFrom))
+                    .map(Value::get).orElse(null);
             if (parent != null) {
                 if (parent instanceof ObjectValue parentObject) {
                     object.fields().putAll(parentObject.fields());

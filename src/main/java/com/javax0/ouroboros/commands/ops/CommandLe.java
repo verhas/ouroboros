@@ -4,7 +4,14 @@ import com.javax0.ouroboros.Interpreter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
+/**
+ * command_le
+ * {%COMMAND le%}
+ * Compare two values for less or equal.
+ * The command compares two values and returns true if the first is less or equal than the second, and optionally the further arguments.
+ * <p>
+ * end
+ */
 public class CommandLe extends AbstractCommandBinop<Boolean> {
 
     public CommandLe(Interpreter interpreter) {

@@ -6,7 +6,8 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 import java.util.ArrayList;
 import java.util.Optional;
 
-/** command_source
+/**
+ * command_source
  * {%COMMAND source%}
  * Get the remaining source that was not processed yet.
  * end

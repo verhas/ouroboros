@@ -6,9 +6,12 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-/** command_puts
+/**
+ * command_puts
  * {%COMMAND puts%}
  * Print the value as a string.
+ * <p>
+ * {%EXAMPLE/puts%}
  * end
  */
 public class CommandPuts extends AbstractCommand<String> {
@@ -20,8 +23,7 @@ public class CommandPuts extends AbstractCommand<String> {
     @Override
     public Value<String> execute(Context context) {
         final var value = nextArgument(context).orElse(null);
-        //final var value = interpreter.evaluate(context, interpreter.pop());
-        String result = "" + (value == null ? null : value);
+        String result = "" + value;
         interpreter.output(result);
         return new SimpleValue<>(result);
     }

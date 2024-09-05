@@ -10,6 +10,26 @@ end snippet
 --------------------------------
 snippet putsadd.ur
 puts add "Hello, " "World!"
+puts "\n"
+puts add 2 2
+puts "\n"
+puts add "2" 2
+puts "\n"
+puts add BigDecimal "2222222222222222222222222222" 2
+puts "\n"
+puts add 2.3 5
+end snippet
+--------------------------------
+snippet putsdiv.ur
+puts div 55 13
+puts "\n"
+puts div 55.0 13
+puts "\n"
+puts div BigDecimal 10 3
+puts "\n"
+set $scale 10
+set $round "CEILING"
+puts div BigDecimal 10 3
 end snippet
 --------------------------------
 snippet block.ur
@@ -96,28 +116,31 @@ end snippet
 snippet fixup_explanation.ur
 puts """
 The sample `fixup.ur` first executes the `fixup` command.
-The command then reads all the remaiing source code as input and replaces the input string with the list of the tokens.
-After that the program inserts a new lexical analyser into the list `$lex` at the beginning.
-This lexical analyser is NEVER invoked since the code is already tokenized.
-Because of that the addition command presented as `add*`, which means it will read all the arguments until the end of the block, or an `{}` is found will add `3`, `2`, and `1`.
+The command then reads all the remaining source code as input and replaces the input string with a list of tokens.
+After that, the program inserts a new lexical analyzer into the list `$lex` at the beginning.
+This lexical analyzer is NEVER invoked since the code is already tokenized.
+Because of that, the addition command presented as `add*`, which means it will read all the arguments until the end of the block, or until `{}` is found, and will add `3`, `2`, and `1`.
 
-In the second case there is no `fixup`.
-The syntax analyser fetches only as far from the input source string as needed and no more.
-First the command `call` is identified by the built-in lexical analyser as a bare word and since it is a command it will be executed.
+In the second case, there is no `fixup`.
+The syntax analyzer fetches only as much from the input source string as needed and no more.
+First, the command `call` is identified by the built-in lexical analyzer as a bare word, and since it is a command, it will be executed.
 The command `call` will fetch the next two arguments to get the object and the method.
-When it fetches the arguments the interpreter invokes the lexical analysers to get the arguments.
-The rest of the input is not tokenized and is available as a string including and following the space before `0 '{`.
-The arguments for the call are are `$lex` and `insert`.
+When it fetches the arguments, the interpreter invokes the lexical analyzers to get the arguments.
+The rest of the input is not tokenized and is available as a string, including and following the space before `0 '{`.
+The arguments for the call are `$lex` and `insert`.
 Invoking `insert` on the list object advances the lexical analysis further.
-The next argument is the position to insert a new value in the list, this is `0`.
-The element to insert is a quoted block, which will be also tokenized and as a block command gets inserted into the list.
+The next argument is the position to insert a new value in the list; this is `0`.
+The element to insert is a quoted block, which will also be tokenized and, as a block command, gets inserted into the list.
+The block does not execute at this point.
 
-At this point the source code string contains the part that starts with `set q add* ...`.
-As the execution advances it reads on but this time -- without detailing the intermediate steps -- it will also use the inserted lexical analyser.
-When this analyser sees the new line it will replace it with an empty block in the source.
-That was the source will be transformed on the fly to `set q add* 3 2 {}`.
+Now, the source code string contains the part that starts with `set q add* ...`.
+As the execution advances, it reads on, but this time -- without detailing the intermediate steps -- it will also use the inserted lexical analyzer.
+When this analyzer encounters the new line, it will replace it with an empty block in the source.
+That way, the source will be transformed on the fly to `set q add* 3 2 {} 1 {} ...`.
+The addition is performed and the value is assigned to the variable `q`.
 The commands `1` and `{}` are executed and ignored.
-Finally the result of the addition is printed.
+Finally, the result of the addition is printed.
+
 """
 end snippet
 """
@@ -176,3 +199,131 @@ puts "\n"
 puts field A f2
 end snippet
 --------------------------------
+snippet if.ur
+set i 0
+while { lt i 10 } {
+  if { mod i 2 } {
+    puts i
+  }{}
+  setg i add i 1
+}
+end snippet
+--------------------------------
+snippet list.ur
+set i list {1 2 3 4 5}
+puts i
+end snippet
+--------------------------------
+snippet list_first.ur
+set i list {0 1 2 3 4 5}
+puts call i first
+end snippet
+--------------------------------
+snippet list_get.ur
+set i list {0 1 2 3 4 5}
+puts call i get 1
+end snippet
+--------------------------------
+snippet list_insert.ur
+set i list {0 1 2 3 4 5}
+call i insert 1 99
+puts i
+end snippet
+--------------------------------
+snippet list_last.ur
+set i list {0 1 2 3 4 5}
+puts call i last
+end snippet
+--------------------------------
+snippet list_length.ur
+set i list {0 1 2 3 4 5}
+puts call i length
+end snippet
+--------------------------------
+snippet list_rest.ur
+set i list {0 1 2 3 4 5}
+puts call i rest
+end snippet
+--------------------------------
+snippet list_set.ur
+set i list {0 1 2 3 4 5}
+call i set 1 99
+puts i
+end snippet
+--------------------------------
+snippet list_split.ur
+set i list {0 1 2 3 4 5}
+puts call i split 2
+end snippet
+--------------------------------
+snippet object_complex.ur
+set A object {}
+set B object {}
+setf B f "tacocat"
+setf A b B
+set C object A
+setf field C b f "gulash"
+puts field* A b f {}
+setf field C b object {}
+puts add "\n" field* A b f {}
+end snippet
+--------------------------------
+snippet object_complex_explanation.ur
+puts """
+We create two objects `A` and `B`.
+The object `B` has a field `f` with the value `"tacocat"`.
+The object `A` has a field `b` that references the object `B`.
+Then we create an object `C` that inherits the fields of `A`.
+If we set the field `f` of the object `B` to `"gulash"` through the object `C`, the field `f` of the object `B` will be changed to `"gulash"`.
+It is the same and only instance of `B`.
+
+Now if we set the field `b` of the object `C` to an empty object, the field `b` of object `A` does not change.
+`C` only inherits the fields from `A` and the change there does not affect `A`.
+"""
+end snippet
+--------------------------------
+snippet quote.ur
+set hi quote { puts shift puts shift}
+hi "Hello, " "World!"
+end snippet
+--------------------------------
+snippet curry.ur
+set hi quote { puts shift puts shift}
+hi "Hello, " "World!"
+set gruezi quote{ hi "Gruetzi, " shift }
+set world '{hi shift "World!" }
+puts "\n"
+gruezi "Reto!"
+puts "\n"
+world "Ciao, "
+end snippet
+--------------------------------
+snippet set1.ur
+set A "Hello "
+{ puts A set A "World!" } puts A
+puts "\n"
+set A "Hello "
+{ puts A setg A "Gruetzi" } puts A
+puts "\n"
+setf $ A "Hello "
+{ puts A setf $$ A "Ciao" } puts A
+end snippet
+--------------------------------
+snippet set1_explanation.ur
+puts """
+The program sets the variable `A` to `"Hello "`.
+Then it prints the value of `A` and sets `A` to `"World!"`.
+This setting, however, is only valid within the block.
+After the block, the value of `A` is still `"Hello "`.
+
+In the next section we set `A` to `"Hello "` again.
+This time we use the `setg` command to set the global variable `A` to `"Gruetzi"`.
+After the block, the value of `A` is `"Gruetzi"`.
+
+Tne next section sets the variable `A` as a field of the object `$`.
+This variable is available in all environments and it is the object that has all the variables on that level as fields.
+Then it prints the value of `A` and sets the variable `A` to `"Ciao"`.
+This time it sets this variable as the field of the object `$$`.
+This variable is only available in side blocks and they represent the object that has all the variables on the enclosing level as fields.
+"""
+end snippet

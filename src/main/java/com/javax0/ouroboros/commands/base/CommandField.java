@@ -7,11 +7,15 @@ import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.Optional;
 
-/** command_field
+/**
+ * command_field
  * {%COMMAND field%}
+ * <p>
  * Get an object's field's value.
  * The fist argument is the object, and the second argument is the name of the field.
- *
+ * When the first argument is `*` then the command will fetch the subsequent arguments and navigate alon g the path of fields in the object structure.
+ * The navigation stops when there are no more fields, or a `{}`.
+ * <p>
  * {%EXAMPLE/field%}
  * end
  *

@@ -16,6 +16,7 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("sub", new SimpleValue<>(new CommandSub<>(interpreter)));
         context.<Command<?>>set("mul", new SimpleValue<>(new CommandMul<>(interpreter)));
         context.<Command<?>>set("div", new SimpleValue<>(new CommandDiv<>(interpreter)));
+        context.<Command<?>>set("mod", new SimpleValue<>(new CommandMod<>(interpreter)));
         context.<Command<?>>set("eq", new SimpleValue<>(new CommandEq(interpreter)));
         context.<Command<?>>set("ne", new SimpleValue<>(new CommandNe(interpreter)));
         context.<Command<?>>set("le", new SimpleValue<>(new CommandLe(interpreter)));

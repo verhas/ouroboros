@@ -2,6 +2,14 @@ package com.javax0.ouroboros.commands.ops;
 
 import com.javax0.ouroboros.Interpreter;
 
+/**
+ * command_logical_and
+ * {%COMMAND binop: and%}
+ * <p>
+ * Logical and operation.
+ * <p>
+ * end
+ */
 public class CommandAnd extends AbstractCommandLogicalBinop {
 
     public CommandAnd(Interpreter interpreter) {
@@ -12,11 +20,5 @@ public class CommandAnd extends AbstractCommandLogicalBinop {
     boolean binop(boolean left, boolean right) {
         return left && right;
     }
-    @Override
-    boolean finished(boolean start) {
-        return !start;
-    }
-
-
 
 }

@@ -4,7 +4,21 @@ import com.javax0.ouroboros.Interpreter;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
+/**
+ * command_binop_add
+ * {%COMMAND binop: add%}
+ * <p>
+ * Add values.
+ * The values can be numbers or strings.
+ * If the values are numbers, then the result is the sum of the numbers.
+ * If the values are strings, then the result is the concatenation of the strings.
+ * <p>
+ * {%EXAMPLE/putsadd%}
+ * <p>
+ * end
+ *
+ * @param <T>
+ */
 public class CommandAdd<T> extends AbstractCommandBinop<T> {
 
     public CommandAdd(Interpreter interpreter) {

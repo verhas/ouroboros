@@ -9,9 +9,10 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * command_list_first
  * {%COMMAND list.first%}
  * <p>
- * A method defined on every list object that returns the first element of the list.
- *
- *
+ * This method is defined on every list object that returns the first element of the list.
+ * <p>
+ * {%EXAMPLE/list_first%}
+ * <p>
  * end
  *
  * @param <T>

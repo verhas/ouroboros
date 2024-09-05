@@ -10,6 +10,15 @@ import com.javax0.ouroboros.commands.constant.NumericConstant;
 
 import java.util.regex.Pattern;
 
+/**
+ * command_lexer_numeric
+ * {%COMMAND lexer: numeric%}
+ * <p>
+ * Fetches a numeric constant from the input.
+ * It can be decimal or hexadecimal, integer or double.
+ * Also note that the lexer handles the Java hexadecimal floating point, because why not.
+ * end
+ */
 public class NumericLexer extends AbstractCommand<NumericConstant> {
 
     private static final Pattern[] patterns = new Pattern[]{

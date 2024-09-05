@@ -8,13 +8,14 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 /** command_if
  * {%COMMAND if%}
  * <p>
- * If the first argument is true then the second argument is executed, otherwise the third argument is executed.
+ * If the first argument is `true`, the second argument is executed, otherwise the third one.
  * <p>
  * The command returns the value of the executed block.
  * <p>
- * The third argument may be missing, or be `{}`.
- * Note that it can only be missing if the `if` command is the last command of the program or a block.
+ * The third argument may be missing or be `{}`.
+ * Note that it can only be missing if the `if` command is the last command of the program or in a block.
  * <p>
+ * {%EXAMPLE/if%}
  * end
  *
  * @param <T>

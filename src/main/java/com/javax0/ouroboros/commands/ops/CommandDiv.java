@@ -8,6 +8,30 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 
+/**
+ * command_binop_div
+ * {%COMMAND binop: div%}
+ * <p>
+ * Divide values.
+ * The values can only be numbers.
+ * <p>
+ * {%EXAMPLE/putsdiv%}
+ * <p>
+ * When dividing BigDecimal values the scale and the rounding is defined by the local variables `$scale` and `$round`.
+ * The default scale is 2 and the default rounding is `HALF_UP`.
+ * <p>
+ * Rounding modes are
+ * <p>
+ * * `UP`
+ * * `DOWN`
+ * * `CEILING`
+ * * `FLOOR`
+ * * `HALF_UP`
+ * * `HALF_DOWN`
+ * * `HALF_EVEN`, and
+ * * `UNNECESSARY`
+ * end
+ */
 public class CommandDiv<T> extends AbstractCommandBinop<T> {
 
     public CommandDiv(Interpreter interpreter) {
