@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.javax0.ouroboros.AssertUtils.assertOutput;
 import static com.javax0.ouroboros.AssertUtils.output;
 
 public class TestStringLex {
