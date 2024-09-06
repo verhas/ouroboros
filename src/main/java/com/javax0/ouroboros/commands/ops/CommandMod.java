@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * command_mod
- * {%COMMAND mod%}
+ * command_binop_mod
+ * {%COMMAND binop: mod%}
  * Calculate the modulus of two numbers.
  * <p>
  * The command calculates the modulus of the two numbers. The modulus is the remainder of the division of the first number by the second.

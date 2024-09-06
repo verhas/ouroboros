@@ -151,6 +151,7 @@ During the block evaluation the `puts` commands is executed first, and the resul
 === Objects, Functions and Methods
 
 Objects are a collection of fields.
+Note that methods are also filed with an executable block as their value.
 You can create an object with the `object` command.
 The command has one argument, the parent object.
 During creation the object will copy all fields from the parent object.

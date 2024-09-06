@@ -5,7 +5,8 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
-/** command_if
+/**
+ * command_if
  * {%COMMAND if%}
  * <p>
  * If the first argument is `true`, the second argument is executed, otherwise the third one.
@@ -28,8 +29,7 @@ public class CommandIf<T> extends AbstractCommand<T> {
 
     @Override
     public Value<T> execute(Context context) {
-        final var condition = nextArgument(context, this::toBoolean)
-                .orElseThrow(() -> new IllegalArgumentException("Condition is missing"));
+        final var condition = nextArgument(context, this::toBoolean).orElse(false);
         final var then = interpreter.pop();
         final var otherwise = interpreter.pop();
         final var block = condition ? then : otherwise;

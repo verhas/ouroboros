@@ -17,6 +17,6 @@ public class StringConstant extends Constant<String> {
 
     @Override
     public String toString() {
-        return "\"" + value.get() + '"';
+        return "\"\"\"" + value.get() + "\"\"\"";
     }
 }

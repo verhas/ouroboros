@@ -8,7 +8,7 @@ import com.javax0.ouroboros.commands.base.BareWord;
 
 /**
  * command_lexer_symbol
- * {%COMMAND lexers: symbol%}
+ * {%COMMAND lexers: $symbol%}
  * <p>
  * Fetches one or more symbol characters from the input.
  * It returns a BareWord that is a symbol.

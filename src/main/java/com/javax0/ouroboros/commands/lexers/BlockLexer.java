@@ -7,10 +7,11 @@ import com.javax0.ouroboros.commands.pseudo.CommandBlockClose;
 import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * command_lexer_block
- * {%COMMAND lexer: block%}
+ * {%COMMAND lexer: $block%}
  * <p>
  * A lexer that consumes a block of commands.
  * <p>
@@ -36,7 +37,7 @@ public class BlockLexer<T> extends AbstractCommand<CommandBlock<T>> {
             source.update(input.substring(1));
             final var fetch = getFetcher(context);
             while (!source.get().isEmpty()) {
-                final var block = fetch.execute(context).get();
+                final var block = Optional.ofNullable(fetch.execute(context)).map(Value::get).orElse(null);
                 if (block instanceof CommandBlockClose) {
                     break;
                 }

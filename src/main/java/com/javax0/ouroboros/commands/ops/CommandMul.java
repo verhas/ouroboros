@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * command_mul
- * {%COMMAND mul%}
+ * command_binop_mul
+ * {%COMMAND binop: mul%}
  * Multiply two or more values.
  * The command multiplies two or more values and returns the result.
  * <p>

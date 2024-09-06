@@ -15,6 +15,13 @@ import java.math.BigInteger;
  * In this case the operation is applied to all the arguments in the stack till the end of the input or until an `{}` is found.
  * The first case, when all the arguments are processed can be used when this command is the last one in the command list in the mail level or inside a block.
  * <p>
+ * {%sample/binop%}
+ * <p>
+ * will result in
+ * <p>
+ * {%output%}
+ *
+ * <p>
  * In the case of logical operators, like `and` and `or` the operation is NOT short circuit.
  * This means that all the arguments are evaluated.
  * end

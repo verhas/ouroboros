@@ -17,18 +17,18 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * {%EXPLANATION/set1_explanation%}
  * end
  */
-public class CommandSet extends AbstractCommand<Void> {
+public class CommandSet extends AbstractCommand<Object> {
     public CommandSet(Interpreter interpreter) {
         set(interpreter);
     }
 
     @Override
-    public Value<Void> execute(Context context) {
+    public Value<Object> execute(Context context) {
         final String name = getName(context)
                 .orElseThrow(() -> new IllegalArgumentException("The first argument of 'set' should be a name"));
         final var value = interpreter.evaluate(context, interpreter.pop());
         context.set(name, value);
-        return null;
+        return value;
     }
 
 

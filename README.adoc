@@ -240,6 +240,7 @@ During the block evaluation the `puts` commands is executed first, and the resul
 === Objects, Functions and Methods
 
 Objects are a collection of fields.
+Note that methods are also filed with an executable block as their value.
 You can create an object with the `object` command.
 The command has one argument, the parent object.
 During creation the object will copy all fields from the parent object.
@@ -392,6 +393,32 @@ Each of the operations can also be used having the `*` as the first argument.
 In this case the operation is applied to all the arguments in the stack till the end of the input or until an `{}` is found.
 The first case, when all the arguments are processed can be used when this command is the last one in the command list in the mail level or inside a block.
 
+
+.binop.ur source
+[source]
+----
+"simple binary operation adding 2 and 2:"
+puts add 2 2
+"multiple addition till there is a closing {}:"
+puts add* 2 2 2 2 {}
+"multiple addition till there are no more tokens to fetch on the given level to add:"
+puts {add* 2 2 2 2}
+
+----
+
+
+
+will result in
+
+
+.binop.ur output
+[source]
+----
+488
+----
+
+
+
 In the case of logical operators, like `and` and `or` the operation is NOT short circuit.
 This means that all the arguments are evaluated.
 
@@ -435,6 +462,11 @@ Hello, World!
 7.3
 ----
 
+
+
+=== binop: and
+
+Logical and operation.
 
 
 === binop: div
@@ -488,6 +520,58 @@ Rounding modes are
 * `HALF_DOWN`
 * `HALF_EVEN`, and
 * `UNNECESSARY`
+
+=== binop: eq
+Compare two values.
+The command compares two values and returns true if they are equal.
+
+
+=== binop: ge
+Compare two values for greater or equal.
+The command compares two values and returns true if the first is greater or equal than the second, and optionally the further arguments.
+
+
+=== binop: gt
+Compare two values for greater.
+The command compares two values and returns true if the first is greater than the second, and optionally the further arguments.
+
+
+=== binop: le
+Compare two values for less or equal.
+The command compares two values and returns true if the first is less or equal than the second, and optionally the further arguments.
+
+
+=== binop: lt
+Compare two values for less.
+The command compares two values and returns true if the first is less than the second, and optionally the further arguments.
+
+
+=== binop: mod
+Calculate the modulus of two numbers.
+
+The command calculates the modulus of the two numbers. The modulus is the remainder of the division of the first number by the second.
+
+
+=== binop: mul
+Multiply two or more values.
+The command multiplies two or more values and returns the result.
+
+
+=== binop: ne
+Compare two values for not equal.
+The command compares two values and returns true if the first is not equal to the second, and optionally the further arguments.
+
+
+=== binop: sub
+Subtract two values.
+The command subtracts the second and optionally the further values from the first and returns the result.
+
+
+=== binop: or
+Logical OR.
+The command calculates the logical OR of the two boolean values.
+The evaluation is NOT short-circuiting.
+
 
 === Block
 This command is used to execute a block.
@@ -633,11 +717,6 @@ The argument can be integer, float, boolean, string, or even BigInteger and BigD
 A number that conforms to the Java double type.
 If a floating number literal is present in the code, the lexical analyzers will create a double constant from it.
 The double constant is a constant that holds a double value.
-
-=== eq
-Compare two values.
-The command compares two values and returns true if they are equal.
-
 
 === eval
 Evaluate the argument string as program code using the current syntax setup.
@@ -810,16 +889,6 @@ Finally, the result of the addition is printed.
 
 
 
-=== ge
-Compare two values for greater or equal.
-The command compares two values and returns true if the first is greater or equal than the second, and optionally the further arguments.
-
-
-=== gt
-Compare two values for greater.
-The command compares two values and returns true if the first is greater than the second, and optionally the further arguments.
-
-
 === if
 
 If the first argument is `true`, the second argument is executed, otherwise the third one.
@@ -864,11 +933,6 @@ The command returns true if the string is blank.
 === isEmpty
 Check if the string is empty.
 The command returns true if the string is empty.
-
-=== le
-Compare two values for less or equal.
-The command compares two values and returns true if the first is less or equal than the second, and optionally the further arguments.
-
 
 === length
 Get the length of the string.
@@ -1211,11 +1275,6 @@ will result in
 ----
 
 
-=== binop: and
-
-Logical and operation.
-
-
 === long
 Create a long value.
 The argument the command uses is the value and converts it to long.
@@ -1227,30 +1286,9 @@ A number that conforms to the Java long type.
 If an integer number literal is present in the code, the lexical analyzers will create a long constant from it.
 The long constant is a constant that holds a long value.
 
-=== lt
-Compare two values for less.
-The command compares two values and returns true if the first is less than the second, and optionally the further arguments.
-
-
 === match
 Check if the string matches the regular expression.
 The command returns true if the string matches the regular expression.
-
-=== mod
-Calculate the modulus of two numbers.
-
-The command calculates the modulus of the two numbers. The modulus is the remainder of the division of the first number by the second.
-
-
-=== mul
-Multiply two or more values.
-The command multiplies two or more values and returns the result.
-
-
-=== ne
-Compare two values for not equal.
-The command compares two values and returns true if the first is not equal to the second, and optionally the further arguments.
-
 
 === not
 Negate the value.
@@ -1309,12 +1347,6 @@ Now if we set the field `b` of the object `C` to an empty object, the field `b` 
 `C` only inherits the fields from `A` and the change there does not affect `A`.
 
 
-
-
-=== or
-Logical OR.
-The command calculates the logical OR of the two boolean values.
-The evaluation is NOT short-circuiting.
 
 
 === puts
@@ -1443,6 +1475,121 @@ This variable is only available in side blocks and they represent the object tha
 Set a field in an object.
 The first argument is the object, the second argument is the name of the field, and the third argument is the value.
 
+Example:
+
+
+.setf1.ur source
+[source]
+----
+set A object{}
+setf A f1 "racecar"
+puts field A f1
+
+----
+
+
+
+will result in
+
+
+.setf1.ur output
+[source]
+----
+racecar
+----
+
+
+Note also that the symbols `$` is always available and points to the object that contains the local variables.
+Similarly, the `pass:[$$]` symbol is also available except the top scope, and it points to the object that contains the local variables of the one level above.
+You can also reach `pass:[$$]` as a field via `pass:[$$]` traversing the call hierarchy.
+
+The next example sets the local variable `A` and after that it modifies it as a field of `$`.
+
+
+
+.setf2.ur source
+[source]
+----
+  { set A "Victor Noir"
+  setf $ A  "Yvan Salmon"
+  puts A }
+
+----
+
+
+
+will result in
+
+
+.setf2.ur output
+[source]
+----
+Yvan Salmon
+----
+
+
+The next example uses the `pass:[$$]` to set a field in the object that contains the local variables of the caller.
+
+
+.setf3.ur source
+[source]
+----
+  { set A "Victor Noir\n"
+     { set A  "Yvan Salmon\n"
+       { set A "Bonaparte\n"
+         setf $$ A "Napoleon\n"
+         setf field $$ $$ A "Josephine\n"
+         puts A
+       }
+       puts A
+     }
+  puts A
+  }
+
+----
+
+
+
+will result in
+
+
+.setf3.ur output
+[source]
+----
+Bonaparte
+Napoleon
+Josephine
+
+----
+
+
+The last example shows that you can assign a function to a field to act as a method.
+
+
+.setf4.ur source
+[source]
+----
+set A object{}
+setf A f1 ' { "racecar" }
+puts field A f1
+puts "\n"
+puts call A f1
+
+----
+
+
+
+will result in
+
+
+.setf4.ur output
+[source]
+----
+{"racecar"}
+racecar
+----
+
+
 === setg
 Set a global variable in the context.
 The first argument is the name of the variable, and the second argument is the value.
@@ -1467,11 +1614,6 @@ The command converts the argument to string.
 A string value.
 If a string literal is present in the code, the lexical analyzers will create a string constant from it.
 The string constant is a constant that holds a string value.
-
-=== sub
-Subtract two values.
-The command subtracts the second and optionally the further values from the first and returns the result.
-
 
 === substring
 Get the substring of the string.

@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Objects;
 /**
- * command_ne
- * {%COMMAND ne%}
+ * command_binop_ne
+ * {%COMMAND binop: ne%}
  * Compare two values for not equal.
  * The command compares two values and returns true if the first is not equal to the second, and optionally the further arguments.
  * <p>

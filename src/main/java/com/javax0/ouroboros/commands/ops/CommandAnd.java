@@ -3,7 +3,7 @@ package com.javax0.ouroboros.commands.ops;
 import com.javax0.ouroboros.Interpreter;
 
 /**
- * command_logical_and
+ * command_binop_and
  * {%COMMAND binop: and%}
  * <p>
  * Logical and operation.

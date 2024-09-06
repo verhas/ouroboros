@@ -18,6 +18,6 @@ public class DoubleConstant extends Constant<Double> implements NumericConstant 
 
     @Override
     public String toString() {
-        return value.get() + "L";
+        return value.get()+"";
     }
 }

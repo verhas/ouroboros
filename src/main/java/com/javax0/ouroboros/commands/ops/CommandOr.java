@@ -3,8 +3,8 @@ package com.javax0.ouroboros.commands.ops;
 import com.javax0.ouroboros.Interpreter;
 
 /**
- * command_or
- * {%COMMAND or%}
+ * command_binopn_or
+ * {%COMMAND binop: or%}
  * Logical OR.
  * The command calculates the logical OR of the two boolean values.
  * The evaluation is NOT short-circuiting.

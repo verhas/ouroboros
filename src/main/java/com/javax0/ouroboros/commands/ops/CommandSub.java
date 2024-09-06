@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.regex.Pattern;
 /**
- * command_sub
- * {%COMMAND sub%}
+ * command_binop_sub
+ * {%COMMAND binop: sub%}
  * Subtract two values.
  * The command subtracts the second and optionally the further values from the first and returns the result.
  * <p>

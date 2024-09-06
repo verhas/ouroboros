@@ -7,8 +7,8 @@ import java.math.BigInteger;
 import java.util.Objects;
 
 /**
- * command_eq
- * {%COMMAND eq%}
+ * command_binop_eq
+ * {%COMMAND binop: eq%}
  * Compare two values.
  * The command compares two values and returns true if they are equal.
  * <p>

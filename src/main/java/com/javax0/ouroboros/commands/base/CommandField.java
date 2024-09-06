@@ -2,7 +2,7 @@ package com.javax0.ouroboros.commands.base;
 
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.AbstractCommand;
-import com.javax0.ouroboros.interpreter.ObjectValue;
+import com.javax0.ouroboros.ObjectValue;
 import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.Optional;

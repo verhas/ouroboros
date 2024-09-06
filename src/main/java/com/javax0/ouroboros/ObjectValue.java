@@ -1,6 +1,4 @@
-package com.javax0.ouroboros.interpreter;
-
-import com.javax0.ouroboros.Value;
+package com.javax0.ouroboros;
 
 import java.util.ArrayList;
 import java.util.HashMap;

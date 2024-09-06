@@ -32,6 +32,20 @@ public class SimpleExecutor implements Interpreter {
     @Override
     public Source source() {
         purgeStack();
+
+        final var store = new ArrayList<Interpreter.State>();
+        Interpreter.State state;
+        while (bottomSource() == null && (state = up()) != null) {
+            store.add(state);
+        }
+        try {
+            return bottomSource();
+        } finally {
+            store.reversed().forEach(this::down);
+        }
+    }
+
+    private Source bottomSource() {
         return Optional.of(stack)
                 .filter(it -> !it.isEmpty())
                 .map(List::getLast)
@@ -93,7 +107,7 @@ public class SimpleExecutor implements Interpreter {
 
     @Override
     public void down(Interpreter.State state) {
-        if( state instanceof SimpleState simpleState ){
+        if (state instanceof SimpleState simpleState) {
             stack.add(simpleState.blocks);
             context.down(simpleState.variables);
         } else {
@@ -104,7 +118,7 @@ public class SimpleExecutor implements Interpreter {
     @Override
     public Interpreter.State up() {
         if (stack.isEmpty()) {
-            throw new IllegalStateException("Stack underflow");
+            return null;
         }
         return new SimpleState(stack.removeLast(), context.up());
     }
@@ -117,7 +131,7 @@ public class SimpleExecutor implements Interpreter {
         }
         if (block instanceof Command<?> command) {
             command.set(this);
-            return  (Value<T>) command.execute(context);
+            return (Value<T>) command.execute(context);
         } else {
             throw new IllegalArgumentException("Block is not a command: " + block);
         }
@@ -128,7 +142,6 @@ public class SimpleExecutor implements Interpreter {
         final var source = new Source(this, input);
         push(source);
         source.set(this);
-        final var fetch = getFetcher();
         Block result;
         while ((result = pop()) != null) {
             evaluate(context, result);

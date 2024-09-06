@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 /**
  * command_lexer_numeric
- * {%COMMAND lexer: numeric%}
+ * {%COMMAND lexer: $number%}
  * <p>
  * Fetches a numeric constant from the input.
  * It can be decimal or hexadecimal, integer or double.

@@ -8,7 +8,7 @@ import com.javax0.ouroboros.commands.constant.StringConstant;
 
 /**
  * command_lexer_string
- * {%COMMAND lexer: string%}
+ * {%COMMAND lexer: $string%}
  * <p>
  * Fetches a string constant from the input.
  * It can be a simple string or a multi-line string.

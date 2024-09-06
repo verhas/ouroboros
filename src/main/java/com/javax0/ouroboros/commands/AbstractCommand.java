@@ -52,6 +52,12 @@ public abstract class AbstractCommand<T> implements Command<T> {
                 .map(converter);
     }
 
+    protected <Q> Optional<Q> nextArgument(Context context, Block pop, Function<Object, Q> converter) {
+        return Optional.ofNullable(interpreter.evaluate(context, pop))
+                .map(Value::get)
+                .map(converter);
+    }
+
     protected <Q> Optional<Q> nextArgument(Context context) {
         final var object = interpreter.pop();
         if (object instanceof Command<?>) {
@@ -74,8 +80,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
             case String s -> !s.isEmpty() && !"0".equals(s) && !"false".equalsIgnoreCase(s);
             case Boolean b -> b;
             case null -> false;
-            default ->
-                    throw new IllegalArgumentException("Cannot convert " + value + "/" + value.getClass() + " to a boolean");
+            default -> true;
         };
     }
 

@@ -461,6 +461,12 @@ public class TestSimpleExecutor {
         assertOutput("puts substring 1 5 \"abraka dabra\"", "brak");
     }
 
+    @DisplayName("substring with '*'")
+    @Test
+    void testsubstring2() throws Exception {
+        assertOutput("puts substring 1 * \"abraka dabra\"", "braka dabra");
+    }
+
     @DisplayName("lc")
     @Test
     void testlc() throws Exception {
@@ -599,15 +605,47 @@ public class TestSimpleExecutor {
     @DisplayName("test complex object execution")
     @Test
     void test() throws Exception {
-        assertOutput("set A object {}\n" +
-                "set B object {}\n" +
-                "setf B f \"tacocat\"\n" +
-                "setf A b B\n" +
-                "set C object A\n" +
-                "setf field C b f \"gulash\"\n" +
-                "puts field* A b f", "gulash");
+        assertOutput("""
+                set A object {}
+                set B object {}
+                setf B f "tacocat"
+                setf A b B
+                set C object A
+                setf field C b f "gulash"
+                puts field* A b f""", "gulash");
     }
 
+    @DisplayName("test complex object execution")
+    @Test
+    void blockExecution() throws Exception {
+        assertOutput("""
+                { set A "Victor Noir"
+                  setf $ A  "Yvan Salmon"
+                  puts A }""", "Yvan Salmon");
+    }
+
+
+    @DisplayName("fetch token from source")
+    @Test
+    void fetchFromSource() throws Exception {
+        assertOutput("""
+                set fetch '{
+                  while { $space } {}
+                  if { setf $$ value string $keyword }{ value }{
+                  if { setf $$ value string $string }{ value }{
+                  if { setf $$ value string $number }{ value }{
+                  if { setf $$ value string $symbol }{ value }{
+                  if { setf $$ value string $block }{ value }{
+                  if { setf $$ value string $blockClose }{ value }{"baj"
+                  }}}}}}
+                }
+                {
+                puts fetch
+                }
+                puts "a"
+                
+                """, "puts");
+    }
 }
 
 

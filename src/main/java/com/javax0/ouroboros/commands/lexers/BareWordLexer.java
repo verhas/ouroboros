@@ -29,10 +29,11 @@ import com.javax0.ouroboros.commands.base.BareWord;
 
 /**
  * command_lexer_bare_word
- * {%COMMAND lexer: bare word%}
+ * {%COMMAND lexer: $keyword%}
  * <p>
- * Get the next word from the source that is formally a valid Java identifier.
+ * Get the next word from the source that is formally a valid identifier.
  * It will be a bare word that may represent a command or a value based on the context.
+ * Return `null` if the next token is not a valid identifier.
  * <p>
  * end
  *

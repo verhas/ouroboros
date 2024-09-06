@@ -1,7 +1,5 @@
 package com.javax0.ouroboros;
 
-import com.javax0.ouroboros.interpreter.ObjectValue;
-
 import java.util.List;
 
 /**

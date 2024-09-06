@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.interpreter;
 
 import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.ObjectValue;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 
@@ -62,17 +63,20 @@ class ExecutorContext implements Context {
         variables.fields().put(name, value);
     }
 
-    ObjectValue up() {
+    @Override
+    public ObjectValue up() {
         return stack.removeLast();
     }
 
-    ObjectValue down() {
+    @Override
+    public ObjectValue down() {
         final var variables = stack.getLast();
         stack.add(new ObjectValue.Implementation());
         return variables;
     }
 
-    void down(ObjectValue variables) {
+    @Override
+    public void down(ObjectValue variables) {
         stack.add(variables);
     }
 
@@ -80,7 +84,7 @@ class ExecutorContext implements Context {
     public String toString() {
         final var sb = new StringBuilder();
         sb.append("[\n");
-        for( var variables : stack ){
+        for (var variables : stack) {
             sb.append(variables).append("\n");
         }
         sb.append("]\n");

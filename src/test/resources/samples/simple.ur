@@ -92,7 +92,7 @@ end snippet
 snippet lexNewLine.ur
 call $lex insert 0 '{
 if { eq charAt 0 source "\n"}
-   {sets add "{}" substring 1 length source source}}
+   {sets substring 1 length source source '{}}}
 set q add* 3 2
 1 {} puts q
 end snippet
@@ -327,3 +327,47 @@ This time it sets this variable as the field of the object `$$`.
 This variable is only available in side blocks and they represent the object that has all the variables on the enclosing level as fields.
 """
 end snippet
+--------------------------------
+snippet binop.ur
+"simple binary operation adding 2 and 2:"
+puts add 2 2
+"multiple addition till there is a closing {}:"
+puts add* 2 2 2 2 {}
+"multiple addition till there are no more tokens to fetch on the given level to add:"
+puts {add* 2 2 2 2}
+end snippet
+--------------------------------
+snippet setf1.ur
+set A object{}
+setf A f1 "racecar"
+puts field A f1
+end snippet
+--------------------------------
+snippet setf2.ur
+  { set A "Victor Noir"
+  setf $ A  "Yvan Salmon"
+  puts A }
+end snippet
+--------------------------------
+snippet setf3.ur
+  { set A "Victor Noir\n"
+     { set A  "Yvan Salmon\n"
+       { set A "Bonaparte\n"
+         setf $$ A "Napoleon\n"
+         setf field $$ $$ A "Josephine\n"
+         puts A
+       }
+       puts A
+     }
+  puts A
+  }
+end snippet
+--------------------------------
+snippet setf4.ur
+set A object{}
+setf A f1 ' { "racecar" }
+puts field A f1
+puts "\n"
+puts call A f1
+end snippet
+--------------------------------

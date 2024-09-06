@@ -8,7 +8,7 @@ import com.javax0.ouroboros.commands.base.BareWord;
 
 /**
  * command_lexer_space
- * {%COMMAND lexers: space%}
+ * {%COMMAND lexers: $space%}
  * <p>
  * Fetches one or more white space from the input.
  * It returns `null` so that the white spaces are simple token separators and no command is created from them.

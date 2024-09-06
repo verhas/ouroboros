@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * command_ge
- * {%COMMAND ge%}
+ * command_binop_ge
+ * {%COMMAND binop: ge%}
  * Compare two values for greater or equal.
  * The command compares two values and returns true if the first is greater or equal than the second, and optionally the further arguments.
  * <p>

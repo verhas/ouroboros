@@ -8,10 +8,10 @@ import com.javax0.ouroboros.commands.pseudo.CommandBlockClose;
 
 /**
  * command_lexer_block_close
- * {%COMMAND lexer: block close%}
+ * {%COMMAND lexer: $blockClose%}
  * <p>
  * A lexer that consumes the closing block character '}'.
- * It returns a CommandBlockClose command, which should and will never execute.
+ * It returns a CommandBlockClose command, which should and never will execute.
  * It is a technical placeholder.
  * <p>
  * end
