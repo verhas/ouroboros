@@ -42,6 +42,7 @@ public class CommandsRegistry implements ContextAgent {
 
         context.<Command<?>>set("length", new SimpleValue<>(new CommandLength(interpreter)));
         context.<Command<?>>set("charAt", new SimpleValue<>(new CommandCharAt(interpreter)));
+        context.<Command<?>>set("indexOf", new SimpleValue<>(new CommandIndexOf(interpreter)));
         context.<Command<?>>set("isBlank", new SimpleValue<>(new CommandIsBlank(interpreter)));
         context.<Command<?>>set("isEmpty", new SimpleValue<>(new CommandIsEmpty(interpreter)));
         context.<Command<?>>set("replace", new SimpleValue<>(new CommandReplace(interpreter)));

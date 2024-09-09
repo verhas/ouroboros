@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import static com.javax0.ouroboros.AssertUtils.output;
+import static com.javax0.ouroboros.AssertUtils.outputSafe;
 
 public class TestRunSamples {
     public static void deleteDirectory(Path path) throws IOException {
@@ -53,12 +53,7 @@ public class TestRunSamples {
                     final var end = source.indexOf(END_SNIPPET);
                     final var s = end == -1 ? source : source.substring(0, end);
                     source = end == -1 ? "" : source.substring(end + END_SNIPPET.length());
-                    String result = null;
-                    try {
-                        result = output(s);
-                    } catch (Exception e) {
-                        result = e.getMessage();
-                    }
+                    String result = outputSafe(s);
                     Files.writeString(outputDir.resolve(fn), result);
                 }
             } catch (Exception e) {

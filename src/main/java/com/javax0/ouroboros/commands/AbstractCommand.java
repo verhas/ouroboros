@@ -2,6 +2,7 @@ package com.javax0.ouroboros.commands;
 
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.base.BareWord;
+import com.javax0.ouroboros.commands.lexers.NumericLexer;
 import com.javax0.ouroboros.utils.SafeCast;
 
 import java.math.BigDecimal;
@@ -94,7 +95,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
             case Boolean b -> b ? 1L : 0L;
             case String s -> {
                 try {
-                    yield Long.parseLong(s);
+                    yield NumericLexer.parseLong(s);
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException("Cannot convert '" + value + "' to a long");
                 }
@@ -115,7 +116,7 @@ public abstract class AbstractCommand<T> implements Command<T> {
             case Boolean b -> b ? 1.0 : 0.0;
             case String s -> {
                 try {
-                    yield Double.parseDouble(s);
+                    yield NumericLexer.parseDouble(s);
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException("Cannot convert '" + value + "' to a double");
                 }

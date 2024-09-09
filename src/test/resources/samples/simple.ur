@@ -378,6 +378,7 @@ switch
 {eq a 2} {puts 2}
 {eq a 1} {puts 3}
 {}
+end snippet
 --------------------------------
 snippet switch2.ur
 set a 1
@@ -386,4 +387,5 @@ set a 1
  {eq a 2} {puts 2}
  {eq a 1} {puts 3}
 }
+end snippet
 --------------------------------

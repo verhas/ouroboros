@@ -14,4 +14,10 @@ public class CommandBlockClose implements Command<Void> {
     public Value<Void> execute(Context context) {
         throw new IllegalArgumentException("CommandBlockClose does not implement execute(...)");
     }
+
+
+    @Override
+    public String toString() {
+        return "}";
+    }
 }

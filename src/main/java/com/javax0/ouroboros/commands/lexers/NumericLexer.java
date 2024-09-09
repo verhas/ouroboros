@@ -32,7 +32,15 @@ public class NumericLexer extends AbstractCommand<NumericConstant> {
             ,
     };
 
-    // TODO: implement sign and float and hex and so on
+
+    public static Long parseLong(String s) {
+        return Long.parseLong(s.replaceAll("[Ll]$", ""));
+    }
+
+    public static Double parseDouble(String s) {
+        return Double.parseDouble(s.replaceAll("[fFdD]$", ""));
+    }
+
     @Override
     public Value<NumericConstant> execute(Context context) {
         final var source = interpreter.source();
@@ -65,7 +73,7 @@ public class NumericLexer extends AbstractCommand<NumericConstant> {
         sb.delete(0, maxLength);
         source.update(sb.toString());
         return index > 1 ? new SimpleValue<>(new DoubleConstant(Double.parseDouble(literals[index])))
-                : new SimpleValue<>(new LongConstant(Long.parseLong(literals[index])));
+                : new SimpleValue<>(new LongConstant(NumericLexer.parseLong(literals[index])));
     }
 }
 

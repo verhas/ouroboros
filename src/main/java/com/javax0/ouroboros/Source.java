@@ -5,7 +5,7 @@ import com.javax0.ouroboros.commands.constant.Constant;
 public class Source extends Constant<String> {
     public Source(final Interpreter interpreter, final String value) {
         set(interpreter);
-        this.value = new MutableValue<>(value);
+        this.value = new SimpleValue<>(value);
     }
 
     @Override
@@ -20,6 +20,7 @@ public class Source extends Constant<String> {
 
 
     public void update(final String value) {
-        ((MutableValue<String>)this.value).set(value);
+        ((SimpleValue<String>)this.value).set(value);
     }
+
 }

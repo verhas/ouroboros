@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.commands.ops;
 
 import com.javax0.ouroboros.Interpreter;
+import com.javax0.ouroboros.commands.lexers.NumericLexer;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -43,7 +44,7 @@ public class CommandMul<T> extends AbstractCommandBinop<T> {
     @Override
     T binop(String left, String right) {
         try {
-            final var factor = Long.parseLong(right);
+            final var factor = NumericLexer.parseLong(right);
             return (T) (left.repeat(Math.toIntExact(factor)));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Cannot multiply '" + left + "' by '" + right + "'");

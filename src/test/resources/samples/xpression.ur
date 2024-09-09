@@ -3,31 +3,34 @@ Expression is:
 
 expression ::=
   'not' expression |
-  expression1 'and' expression |
   expression1 'or' expression |
   expression1 ;
 
 expression1 ::=
-  expression2 '==' expression1 |
-  expression2 '!=' expression1 |
-  expression2 '<' expression1  |
-  expression2 '<=' expression1 |
-  expression2 '>' expression1  |
-  expression2 '>=' expression1 |
+  expression2 'and' expression |
   expression2 ;
 
 expression2 ::=
-  expression3 '+' expression2 |
-  expression3 '-' expression2 |
+  expression3 '==' expression2 |
+  expression3 '!=' expression2 |
+  expression3 '<'  expression2 |
+  expression3 '<=' expression2 |
+  expression3 '>'  expression2 |
+  expression3 '>=' expression2 |
   expression3 ;
 
 expression3 ::=
-  expression4 '*' expression3 |
-  expression4 '/' expression3 |
-  expression4 '%' expression3 |
+  expression4 '+' expression3 |
+  expression4 '-' expression3 |
   expression4 ;
 
 expression4 ::=
+  expression5 '*' expression4 |
+  expression5 '/' expression4 |
+  expression5 '%' expression4 |
+  expression5 ;
+
+expression5 ::=
   ( expression )   |
   constant         |
   variable         |
@@ -42,43 +45,157 @@ needs to restore.
 """
 set fetch '{
   while { $space } {}
-  set src source
-  if { setf $$ value string $keyword    }{ setg $source src setg $nextToken value }{
-  if { setf $$ value string $string     }{ setg $source src setg $nextToken value }{
-  if { setf $$ value string $number     }{ setg $source src setg $nextToken value }{
-  if { setf $$ value string $symbol     }{ setg $source src setg $nextToken value }{
-  if { setf $$ value string $block      }{ setg $source src setg $nextToken value }{
-  if { setf $$ value string $blockClose }{ setg $source src setg $nextToken value }{
-  }}}}}}
+  set src string source
+  switch
+  { setf $$ value string $keyword    }{ setg $source src setg $nextToken value }
+  { setf $$ value string $string     }{ setg $source src setg $nextToken value }
+  { setf $$ value string $number     }{ setg $source src setg $nextToken value }
+  { setf $$ value string eSymbol     }{ setg $source src setg $nextToken value }
+  { setf $$ value string $symbol     }{ setg $source src setg $nextToken value }
+  { setf $$ value string $block      }{ setg $source src setg $nextToken value }
+  { setf $$ value string $blockClose }{ setg $source src setg $nextToken value }
+  {}
 }
+
+set eSymbol '{
+  if { ne -1 indexOf charAt 0 source "(+-*/%)" }
+     {
+       set returnValue charAt 0 source
+       sets substring 1 * source
+       returnValue
+     }
+     {}
+}
+
+set to_mnemonic '{
+  set operators list {"==" "!=" "<" "<=" ">" ">=" "+" "-" "*" "/" "%" "&&" "||" "!"}
+  set mnemonics list {"eq" "ne" "lt" "le" "gt" "ge" "add" "sub" "mul" "div" "mod" "and" "or" "not"}
+  set i 0
+  set m shift
+  while{ lt i call operators length } {
+    if { eq m  call operators get i }
+    { setf field $$ $$ m call mnemonics get i } {}
+    setf $$ i add i 1
+  }
+  m
+}
+
 """
 Analyze an expression. The first token is assumed to be prefetched and in the global variable $nextToken.
 The return value of the function is the value of the expression transformed to UR and the global variable $nextToken
 contains the first unprocessed token.
 """
 set expression '{
-   if { eq $nextToken "not" }
-      {
-        fetch
-        add "not " expression
+  if { eq $nextToken "not" }{
+    fetch
+    add "not " expression
+    }{
+    set left expression1
+    while { eq $nextToken "or" }{
+      set operator $nextToken
+      fetch
+      set right expression
+      setf $$ left add* {to_mnemonic operator} " " left " " right {}
       }
-      { set left expression1
-        switch
-        { eq $nextToken "and" }
-           {
-            set right expression
-            add* "and " left " " right {}
-           }
-        { eq $nextToken "or" }
-              {
-              set right expression
-              add* "or " left " " right {}
-              }
-        { true }
-              { left }
+    left
+    }
+  }
+
+set expression1 '{
+  set left expression2
+  while { eq $nextToken "and" }{
+    set operator $nextToken
+    fetch
+    set right expression2
+    setf $$ left add* {to_mnemonic operator} " " left " " right {}
+    }
+  left
+  }
+
+set expression2 '{
+  set left expression3
+  while { ne -1 indexOf $nextToken "== != < <= > >=" }{
+    set operator $nextToken
+    fetch
+    set right expression2
+    setf $$ left add* {to_mnemonic operator} " " left " " right {}
+    }
+  left
+  }
+
+set expression3 '{
+  set left expression4
+  { """Correct the lexical analysis, because at this point a '+' or a '-' can be a binary operator instead of
+       the sign of a number. If the first character is '+' or '-' then we have to undo the parsing of the number
+       using the saved $source state and use the first character as the token.
+    """
+    set firstChar charAt 0 $source
+    if{ ne -1 indexOf firstChar "+-" }{
+      """skip the first character as it will not be part of the rest,
+         even if it is a number and put back the already parsed
+         source w/o the + or -"""
+      sets substring 1 * $source
+      setg $nextToken firstChar
       }
+    }
+  while{ ne -1 indexOf $nextToken "+ -" }{
+    set operator $nextToken
+    fetch
+    set right expression4
+    setf $$ left add* {to_mnemonic operator} " " left " " right {}
+    }
+  left
+  }
+
+set expression4 '{
+  set left expression5
+  while{ ne -1 indexOf $nextToken "* / %" }{
+    set operator $nextToken
+    fetch
+    set right expression5
+    setf $$ left  add* {to_mnemonic operator} " " left " " right {}
+    }
+  left
+  }
+
+set expression5 '{
+  switch
+    { eq $nextToken "(" }{
+      fetch
+      set left expression
+      if { ne $nextToken ")" }
+         { error add "Expected ')' instead of " $nextToken }
+         { fetch left }
+      }
+   { eq $nextToken "+" }{
+     fetch
+     expression4
+     }
+   { eq $nextToken "-" }{
+     fetch
+     add "0 -" expression5
+     }
+   { true }{
+     set left $nextToken
+     fetch left
+     }
+   {}
 }
 
+call $lex insert 0 '{
+  if { eq charAt 0 source "("}
+     {
+       fetch "get over the opening parenthesis"
+       fetch "get the first token of the expression"
+       set result expression
+       if { ne $nextToken ")" }
+          { error add "Expected ')' instead of " $nextToken }
+          {}
+       sets add result source
+       {}
+     }
+}
 
+puts ((6+2)*3 % 7)
 end snippet
 --------------------------------

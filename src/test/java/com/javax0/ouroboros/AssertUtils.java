@@ -18,6 +18,35 @@ class AssertUtils {
         }
     }
 
+    public static String getFullExceptionInfo(Throwable e) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(e.toString()).append("\n");
+
+        for (StackTraceElement element : e.getStackTrace()) {
+            sb.append("\tat ").append(element.toString()).append("\n");
+        }
+
+        Throwable cause = e.getCause();
+        if (cause != null) {
+            sb.append("Caused by: ");
+            sb.append(getFullExceptionInfo(cause));
+        }
+
+        return sb.toString();
+    }
+
+    static String outputSafe(final String program) {
+        final var executor = new SimpleExecutor();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (final var out = new PrintStream(baos)) {
+            executor.setOutput(out);
+            executor.execute(program);
+            return baos.toString(StandardCharsets.UTF_8);
+        } catch (final Exception e) {
+            return baos.toString(StandardCharsets.UTF_8) + "\n" + getFullExceptionInfo(e);
+        }
+    }
+
     static void assertOutput(final String program, final String expected) throws Exception {
         Assertions.assertEquals(expected, output(program));
     }

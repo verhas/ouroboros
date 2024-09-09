@@ -45,5 +45,4 @@ public class CommandEq extends AbstractCommandBinop<Boolean> {
         return Objects.equals(left,right);
     }
 
-
 }

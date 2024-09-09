@@ -459,6 +459,12 @@ public class TestSimpleExecutor {
     @Test
     void testsubstring() throws Exception {
         assertOutput("puts substring 1 5 \"abraka dabra\"", "brak");
+    }    @DisplayName("substring")
+    @Test
+    void testStringIndexOf() throws Exception {
+        assertOutput("""
+                                puts indexOf "gigi" "hihi haha gigi gaga bakkara"
+    """, "10");
     }
 
     @DisplayName("substring with '*'")
@@ -631,20 +637,31 @@ public class TestSimpleExecutor {
         assertOutput("""
                 set fetch '{
                   while { $space } {}
-                  if { setf $$ value string $keyword }{ value }{
-                  if { setf $$ value string $string }{ value }{
-                  if { setf $$ value string $number }{ value }{
-                  if { setf $$ value string $symbol }{ value }{
-                  if { setf $$ value string $block }{ value }{
-                  if { setf $$ value string $blockClose }{ value }{"baj"
-                  }}}}}}
+                  switch
+                  { setf $$ value string $keyword }{ value }
+                  { setf $$ value string $string }{ value }
+                  { setf $$ value string $number }{ value }
+                  { setf $$ value string $symbol }{ value }
+                  { setf $$ value string $block }{ value }
+                  { setf $$ value string $blockClose }{ value }
+                  {}
                 }
                 {
                 puts fetch
+                puts " "
+                puts fetch
+                puts " "
+                puts fetch
+                puts " "
+                puts fetch
+                puts " "
+                puts fetch
+                puts " "
+                puts fetch
                 }
-                puts "a"
+                puts "a" 123 { 1 2 3 } [[ }
                 
-                """, "puts");
+                """, "puts \"\"\"a\"\"\" 123L {1L 2L 3L} [[ }");
     }
     @DisplayName("switch case")
     @Test
@@ -668,6 +685,46 @@ public class TestSimpleExecutor {
                 {eq a 1} {puts 3}
                 {}""", "1");
     }
+
+    @DisplayName("test operator metch   ")
+    @Test
+    void testMatch() throws Exception {
+        assertOutput("""
+                      set operator_mnemonic '{
+                        set operators list {"==" "!=" "<" "<=" ">" ">=" "+" "-" "*" "/" "%"}
+                        set mnemonics list {"eq" "ne" "lt" "le" "gt" "ge" "add" "sub" "mul" "div" "mod"}
+                        set i 0
+                        set m shift
+                        while{ lt i call operators length } {
+                          if { eq m  call operators get i }
+                          { setf field $$ $$ m call mnemonics get i } {}
+                          setf $$ i add i 1
+                        }
+                        m
+                      }
+                      puts operator_mnemonic "=="
+                      puts " "
+                        puts operator_mnemonic "!="
+                        puts " "
+                        puts operator_mnemonic "<"
+                        puts " "
+                        puts operator_mnemonic "<="
+                        puts " "
+                        puts operator_mnemonic ">"
+                        puts " "
+                        puts operator_mnemonic ">="
+                        puts " "
+                        puts operator_mnemonic "+"
+                        puts " "
+                        puts operator_mnemonic "-"
+                        puts " "
+                        puts operator_mnemonic "*"
+                        puts " "
+                        puts operator_mnemonic "/"
+                        puts " "
+                        puts operator_mnemonic "%" """, "eq ne lt le gt ge add sub mul div mod");
+    }
+    
 }
 
 
