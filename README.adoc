@@ -718,6 +718,11 @@ A number that conforms to the Java double type.
 If a floating number literal is present in the code, the lexical analyzers will create a double constant from it.
 The double constant is a constant that holds a double value.
 
+=== error
+Stop the execution with an error.
+The argument of the command is the error message.
+
+
 === eval
 Evaluate the argument string as program code using the current syntax setup.
 Note that the lexical analysers can be modified during the code execution.
@@ -746,12 +751,7 @@ will result in
 .eval.ur output
 [source]
 ----
-{
-    puts "Hello, "
-    puts "World!"
-  }
-  "will print out"
-Hello, World!
+Cannot lex the block: 
 ----
 
 
@@ -952,13 +952,14 @@ Typically, the space lexer returns a null value when it reads a space character.
 When this happens, the lexical analysis starts over with the first lexer.
 
 
-=== lexer: bare word
+=== lexer: $keyword
 
-Get the next word from the source that is formally a valid Java identifier.
+Get the next word from the source that is formally a valid identifier.
 It will be a bare word that may represent a command or a value based on the context.
+Return `null` if the next token is not a valid identifier.
 
 
-=== lexer: block
+=== lexer: $block
 
 A lexer that consumes a block of commands.
 
@@ -967,32 +968,32 @@ When the parser finds the opening `{` character it starts to read the commands w
 That way blocks can be nested.
 
 
-=== lexer: block close
+=== lexer: $blockClose
 
 A lexer that consumes the closing block character '}'.
-It returns a CommandBlockClose command, which should and will never execute.
+It returns a CommandBlockClose command, which should and never will execute.
 It is a technical placeholder.
 
 
-=== lexer: numeric
+=== lexer: $number
 
 Fetches a numeric constant from the input.
 It can be decimal or hexadecimal, integer or double.
 Also note that the lexer handles the Java hexadecimal floating point, because why not.
 
-=== lexers: space
+=== lexers: $space
 
 Fetches one or more white space from the input.
 It returns `null` so that the white spaces are simple token separators and no command is created from them.
 
-=== lexer: string
+=== lexer: $string
 
 Fetches a string constant from the input.
 It can be a simple string or a multi-line string.
 
 Multi-line strings start with three `"` characters and they so not need escaping for single `"` quotes
 
-=== lexers: symbol
+=== lexers: $symbol
 
 Fetches one or more symbol characters from the input.
 It returns a BareWord that is a symbol.
@@ -1585,7 +1586,7 @@ will result in
 .setf4.ur output
 [source]
 ----
-{"racecar"}
+{"""racecar"""}
 racecar
 ----
 
@@ -1604,6 +1605,7 @@ Get the argument following the block with evaluation.
 
 
 === source
+
 Get the remaining source that was not processed yet.
 
 === string
@@ -1621,6 +1623,42 @@ The command returns the substring of the string.
 
 The first argument is the start index, the second argument is the end index.
 The third argument is the string.
+
+If the second argument is `*` then the substring is taken from the start index to the end of the string.
+
+=== switch
+
+The switch command must have an even number of parameters till an `{}` or end of the tokens.
+The switch command must be followed by an even number of blocks.
+The first, the third and every odd block is evaluated as a condition until one is found `true`.
+When a condition is true the even block following the condition is evaluated and the result is returned.
+The rest of the conditions and all subsequent blocks are ignored.
+
+ * Example:
+
+
+.switch.ur source
+[source]
+----
+set A object{}
+setf A f1 ' { "racecar" }
+puts field A f1
+puts "\n"
+puts call A f1
+
+----
+
+
+
+will result in
+
+
+.switch.ur output
+[source]
+----
+{"""racecar"""}
+racecar
+----
 
 
 === tolower
@@ -1660,7 +1698,7 @@ To avoid this, the following program alters the syntax analysis process to treat
 ----
 call $lex insert 0 '{
 if { eq charAt 0 source "\n"}
-   {sets add "{}" substring 1 length source source}}
+   {sets substring 1 length source source '{}}}
 set q add* 3 2
 1 {} puts q
 

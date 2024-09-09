@@ -3,6 +3,7 @@ package com.javax0.ouroboros.commands.base;
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +33,11 @@ public class CommandBlock<T> extends AbstractCommand<T> {
 
     public Block getBlock() {
         return block;
+    }
+
+    @Override
+    public List<Block> subBlocks() {
+        return block.subBlocks();
     }
 
     public CommandBlock(Interpreter interpreter, Block block) {

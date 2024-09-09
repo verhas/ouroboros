@@ -646,6 +646,28 @@ public class TestSimpleExecutor {
                 
                 """, "puts");
     }
+    @DisplayName("switch case")
+    @Test
+    void testSwitch() throws Exception {
+        assertOutput("""
+                set a 1
+                {switch
+                {eq a 1} {puts 1}
+                {eq a 2} {puts 2}
+                {eq a 1} {puts 3}
+                }""", "1");
+    }
+    @DisplayName("switch case null close")
+    @Test
+    void testSwitch2() throws Exception {
+        assertOutput("""
+                set a 1
+                switch
+                {eq a 1} {puts 1}
+                {eq a 2} {puts 2}
+                {eq a 1} {puts 3}
+                {}""", "1");
+    }
 }
 
 

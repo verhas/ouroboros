@@ -3,6 +3,7 @@ package com.javax0.ouroboros.registries;
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.base.*;
 import com.javax0.ouroboros.commands.control.CommandIf;
+import com.javax0.ouroboros.commands.control.CommandSwitch;
 import com.javax0.ouroboros.commands.control.CommandWhile;
 import com.javax0.ouroboros.commands.list.CommandList;
 import com.javax0.ouroboros.commands.ops.*;
@@ -26,6 +27,7 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("and", new SimpleValue<>(new CommandAnd(interpreter)));
         context.<Command<?>>set("or", new SimpleValue<>(new CommandOr(interpreter)));
         context.<Command<?>>set("if", new SimpleValue<>(new CommandIf<>(interpreter)));
+        context.<Command<?>>set("switch", new SimpleValue<>(new CommandSwitch<>(interpreter)));
         context.<Command<?>>set("while", new SimpleValue<>(new CommandWhile<>(interpreter)));
         context.<Command<?>>set("error", new SimpleValue<>(new CommandError(interpreter)));
 

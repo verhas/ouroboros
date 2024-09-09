@@ -2,7 +2,7 @@
 Expression is:
 
 expression ::=
-  'not' ( expression ) |
+  'not' expression |
   expression1 'and' expression |
   expression1 'or' expression |
   expression1 ;
@@ -35,57 +35,50 @@ expression4 ::=
   '-' expression4  ;
 
 snippet xpression.ur
+"""
+Fetch the next token and store it in the global variable '$nextToken'.
+It also stores the state of the source in the global variable $source as it was before the fetch in case the caller
+needs to restore.
+"""
 set fetch '{
   while { $space } {}
-  if { setf $$ value string $keyword }{ value }{
-  if { setf $$ value string $string }{ value }{
-  if { setf $$ value string $number }{ value }{
-  if { setf $$ value string $symbol }{ value }{
-  if { setf $$ value string $block }{ value }{
-  if { setf $$ value string $blockClose }{ value }{"baj"
+  set src source
+  if { setf $$ value string $keyword    }{ setg $source src setg $nextToken value }{
+  if { setf $$ value string $string     }{ setg $source src setg $nextToken value }{
+  if { setf $$ value string $number     }{ setg $source src setg $nextToken value }{
+  if { setf $$ value string $symbol     }{ setg $source src setg $nextToken value }{
+  if { setf $$ value string $block      }{ setg $source src setg $nextToken value }{
+  if { setf $$ value string $blockClose }{ setg $source src setg $nextToken value }{
   }}}}}}
 }
+"""
+Analyze an expression. The first token is assumed to be prefetched and in the global variable $nextToken.
+The return value of the function is the value of the expression transformed to UR and the global variable $nextToken
+contains the first unprocessed token.
+"""
 set expression '{
-   set token fetch
-   if { eq token "not" }
+   if { eq $nextToken "not" }
       {
-        if{ eq fetch "(" }
-          { set value add "not " expression
-            if { eq fetch ")" }
-               { value }
-               { error "Expected ) after not" }
-          }
-          {error "Expected ( after not" }
+        fetch
+        add "not " expression
       }
       { set left expression1
-        if { startsWith source "and" }
-          { sets substring 3 * source
-            while {startsWith source " "}
-              { sets substring 1 * source }
+        switch
+        { eq $nextToken "and" }
+           {
             set right expression
             add* "and " left " " right {}
-          }
-          { set left expression1
-            if { startsWith source "or" }
-              { sets substring 2 * source
-                while {startsWith source " "}
-                  { sets substring 1 * source }
-                set right expression
-                add "or " left right
+           }
+        { eq $nextToken "or" }
+              {
+              set right expression
+              add* "or " left " " right {}
               }
+        { true }
               { left }
-          }
       }
-
 }
 
 
-call $lex insert 0 '{
-  if { eq charAt 0 source "("}
-       {sets substring 1 * source}
-     }
-}
-set q add* 3 2
-1 {} puts q
 end snippet
 --------------------------------

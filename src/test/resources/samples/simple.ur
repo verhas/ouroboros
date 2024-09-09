@@ -371,3 +371,19 @@ puts "\n"
 puts call A f1
 end snippet
 --------------------------------
+snippet switch1.ur
+set a 1
+switch
+{eq a 1} {puts 1}
+{eq a 2} {puts 2}
+{eq a 1} {puts 3}
+{}
+--------------------------------
+snippet switch2.ur
+set a 1
+{switch
+ {eq a 1} {puts 1}
+ {eq a 2} {puts 2}
+ {eq a 1} {puts 3}
+}
+--------------------------------
