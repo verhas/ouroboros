@@ -724,6 +724,52 @@ public class TestSimpleExecutor {
                         puts " "
                         puts operator_mnemonic "%" """, "eq ne lt le gt ge add sub mul div mod");
     }
+
+    @DisplayName("test stack trace")
+    @Test
+    void testStackTrace()throws Exception{
+        assertOutput("""
+                set stack {}
+                set fun1 '{
+                  {{{
+                  setn stack $$ }}}
+                  set i 1
+                  while{ stack }{
+                    puts add* " " i ": " field? stack $it "\\n" {}
+                    setn stack field? stack $$
+                    setn i add i 1
+                  }
+                }
+                set fun2 '{
+                  fun1
+                }
+                {
+                    fun2
+                }
+                """, """
+                 1: {{setn stack $$}}
+                 2: {{{setn stack $$}}}
+                 3: {{{{setn stack $$}}} set i 3L while {stack} {puts add * ""\" ""\" i ""\": ""\" field ? stack $it ""\"
+                ""\" {} setn stack field ? stack $$ setn i add i 1L}}
+                 4: {fun1}
+                 5: {fun2}
+                 6: {fun2}
+                """);
+    }
+
+
+    @DisplayName("test eval bug")
+    @Test
+
+    void testEvalBug()throws Exception {
+        assertOutput("""
+                eval puts ""\"{
+                    puts "Hello, "
+                    puts "World!"
+                  }
+                  "will print out"
+                ""\"""", "");
+    }
     
 }
 

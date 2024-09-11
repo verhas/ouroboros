@@ -2,7 +2,6 @@ package com.javax0.ouroboros.commands.base;
 
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.AbstractCommand;
-import com.javax0.ouroboros.ObjectValue;
 import com.javax0.ouroboros.utils.SafeCast;
 
 import java.util.Optional;
@@ -29,10 +28,12 @@ public class CommandField<T> extends AbstractCommand<T> {
     @Override
     public Value<T> execute(Context context) {
         var objectArg = interpreter.pop();
+        final var isopt = isOpt(objectArg);
         final var vararg = isVararg(objectArg);
-        if (vararg) {
+        if (vararg ||isopt) {
             objectArg = interpreter.pop();
         }
+
 
         Object object = Optional.ofNullable(switch (objectArg) {
                     case Command<?> command ->
@@ -46,17 +47,21 @@ public class CommandField<T> extends AbstractCommand<T> {
         do {
             final String name = getName(context).orElse(null);
             if (name != null) {
-                object = Optional.of(object)
+                final var opobject = Optional.of(object)
                         .map(SafeCast.to(ObjectValue.class))
                         .map(o -> o.get(name))
-                        .map(Value::get)
-                        .orElseThrow(() -> new IllegalArgumentException("Field " + name + " is not found or not found or not an object"));
+                        .map(Value::get);
+                object = isopt ?
+                        opobject.orElse(null) :
+                        opobject.orElseThrow(() -> new IllegalArgumentException("Field " + name + " is not found or not found or not an object"));
+                done = object == null;
             } else {
                 done = true;
             }
         } while (vararg && !done);
         return switch (object) {
             case Value<?> value -> (Value<T>) value;
+            case null -> new SimpleValue<>(null);
             default -> new SimpleValue<>((T) object);
         };
     }

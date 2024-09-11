@@ -31,7 +31,6 @@ public class SimpleExecutor implements Interpreter {
 
     @Override
     public Source source() {
-        purgeStack();
 
         final var store = new ArrayList<Interpreter.State>();
         Interpreter.State state;
@@ -46,6 +45,8 @@ public class SimpleExecutor implements Interpreter {
     }
 
     private Source bottomSource() {
+        purgeStack();
+
         return Optional.of(stack)
                 .filter(it -> !it.isEmpty())
                 .map(List::getLast)
@@ -144,6 +145,7 @@ public class SimpleExecutor implements Interpreter {
         source.set(this);
         Block result;
         while ((result = pop()) != null) {
+            context.set("$it",new SimpleValue<>(result));
             evaluate(context, result);
         }
     }

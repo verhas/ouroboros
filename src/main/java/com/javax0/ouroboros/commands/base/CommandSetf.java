@@ -61,12 +61,13 @@ public class CommandSetf extends AbstractCommand<Object> {
 
     @Override
     public Value<Object> execute(Context context) {
-        final ObjectValue object = Optional.ofNullable(interpreter.pop())
+        final var arg = interpreter.pop();
+        final ObjectValue object = Optional.ofNullable(arg)
                 .map(SafeCast.to(Command.class))
                 .map(cmd -> interpreter.evaluate(context, cmd))
                 .map(Value::get)
                 .map(SafeCast.to(ObjectValue.class))
-                .orElseThrow(() -> new IllegalArgumentException("The first argument of 'setf' should be an object"));
+                .orElseThrow(() -> new IllegalArgumentException("The first argument of 'setf' should be an object and not '" + arg+"'"));
         final var nameArg = interpreter.pop();
         final String name = Optional.ofNullable(nameArg)
                 .map(SafeCast.to(Value.class))

@@ -204,11 +204,20 @@ When the call is executed, the interpreter will assign the objet to the variable
 
 When you execute a block, the value of the block is the value of the last command in the block.
 Every block has a local scope, and when you define a variable in a block, it is only available in this block.
-There are two special variables that are always available inside a block: `$` and `pass:[$$]`.
-`$` is an object representing the current block.
-`pass:[$$]` is the surrounding block.
+There are three special variables that are always available inside a block: `$`, `pass:[$$]`, and `$it`.
+
+* `$` is an object representing the current block.
+
+* `pass:[$$]` is the surrounding block.
 The fields of these objects are the variables of the block.
 
+* `$it` is the block itself.
+Note that this variable is also available for the parent block via the `$$` variable as a field.
+The following example shows a simple stack trace implementation:
++
+{%sample/stackTrace%}
++
+{%output%}
 == Commands
 {%@define EXAMPLE(X)= * Example:
 

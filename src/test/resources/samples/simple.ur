@@ -328,6 +328,30 @@ This variable is only available in side blocks and they represent the object tha
 """
 end snippet
 --------------------------------
+snippet setn1.ur
+set A "Hello, "
+puts {
+    puts A
+    setn A "Gruetzi, "
+    set A "World!"
+    setn A "Welt!"
+}
+puts A
+end snippet
+--------------------------------
+snippet setn1_explanation.ur
+puts """
+The program sets the global variable `A` to `"Hello, "`.
+Then it prints the value of `A` and sets `A` to `"Gruetzi, "`.
+This time it sets the global variable `A` to `"Gruetzi, "` calling the `setn` command.
+The next command creates a local variable `A` and sets it to `"World!"`.
+The following `setn` command sets this local variable `A` to `"Welt!"`.
+Since it is returned and it is the last value in the block it is printed.
+
+After the block, the global variable `A` is still `"Gruetzi, "`.
+"""
+end snippet
+--------------------------------
 snippet binop.ur
 "simple binary operation adding 2 and 2:"
 puts add 2 2
@@ -387,5 +411,23 @@ set a 1
  {eq a 2} {puts 2}
  {eq a 1} {puts 3}
 }
+end snippet
+--------------------------------
+snippet stackTrace.ur
+set stack {}
+set stackTrace '{
+  setn stack field? $$ $$ "whoever was calling this function"
+  set i 1 "only to count the stack frames"
+  while{ stack }{
+    puts add* " " i ": " field? stack $it "\n" {}
+    setn stack field? stack $$
+    setn i add i 1
+  }
+}
+set fun4 '{ stackTrace }
+set fun3 '{       fun4 }
+set fun2 '{       fun3 }
+set fun1 '{       fun2 }
+fun1
 end snippet
 --------------------------------

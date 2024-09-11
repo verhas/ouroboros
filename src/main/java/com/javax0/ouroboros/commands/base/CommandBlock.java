@@ -53,6 +53,7 @@ public class CommandBlock<T> extends AbstractCommand<T> {
             context.set("$", new SimpleValue<>(context.bottom()));
             Value<T> result = null;
             interpreter.pushAll(block.subBlocks().reversed());
+            context.set("$it", new SimpleValue<>(block));
             Block block;
             while ((block = interpreter.pop()) != null) {
                 result = interpreter.evaluate(context, block);

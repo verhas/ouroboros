@@ -21,7 +21,10 @@ public abstract class AbstractCommand<T> implements Command<T> {
     }
 
     protected boolean isVararg(Block block) {
-        return block instanceof BareWord<?> bw && "*".equals(bw.get());
+        return block instanceof BareWord<?> bw && bw.get() != null && bw.get().contains("*");
+    }
+    protected boolean isOpt(Block block) {
+        return block instanceof BareWord<?> bw && bw.get() != null && bw.get().contains("?");
     }
 
     protected Optional<String> getName(Context context) {

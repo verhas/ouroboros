@@ -33,6 +33,7 @@ public class CommandsRegistry implements ContextAgent {
 
         context.<Command<?>>set("set", new SimpleValue<>(new CommandSet(interpreter)));
         context.<Command<?>>set("setg", new SimpleValue<>(new CommandSetg(interpreter)));
+        context.<Command<?>>set("setn", new SimpleValue<>(new CommandSetn(interpreter)));
         context.<Command<?>>set("setf", new SimpleValue<>(new CommandSetf(interpreter)));
         context.<Command<?>>set("sets", new SimpleValue<>(new CommandSets(interpreter)));
 

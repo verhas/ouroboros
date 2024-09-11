@@ -270,7 +270,8 @@ It will result in an exception:
 .unquoted.ur output
 [source]
 ----
-Variable a is not defined
+OUTPUT BEFORE ERROR: 
+ERROR: Variable a is not defined
 ----
 
 
@@ -340,10 +341,51 @@ When the call is executed, the interpreter will assign the objet to the variable
 
 When you execute a block, the value of the block is the value of the last command in the block.
 Every block has a local scope, and when you define a variable in a block, it is only available in this block.
-There are two special variables that are always available inside a block: `$` and `pass:[$$]`.
-`$` is an object representing the current block.
-`pass:[$$]` is the surrounding block.
+There are three special variables that are always available inside a block: `$`, `pass:[$$]`, and `$it`.
+
+* `$` is an object representing the current block.
+
+* `pass:[$$]` is the surrounding block.
 The fields of these objects are the variables of the block.
+
+* `$it` is the block itself.
+Note that this variable is also available for the parent block via the `$$` variable as a field.
+The following example shows a simple stack trace implementation:
++
+
+.stackTrace.ur source
+[source]
+----
+set stack {}
+set stackTrace '{
+  setn stack field? $$ $$ "whoever was calling this function"
+  set i 1 "only to count the stack frames"
+  while{ stack }{
+    puts add* " " i ": " field? stack $it "\n" {}
+    setn stack field? stack $$
+    setn i add i 1
+  }
+}
+set fun4 '{ stackTrace }
+set fun3 '{       fun4 }
+set fun2 '{       fun3 }
+set fun1 '{       fun2 }
+fun1
+
+----
+
+
++
+
+.stackTrace.ur output
+[source]
+----
+ 1: {fun4}
+ 2: {fun3}
+ 3: {fun2}
+ 4: fun1
+
+----
 
 == Commands
 
@@ -751,7 +793,12 @@ will result in
 .eval.ur output
 [source]
 ----
-Cannot lex the block: 
+{
+    puts "Hello, "
+    puts "World!"
+  }
+  "will print out"
+Hello, World!
 ----
 
 
@@ -926,6 +973,10 @@ will result in
 ----
 
 
+=== indexOf
+Returnt he index of the string in the second string where it appears in the second string or -1 if the first string
+is not part of the second.
+
 === isBlank
 Check if the string is blank.
 The command returns true if the string is blank.
@@ -983,8 +1034,13 @@ Also note that the lexer handles the Java hexadecimal floating point, because wh
 
 === lexers: $space
 
-Fetches one or more white space from the input.
+Fetches one or more white spaces from the input.
 It returns `null` so that the white spaces are simple token separators and no command is created from them.
+
+Note that returning `null` and returning `null` value (an instance of `SimpleValue` with `null` value) are different things.
+The `null` return value means that the lexer consumed no input.
+The `null` simple value means that there were characters on the input that the lexer consumed, but there is no created command or value.
+
 
 === lexer: $string
 
@@ -1595,6 +1651,57 @@ racecar
 Set a global variable in the context.
 The first argument is the name of the variable, and the second argument is the value.
 
+=== setn
+Alter the value of a variable.
+
+The first argument is the name of the variable, and the second argument is the value.
+
+The difference between this command and set is that this command will first search for the variable.
+If there is already a variable with the given name, it will alter the value of that variable instead of creating a
+new one shadowing it in the local block.
+
+ * Example:
+
+
+.setn1.ur source
+[source]
+----
+set A "Hello, "
+puts {
+    puts A
+    setn A "Gruetzi, "
+    set A "World!"
+    setn A "Welt!"
+}
+puts A
+
+----
+
+
+
+will result in
+
+
+.setn1.ur output
+[source]
+----
+Hello, Welt!Gruetzi, 
+----
+
+
+
+
+The program sets the global variable `A` to `"Hello, "`.
+Then it prints the value of `A` and sets `A` to `"Gruetzi, "`.
+This time it sets the global variable `A` to `"Gruetzi, "` calling the `setn` command.
+The next command creates a local variable `A` and sets it to `"World!"`.
+The following `setn` command sets this local variable `A` to `"Welt!"`.
+Since it is returned and it is the last value in the block it is printed.
+
+After the block, the global variable `A` is still `"Gruetzi, "`.
+
+
+
 === sets
 
 Set the remaining source that was not processed yet.
@@ -1637,14 +1744,15 @@ The rest of the conditions and all subsequent blocks are ignored.
  * Example:
 
 
-.switch.ur source
+.switch1.ur source
 [source]
 ----
-set A object{}
-setf A f1 ' { "racecar" }
-puts field A f1
-puts "\n"
-puts call A f1
+set a 1
+switch
+{eq a 1} {puts 1}
+{eq a 2} {puts 2}
+{eq a 1} {puts 3}
+{}
 
 ----
 
@@ -1653,12 +1761,41 @@ puts call A f1
 will result in
 
 
-.switch.ur output
+.switch1.ur output
 [source]
 ----
-{"""racecar"""}
-racecar
+1
 ----
+
+
+The same example can also be written as:
+
+ * Example:
+
+
+.switch2.ur source
+[source]
+----
+set a 1
+{switch
+ {eq a 1} {puts 1}
+ {eq a 2} {puts 2}
+ {eq a 1} {puts 3}
+}
+
+----
+
+
+
+will result in
+
+
+.switch2.ur output
+[source]
+----
+1
+----
+
 
 
 === tolower

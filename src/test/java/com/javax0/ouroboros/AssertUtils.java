@@ -43,7 +43,7 @@ class AssertUtils {
             executor.execute(program);
             return baos.toString(StandardCharsets.UTF_8);
         } catch (final Exception e) {
-            return baos.toString(StandardCharsets.UTF_8) + "\n" + getFullExceptionInfo(e);
+            return "OUTPUT BEFORE ERROR: "+baos.toString(StandardCharsets.UTF_8) + "\nERROR: " + e.getMessage();//getFullExceptionInfo(e);
         }
     }
 
