@@ -164,7 +164,7 @@ However, you have to be careful.
 If you assign a block to a variable, make sure that you assign the block and not the evaluated result of the block.
 For example, the following code will not work:
 
-{%sample/unquoted%}
+{%sample/err_unquoted%}
 
 It will result in an exception:
 
@@ -266,4 +266,6 @@ After this the command `add* 3 2\n` will be treated as `add* 3 2 {}`.
 That way this program will result in:
 
 {%output%}
+
+You can also find other examples in the test cases, for example, {%@file (format="`$name`") src/test/resources/samples/xpression.ur%} contains a script that defines numerical expression parser.
 

@@ -63,7 +63,7 @@ setf obj name "Hello, "
 }
 end snippet
 --------------------------------
-snippet unquoted.ur
+snippet err_unquoted.ur
 set a { puts shift }
 a "Hello, World!"
 end snippet
@@ -90,24 +90,24 @@ call a b "Hello, "
 end snippet
 --------------------------------
 snippet lexNewLine.ur
-call $lex insert 0 '{
-if { eq charAt 0 source "\n"}
+insert $lex 0 '{
+if { eq at source 0 "\n"}
    {sets substring 1 length source source '{}}}
 set q add* 3 2
 1 {} puts q
 end snippet
 --------------------------------
 snippet fixup.ur
-fixup call $lex insert 0 '{
-if { eq charAt 0 source "\n"}
+fixup insert $lex 0 '{
+if { eq at source 0 "\n"}
    {sets add "{}" substring 1 length source source}}
 set q add* 3 2
 1 {} puts q
 end snippet
 --------------------------------
 snippet nofixup.ur
-call $lex insert 0 '{
-if { eq charAt 0 source "\n"}
+insert $lex 0 '{
+if { eq at source 0 "\n"}
    {sets add "{}" substring 1 length source source}}
 set q add* 3 2
 1 {} puts q
@@ -216,44 +216,44 @@ end snippet
 --------------------------------
 snippet list_first.ur
 set i list {0 1 2 3 4 5}
-puts call i first
+puts first i
 end snippet
 --------------------------------
 snippet list_get.ur
 set i list {0 1 2 3 4 5}
-puts call i get 1
+puts at i 1
 end snippet
 --------------------------------
 snippet list_insert.ur
 set i list {0 1 2 3 4 5}
-call i insert 1 99
+insert i 1 99
 puts i
 end snippet
 --------------------------------
 snippet list_last.ur
 set i list {0 1 2 3 4 5}
-puts call i last
+puts last i
 end snippet
 --------------------------------
 snippet list_length.ur
 set i list {0 1 2 3 4 5}
-puts call i length
+puts length i
 end snippet
 --------------------------------
 snippet list_rest.ur
 set i list {0 1 2 3 4 5}
-puts call i rest
+puts rest i
 end snippet
 --------------------------------
 snippet list_set.ur
 set i list {0 1 2 3 4 5}
-call i set 1 99
+setl i 1 99
 puts i
 end snippet
 --------------------------------
 snippet list_split.ur
 set i list {0 1 2 3 4 5}
-puts call i split 2
+puts split i 2
 end snippet
 --------------------------------
 snippet object_complex.ur
@@ -429,5 +429,38 @@ set fun3 '{       fun4 }
 set fun2 '{       fun3 }
 set fun1 '{       fun2 }
 fun1
+end snippet
+--------------------------------
+snippet simple_closure.ur
+{
+  set localVariable "Hello, World!"
+  setg f closure ' { puts localVariable }
+}
+f
+end snippet
+--------------------------------
+snippet high_order_func.ur
+set greet quote {
+   set z shift
+   closure '{puts add "Hello " z }
+   }
+set ga greet "Agnieszka"
+set gb greet "Bartek"
+ga
+puts "\n"
+gb
+end snippet
+--------------------------------
+snippet redefine_puts.ur
+set puts closure quote {puts "--" puts shift puts "--\n" }
+puts "Hello, World!"
+puts "Hello, Ouroboros!"
+end snippet
+--------------------------------
+snippet closure_quote.ur
+set ` '{ closure arg }
+set puts `{puts "--" puts shift puts "--\n" }
+puts "Hello, World!"
+puts "Hello, Ouroboros!"
 end snippet
 --------------------------------

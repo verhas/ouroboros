@@ -254,7 +254,7 @@ If you assign a block to a variable, make sure that you assign the block and not
 For example, the following code will not work:
 
 
-.unquoted.ur source
+.err_unquoted.ur source
 [source]
 ----
 set a { puts shift }
@@ -267,7 +267,7 @@ a "Hello, World!"
 It will result in an exception:
 
 
-.unquoted.ur output
+.err_unquoted.ur output
 [source]
 ----
 OUTPUT BEFORE ERROR: 
@@ -401,6 +401,35 @@ This command is similar to the command `shift`, but it does not evaluate the arg
 It has the similar effect as quoting the argument and then calling shift.
 
 This command can be used to create commands (functions, methods) that evaluate some of the arguments conditionally.
+
+
+=== at
+Get the element at the given index.
+The position is zero-based.
+The argument is either a list or a string.
+
+ * Example:
+
+
+.list_get.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts at i 1
+
+----
+
+
+
+will result in
+
+
+.list_get.ur output
+[source]
+----
+1
+----
+
 
 
 === BareWord
@@ -660,6 +689,10 @@ Create a boolean value.
 The argument the command uses is the value and converts it to boolean.
 The argument can be an integer, a floating point number, BigInteger, BigDecimal, string, boolean, or null.
 
+=== bw
+Create a bare word from a string.
+
+
 === call
 Calls a method on an object.
 
@@ -698,9 +731,136 @@ Hello, World!
 
 
 
-=== charAt
-Get the character at the given index.
-The command returns the character at the given index.
+=== closure
+
+Creates a new closure from a block.
+The block is the argument of the command, and in practical cases it has to be quoted.
+
+A closure is a block of code that preserves the environment where it was created.
+If there is a variable defined as `x` in the environment where the closure is created, then this will be available when the closure runs.
+ * Example:
+
+
+.simple_closure.ur source
+[source]
+----
+{
+  set localVariable "Hello, World!"
+  setg f closure ' { puts localVariable }
+}
+f
+
+----
+
+
+
+will result in
+
+
+.simple_closure.ur output
+[source]
+----
+Hello, World!
+----
+
+
+It will print `"Hello, World!"` even though the variable `localVariable` is not defined outside the block.
+
+Closures inherit ALL levels of the context they are created and this contex closure will have precedence over the actual context.
+For example, it is possible to redefine the `puts` command inside a closure and still use the original when the closure runs:
+
+ * Example:
+
+
+.redefine_puts.ur source
+[source]
+----
+set puts closure quote {puts "--" puts shift puts "--\n" }
+puts "Hello, World!"
+puts "Hello, Ouroboros!"
+
+----
+
+
+
+will result in
+
+
+.redefine_puts.ur output
+[source]
+----
+--Hello, World!--
+--Hello, Ouroboros!--
+
+----
+
+
+When the closure runs, it still uses the `puts` command that was defined in the global context by the time the closure was created.
+When using the `puts` later, it is already calling the closure.
+
+Closures can also be used to create higher order functions.
+
+ * Example:
+
+
+.high_order_func.ur source
+[source]
+----
+set greet quote {
+   set z shift
+   closure '{puts add "Hello " z }
+   }
+set ga greet "Agnieszka"
+set gb greet "Bartek"
+ga
+puts "\n"
+gb
+
+----
+
+
+
+will result in
+
+
+.high_order_func.ur output
+[source]
+----
+Hello Agnieszka
+Hello Bartek
+----
+
+
+In this case the function `greet` creates two closures during the two invocations, and each resulting closure will have it's own value for the variable `z`.
+
+Finally, if you find it cumbersome to write `clsoure` and `'` all the time, you can define a symbol for the combination like in the following example.
+
+ * Example:
+
+
+.closure_quote.ur source
+[source]
+----
+set ` '{ closure arg }
+set puts `{puts "--" puts shift puts "--\n" }
+puts "Hello, World!"
+puts "Hello, Ouroboros!"
+
+----
+
+
+
+will result in
+
+
+.closure_quote.ur output
+[source]
+----
+--Hello, World!--
+--Hello, Ouroboros!--
+
+----
+
 
 === copy
 
@@ -845,6 +1005,36 @@ tacocat
 ----
 
 
+=== first, car
+
+Fetch and return the first element of a list.
+The argument is the list.
+The command is also registered as `car` to follow the LISP tradition.
+
+ * Example:
+
+
+.list_first.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts first i
+
+----
+
+
+
+will result in
+
+
+.list_first.ur output
+[source]
+----
+0
+----
+
+
+
 === fixup
 
 Fix up the source converting all remaining characters of the current source to tokens.
@@ -859,8 +1049,8 @@ Other implementations may override the default implementation of this command an
 .fixup.ur source
 [source]
 ----
-fixup call $lex insert 0 '{
-if { eq charAt 0 source "\n"}
+fixup insert $lex 0 '{
+if { eq at source 0 "\n"}
    {sets add "{}" substring 1 length source source}}
 set q add* 3 2
 1 {} puts q
@@ -885,8 +1075,8 @@ will result in
 .nofixup.ur source
 [source]
 ----
-call $lex insert 0 '{
-if { eq charAt 0 source "\n"}
+insert $lex 0 '{
+if { eq at source 0 "\n"}
    {sets add "{}" substring 1 length source source}}
 set q add* 3 2
 1 {} puts q
@@ -977,6 +1167,38 @@ will result in
 Returnt he index of the string in the second string where it appears in the second string or -1 if the first string
 is not part of the second.
 
+=== insert
+The command inserts an element into a list at a given position.
+The position is zero-based.
+
+The first argument is the list.
+The second argument is the index.
+The third argument is the value.
+
+ * Example:
+
+
+.list_insert.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+insert i 1 99
+puts i
+
+----
+
+
+
+will result in
+
+
+.list_insert.ur output
+[source]
+----
+[0, 99, 1, 2, 3, 4, 5]
+----
+
+
 === isBlank
 Check if the string is blank.
 The command returns true if the string is blank.
@@ -985,9 +1207,38 @@ The command returns true if the string is blank.
 Check if the string is empty.
 The command returns true if the string is empty.
 
+=== last
+
+The command returns the last element of the list.
+The argument is the list.
+
+ * Example:
+
+
+.list_last.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts last i
+
+----
+
+
+
+will result in
+
+
+.list_last.ur output
+[source]
+----
+5
+----
+
+
+
 === length
-Get the length of the string.
-The command returns the length of the string.
+Get the length of the string or a list.
+The command returns the length of the string or a list.
 
 === lexers
 
@@ -1065,19 +1316,6 @@ The argument can be a block or a command.
 When it is a block, then the commands in the block are evaluated individually and the results are added to the list.
 If the argument is a single command, then the command is evaluated and the result is the initial single element of the list.
 
-The list is also an object and has methods:
-
-
-* first
-* last
-* rest
-* get
-* set
-* insert
-* length
-* split
-
-
 These are documented as commands, but you can invoke them as methods of the list object using the command `call`.
 
  * Example:
@@ -1100,235 +1338,6 @@ will result in
 [source]
 ----
 [1, 2, 3, 4, 5]
-----
-
-
-=== list.first
-
-This method is defined on every list object that returns the first element of the list.
-
- * Example:
-
-
-.list_first.ur source
-[source]
-----
-set i list {0 1 2 3 4 5}
-puts call i first
-
-----
-
-
-
-will result in
-
-
-.list_first.ur output
-[source]
-----
-0
-----
-
-
-
-=== list.get
-A list method that gets an element of a list from a given position.
-The position is zero-based.
-
- * Example:
-
-
-.list_get.ur source
-[source]
-----
-set i list {0 1 2 3 4 5}
-puts call i get 1
-
-----
-
-
-
-will result in
-
-
-.list_get.ur output
-[source]
-----
-1
-----
-
-
-
-=== list.insert
-A list method that inserts an element into a list at a given position.
-The position is zero-based.
-
- * Example:
-
-
-.list_insert.ur source
-[source]
-----
-set i list {0 1 2 3 4 5}
-call i insert 1 99
-puts i
-
-----
-
-
-
-will result in
-
-
-.list_insert.ur output
-[source]
-----
-[0, 99, 1, 2, 3, 4, 5]
-----
-
-
-=== list.last
-
-A method defined on every list object that returns the last element of the list.
-If the list is empty, then the command throws an exception.
-The command is defined on the list object.
-The command does not have any argument.
-The command returns the last element of the list.
-
- * Example:
-
-
-.list_last.ur source
-[source]
-----
-set i list {0 1 2 3 4 5}
-puts call i last
-
-----
-
-
-
-will result in
-
-
-.list_last.ur output
-[source]
-----
-5
-----
-
-
-
-=== list.length
-A list method that returns the length of the list.
-
- * Example:
-
-
-.list_length.ur source
-[source]
-----
-set i list {0 1 2 3 4 5}
-puts call i length
-
-----
-
-
-
-will result in
-
-
-.list_length.ur output
-[source]
-----
-6
-----
-
-
-=== list.rest
-A list method that returns a new list that contains all the elements of the original list except the first one.
-If the list is empty, then the command throws an exception.
-The command is defined on the list object.
-The command does not have any argument.
-
- * Example:
-
-
-.list_rest.ur source
-[source]
-----
-set i list {0 1 2 3 4 5}
-puts call i rest
-
-----
-
-
-
-will result in
-
-
-.list_rest.ur output
-[source]
-----
-[1, 2, 3, 4, 5]
-----
-
-
-
-=== list.set
-A list method that sets an element of a list at a given position.
-The position is zero-based.
-
- * Example:
-
-
-.list_set.ur source
-[source]
-----
-set i list {0 1 2 3 4 5}
-call i set 1 99
-puts i
-
-----
-
-
-
-will result in
-
-
-.list_set.ur output
-[source]
-----
-[0, 99, 2, 3, 4, 5]
-----
-
-
-=== list.split
-A list method that splits the list into two lists at a given index.
-The index is zero-based.
-The method returns a list of two lists.
-The first list contains the elements from the beginning of the list up to the index.
-
- * Example:
-
-
-.list_split.ur source
-[source]
-----
-set i list {0 1 2 3 4 5}
-puts call i split 2
-
-----
-
-
-
-will result in
-
-
-.list_split.ur output
-[source]
-----
-[[0, 1], [2, 3, 4, 5]]
 ----
 
 
@@ -1472,6 +1481,37 @@ The command returns the string where all matching occurrence of the regular expr
 Replace the target string with the replacement string in the string.
 The first argument is the source string, the second argument is a regular expression, and the third argument is the replacement string.
 The command returns the string where the first matching occurrence of the regular expression is replaced with the replacement string.
+
+=== rest, cdr
+This command returns a new list that contains all the elements of the list except the first one.
+If the list is empty, then the command throws an exception.
+The argument is the list.
+
+The command is also registered as `cdr` to follow the LISP tradition.
+
+ * Example:
+
+
+.list_rest.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts rest i
+
+----
+
+
+
+will result in
+
+
+.list_rest.ur output
+[source]
+----
+[1, 2, 3, 4, 5]
+----
+
+
 
 === set
 Set a variable in the context.
@@ -1651,6 +1691,37 @@ racecar
 Set a global variable in the context.
 The first argument is the name of the variable, and the second argument is the value.
 
+=== setl
+Set the element of a list at some position.
+The position is zero-based.
+The first argument is the list.
+The second argument is the index.
+The third argument is the value.
+
+ * Example:
+
+
+.list_set.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+setl i 1 99
+puts i
+
+----
+
+
+
+will result in
+
+
+.list_set.ur output
+[source]
+----
+[0, 99, 2, 3, 4, 5]
+----
+
+
 === setn
 Alter the value of a variable.
 
@@ -1710,10 +1781,42 @@ Set the remaining source that was not processed yet.
 
 Get the argument following the block with evaluation.
 
+The pair of the commands is `arg` that fetched the next argument without evaluation.
+
 
 === source
 
 Get the remaining source that was not processed yet.
+
+=== split
+This command splits a list into two lists at a given index.
+The index is zero-based.
+The method returns a list of two lists.
+The first list contains the elements from the beginning of the list up to the index.
+The second list contains the elements from the index to the end of the list.
+
+ * Example:
+
+
+.list_split.ur source
+[source]
+----
+set i list {0 1 2 3 4 5}
+puts split i 2
+
+----
+
+
+
+will result in
+
+
+.list_split.ur output
+[source]
+----
+[[0, 1], [2, 3, 4, 5]]
+----
+
 
 === string
 Convert the argument to string.
@@ -1833,8 +1936,8 @@ To avoid this, the following program alters the syntax analysis process to treat
 .lexNewLine.ur source
 [source]
 ----
-call $lex insert 0 '{
-if { eq charAt 0 source "\n"}
+insert $lex 0 '{
+if { eq at source 0 "\n"}
    {sets substring 1 length source source '{}}}
 set q add* 3 2
 1 {} puts q
@@ -1865,3 +1968,6 @@ That way this program will result in:
 ----
 5
 ----
+
+
+You can also find other examples in the test cases, for example, `src/test/resources/samples/xpression.ur` contains a script that defines numerical expression parser.

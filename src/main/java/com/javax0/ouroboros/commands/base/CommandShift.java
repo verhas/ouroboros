@@ -12,6 +12,8 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  * <p>
  * Get the argument following the block with evaluation.
  * <p>
+ * The pair of the commands is `arg` that fetched the next argument without evaluation.
+ * <p>
  * end
  *
  * @param <T>

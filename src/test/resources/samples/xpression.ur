@@ -58,9 +58,9 @@ set fetch '{
 }
 
 set eSymbol '{
-  if { ne -1 indexOf charAt 0 source "(+-*/%)" }
+  if { ne -1 indexOf at source 0 "(+-*/%)" }
      {
-       set returnValue charAt 0 source
+       set returnValue at source 0
        sets substring 1 * source
        returnValue
      }
@@ -72,9 +72,9 @@ set to_mnemonic '{
   set mnemonics list {"eq" "ne" "lt" "le" "gt" "ge" "add" "sub" "mul" "div" "mod" "and" "or" "not"}
   set i 0
   set m shift
-  while{ lt i call operators length } {
-    if { eq m  call operators get i }
-    { setf field $$ $$ m call mnemonics get i } {}
+  while{ lt i length operators } {
+    if { eq m  at operators i }
+    { setf field $$ $$ m at mnemonics i } {}
     setf $$ i add i 1
   }
   m
@@ -129,7 +129,7 @@ set expression3 '{
        the sign of a number. If the first character is '+' or '-' then we have to undo the parsing of the number
        using the saved $source state and use the first character as the token.
     """
-    set firstChar charAt 0 $source
+    set firstChar at $source 0
     if{ ne -1 indexOf firstChar "+-" }{
       """skip the first character as it will not be part of the rest,
          even if it is a number and put back the already parsed
@@ -182,8 +182,8 @@ set expression5 '{
    {}
 }
 
-call $lex insert 0 '{
-  if { eq charAt 0 source "("}
+insert $lex 0 '{
+  if { eq at source 0 "("}
      {
        fetch "get over the opening parenthesis"
        fetch "get the first token of the expression"

@@ -9,4 +9,8 @@ public interface Value<T> {
         throw new UnsupportedOperationException("Setting the value is not supported");
     }
     Value<T> copy();
+
+    public static <T> Value<T> of(T t){
+        return new SimpleValue<>(t);
+    }
 }

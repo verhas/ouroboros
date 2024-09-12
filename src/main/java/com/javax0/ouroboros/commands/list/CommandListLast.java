@@ -6,14 +6,11 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
 /**
- * command_list_last
- * {%COMMAND list.last%}
+ * command_last
+ * {%COMMAND last%}
  * <p>
- * A method defined on every list object that returns the last element of the list.
- * If the list is empty, then the command throws an exception.
- * The command is defined on the list object.
- * The command does not have any argument.
  * The command returns the last element of the list.
+ * The argument is the list.
  * <p>
  * {%EXAMPLE/list_last%}
  * <p>
@@ -28,7 +25,7 @@ public class CommandListLast<T> extends AbstractCommand<T> {
 
     @Override
     public Value<T> execute(Context context) {
-        final var list = context.variable("this").map(Value::get)
+        final var list = nextArgument(context)
                 .orElseThrow(() -> new IllegalArgumentException("There is no argument to the command 'first"));
         switch (list) {
             case ListValue<?> lv -> {

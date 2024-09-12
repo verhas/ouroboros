@@ -415,10 +415,10 @@ public class TestSimpleExecutor {
     }
 
 
-    @DisplayName("charAt")
+    @DisplayName("at string index")
     @Test
     void testcharAt() throws Exception {
-        assertOutput("puts charAt 2 \"balaka\"", "l");
+        assertOutput("puts at \"balaka\" 2", "l");
     }
 
     @DisplayName("isBlank")
@@ -459,12 +459,14 @@ public class TestSimpleExecutor {
     @Test
     void testsubstring() throws Exception {
         assertOutput("puts substring 1 5 \"abraka dabra\"", "brak");
-    }    @DisplayName("substring")
+    }
+
+    @DisplayName("substring")
     @Test
     void testStringIndexOf() throws Exception {
         assertOutput("""
-                                puts indexOf "gigi" "hihi haha gigi gaga bakkara"
-    """, "10");
+                                            puts indexOf "gigi" "hihi haha gigi gaga bakkara"
+                """, "10");
     }
 
     @DisplayName("substring with '*'")
@@ -504,61 +506,61 @@ public class TestSimpleExecutor {
     @DisplayName("fetch the first element of a list")
     @Test
     void fetchFirst() throws Exception {
-        assertOutput("set a list{1 2 3} puts call a first", "1");
+        assertOutput("set a list{1 2 3} puts first a", "1");
     }
 
     @DisplayName("fetch the n-tn element of a list")
     @Test
     void fetchNTh() throws Exception {
-        assertOutput("set a list{1 2 3} puts call a get 1", "2");
+        assertOutput("set a list{1 2 3} puts at a 1", "2");
     }
 
     @DisplayName("get the length of a list")
     @Test
     void length() throws Exception {
-        assertOutput("set a list{1 2 3} puts call a length", "3");
+        assertOutput("set a list{1 2 3} puts length a", "3");
     }
 
     @DisplayName("split a list")
     @Test
     void split() throws Exception {
-        assertOutput("set a list{1 2 3 4} puts call a split 2", "[[1, 2], [3, 4]]");
+        assertOutput("set a list{1 2 3 4} puts split a 2", "[[1, 2], [3, 4]]");
     }
 
     @DisplayName("get the tail of a list")
     @Test
     void listRest() throws Exception {
-        assertOutput("puts call list{1 2 3 4} rest", "[2, 3, 4]");
+        assertOutput("puts rest list{1 2 3 4}", "[2, 3, 4]");
+        assertOutput("puts cdr list{1 2 3 4}", "[2, 3, 4]");
     }
 
     @DisplayName("split a list complex example")
     @Test
     void splitComplex() throws Exception {
-        assertOutput("set a list{1 2 3 4} " +
-                "setf a head '{" +
-                "                set index shift " +
-                "                set s call this split index " +
-                "                call s first" +
-                "             }" +
-                "set b copy a " +
-                "call b set 1 99 " +
-                "puts a " +
-                "puts b", "[1, 2, 3, 4][1, 99, 3, 4]");
+        assertOutput("""
+                set a list{1 2 3 4}
+                setf a head '{
+                                set index shift
+                                set s split this index
+                                car s
+                             }\
+                set b copy a
+                setl b 1 99
+                puts a
+                puts b""", "[1, 2, 3, 4][1, 99, 3, 4]");
     }
 
     @DisplayName("split a list complex example inserting into it")
     @Test
     void splitComplexInserting() throws Exception {
-        assertOutput("set a list{1 2 3 4} " +
-                "setf a head '{" +
-                "                set index shift " +
-                "                set s call this split index " +
-                "                call s first" +
-                "             }" +
-                "set b copy a " +
-                "call b insert 1 99 " +
-                "puts a " +
-                "puts b", "[1, 2, 3, 4][1, 99, 2, 3, 4]");
+        assertOutput("""
+                set a list{1 2 3 4}
+                set b copy a
+                insert b 1 99
+                insert b 5 97
+                insert b 4 98
+                puts a
+                puts b""", "[1, 2, 3, 4][1, 99, 2, 3, 98, 4, 97]");
     }
 
     @DisplayName("Fetch the source")
@@ -587,9 +589,9 @@ public class TestSimpleExecutor {
     @Test
     void modifyLexers() throws Exception {
         assertOutput(
-                "call $lex insert 3 '{" +
-                        "if { eq charAt 0 source \"\\n\"}" +
-                        "   {sets add \"{}\" substring 1 length source source}}" +
+                "insert $lex 3 '{" +
+                        "if { eq at source 0 \"\\n\"}" +
+                        "   {sets add \"{}\" substring 1 * source}}" +
                         "set q add* 3 2 \n" +
                         "1 {} puts q", "5");
 
@@ -599,9 +601,9 @@ public class TestSimpleExecutor {
     @Test
     void modifyLexersFixup() throws Exception {
         assertOutput(
-                "fixup call $lex insert 3 '{" +
-                        "if { eq charAt 0 source \"\\n\"}" +
-                        "   {sets add \"{}\" substring 1 length source source}}" +
+                "fixup insert $lex 3 '{" +
+                        "if { eq at source 0 \"\\n\"}" +
+                        "   {sets add \"{}\" substring 1 * source}}" +
                         "set q add* 3 2 \n" +
                         "1 {} puts q", "6");
 
@@ -663,6 +665,7 @@ public class TestSimpleExecutor {
                 
                 """, "puts \"\"\"a\"\"\" 123L {1L 2L 3L} [[ }");
     }
+
     @DisplayName("switch case")
     @Test
     void testSwitch() throws Exception {
@@ -674,6 +677,7 @@ public class TestSimpleExecutor {
                 {eq a 1} {puts 3}
                 }""", "1");
     }
+
     @DisplayName("switch case null close")
     @Test
     void testSwitch2() throws Exception {
@@ -686,48 +690,48 @@ public class TestSimpleExecutor {
                 {}""", "1");
     }
 
-    @DisplayName("test operator metch   ")
+    @DisplayName("test operator match   ")
     @Test
     void testMatch() throws Exception {
         assertOutput("""
-                      set operator_mnemonic '{
-                        set operators list {"==" "!=" "<" "<=" ">" ">=" "+" "-" "*" "/" "%"}
-                        set mnemonics list {"eq" "ne" "lt" "le" "gt" "ge" "add" "sub" "mul" "div" "mod"}
-                        set i 0
-                        set m shift
-                        while{ lt i call operators length } {
-                          if { eq m  call operators get i }
-                          { setf field $$ $$ m call mnemonics get i } {}
-                          setf $$ i add i 1
-                        }
-                        m
-                      }
-                      puts operator_mnemonic "=="
-                      puts " "
-                        puts operator_mnemonic "!="
-                        puts " "
-                        puts operator_mnemonic "<"
-                        puts " "
-                        puts operator_mnemonic "<="
-                        puts " "
-                        puts operator_mnemonic ">"
-                        puts " "
-                        puts operator_mnemonic ">="
-                        puts " "
-                        puts operator_mnemonic "+"
-                        puts " "
-                        puts operator_mnemonic "-"
-                        puts " "
-                        puts operator_mnemonic "*"
-                        puts " "
-                        puts operator_mnemonic "/"
-                        puts " "
-                        puts operator_mnemonic "%" """, "eq ne lt le gt ge add sub mul div mod");
+                set operator_mnemonic '{
+                  set operators list {"==" "!=" "<" "<=" ">" ">=" "+" "-" "*" "/" "%"}
+                  set mnemonics list {"eq" "ne" "lt" "le" "gt" "ge" "add" "sub" "mul" "div" "mod"}
+                  set i 0
+                  set m shift
+                  while{ lt i length operators} {
+                    if { eq m  at operators i }
+                    { setf field $$ $$ m at mnemonics i } {}
+                    setf $$ i add i 1
+                  }
+                  m
+                }
+                puts operator_mnemonic "=="
+                puts " "
+                  puts operator_mnemonic "!="
+                  puts " "
+                  puts operator_mnemonic "<"
+                  puts " "
+                  puts operator_mnemonic "<="
+                  puts " "
+                  puts operator_mnemonic ">"
+                  puts " "
+                  puts operator_mnemonic ">="
+                  puts " "
+                  puts operator_mnemonic "+"
+                  puts " "
+                  puts operator_mnemonic "-"
+                  puts " "
+                  puts operator_mnemonic "*"
+                  puts " "
+                  puts operator_mnemonic "/"
+                  puts " "
+                  puts operator_mnemonic "%" """, "eq ne lt le gt ge add sub mul div mod");
     }
 
     @DisplayName("test stack trace")
     @Test
-    void testStackTrace()throws Exception{
+    void testStackTrace() throws Exception {
         assertOutput("""
                 set stack {}
                 set fun1 '{
@@ -760,17 +764,62 @@ public class TestSimpleExecutor {
 
     @DisplayName("test eval bug")
     @Test
-
-    void testEvalBug()throws Exception {
+    void testEvalBug() throws Exception {
         assertOutput("""
                 eval puts ""\"{
                     puts "Hello, "
                     puts "World!"
                   }
                   "will print out"
-                ""\"""", "");
+                ""\"""", "{\n" +
+                "    puts \"Hello, \"\n" +
+                "    puts \"World!\"\n" +
+                "  }\n" +
+                "  \"will print out\"\n" +
+                "Hello, World!");
     }
-    
+
+    @DisplayName("test bw")
+    @Test
+    void testbw() throws Exception {
+        assertOutput("""
+                set {"c" "a"} "hi"
+                bw "puts" a
+                set "{" "wuff"
+                puts bw "{"
+                set Q object {}
+                setf Q acc 0
+                setf Q + '{
+                  setf this "acc" add field this acc shift
+                  }
+                call Q + 1
+                call Q + 1
+                call Q + 1
+                puts field Q acc
+                """, "hiwuff3");
+    }
+
+    @DisplayName("test closure")
+    @Test
+    void testClosure() throws Exception {
+        assertOutput("""
+                set a "hi"
+                set b closure '{puts a}
+                set c '{puts a}
+                set a "low"
+                b c
+                """, "hilow");
+    }
+    @DisplayName("test closure redefining puts")
+    @Test
+    void testClosurePutsRedef() throws Exception {
+        assertOutput("""
+                set puts closure '{puts shift puts "\\n"}
+                puts "hi"
+                puts "low"
+                """, "hi\nlow\n");
+    }
+
 }
 
 

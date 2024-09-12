@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import static com.javax0.ouroboros.AssertUtils.output;
 import static com.javax0.ouroboros.AssertUtils.outputSafe;
 
 public class TestRunSamples {
@@ -41,23 +42,25 @@ public class TestRunSamples {
             deleteDirectory(outputDir);
         }
         Files.createDirectories(outputDir);
-
         Files.list(root.resolve("src/test/resources/samples")).forEach(path -> {
+            String snippet = null;
             try {
                 var source = Files.readString(path);
                 for (int index = source.indexOf(SNIPPET); index >= 0; index = source.indexOf(SNIPPET)) {
                     source = source.substring(index + SNIPPET.length());
+                    final var errAllowed = source.startsWith("err_");
                     final var eol = source.indexOf("\n");
+                    snippet = source.substring(0, eol).trim();
                     final var fn = source.substring(0, eol).trim();
                     source = source.substring(eol + 1);
                     final var end = source.indexOf(END_SNIPPET);
                     final var s = end == -1 ? source : source.substring(0, end);
                     source = end == -1 ? "" : source.substring(end + END_SNIPPET.length());
-                    String result = outputSafe(s);
+                    String result = errAllowed ? outputSafe(s) : output(s);
                     Files.writeString(outputDir.resolve(fn), result);
                 }
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e.getMessage() + " in " + snippet, e);
             }
         });
     }

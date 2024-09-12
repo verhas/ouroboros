@@ -5,13 +5,15 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
-import com.javax0.ouroboros.utils.SafeCast;
 
 /**
- * command_list_set
- * {%COMMAND list.set%}
- * A list method that sets an element of a list at a given position.
+ * command_setl
+ * {%COMMAND setl%}
+ * Set the element of a list at some position.
  * The position is zero-based.
+ * The first argument is the list.
+ * The second argument is the index.
+ * The third argument is the value.
  * <p>
  * {%EXAMPLE/list_set%}
  * end
@@ -25,20 +27,22 @@ public class CommandListSet<T> extends AbstractCommand<T> {
 
     @Override
     public Value<T> execute(Context context) {
+        final var list = nextArgument(context)
+                .orElseThrow(() -> new IllegalArgumentException("There is bad second argument to the command 'set'"));
         final var index = nextArgument(context, this::toLong).map(Math::toIntExact)
                 .orElseThrow(() -> new IllegalArgumentException("The index is missing"));
         final var value = nextArgument(context)
                 .map(SimpleValue::new)
                 .map(Value.class::cast)
                 .orElseThrow(() -> new IllegalArgumentException("The value is missing"));
-        final var list = context.variable("this")
-                .map(Value::get)
-                .map(SafeCast.to(ListValue.class))
-                .map(ListValue::values)
-                .orElseThrow(() -> new IllegalArgumentException("There is bad second argument to the command 'set'"));
-        if (list.isEmpty()) {
-            throw new IllegalArgumentException("The list is empty");
+        switch (list) {
+            case ListValue<?> lv -> {
+                if (lv.isEmpty()) {
+                    throw new IllegalArgumentException("The list is empty");
+                }
+                return (Value<T>) lv.set(index, value);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + list);
         }
-        return (Value<T>) list.set(index, value);
     }
 }

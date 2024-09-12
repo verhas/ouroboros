@@ -5,7 +5,7 @@ import com.javax0.ouroboros.commands.base.*;
 import com.javax0.ouroboros.commands.control.CommandIf;
 import com.javax0.ouroboros.commands.control.CommandSwitch;
 import com.javax0.ouroboros.commands.control.CommandWhile;
-import com.javax0.ouroboros.commands.list.CommandList;
+import com.javax0.ouroboros.commands.list.*;
 import com.javax0.ouroboros.commands.ops.*;
 import com.javax0.ouroboros.commands.string.*;
 
@@ -42,7 +42,6 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("source", new SimpleValue<>(new CommandSource(interpreter)));
 
         context.<Command<?>>set("length", new SimpleValue<>(new CommandLength(interpreter)));
-        context.<Command<?>>set("charAt", new SimpleValue<>(new CommandCharAt(interpreter)));
         context.<Command<?>>set("indexOf", new SimpleValue<>(new CommandIndexOf(interpreter)));
         context.<Command<?>>set("isBlank", new SimpleValue<>(new CommandIsBlank(interpreter)));
         context.<Command<?>>set("isEmpty", new SimpleValue<>(new CommandIsEmpty(interpreter)));
@@ -64,9 +63,20 @@ public class CommandsRegistry implements ContextAgent {
         context.<Command<?>>set("bool", new SimpleValue<>(new CommandBoolean(interpreter)));
         context.<Command<?>>set("not", new SimpleValue<>(new CommandNot(interpreter)));
         context.<Command<?>>set("string", new SimpleValue<>(new CommandString(interpreter)));
+        context.<Command<?>>set("bw", new SimpleValue<>(new CommandBW<>(interpreter)));
         context.<Command<?>>set("quote", new SimpleValue<>(new CommandQuote<>(interpreter)));
+        context.<Command<?>>set("closure", new SimpleValue<>(new CommandClosure<>(interpreter)));
         context.<Command<?>>set("'", new SimpleValue<>(new CommandQuote<>(interpreter)));
         context.<Command<?>>set("list", new SimpleValue<>(new CommandList<>(interpreter)));
+        context.<Command<?>>set("first", new SimpleValue<>(new CommandListFirst<>(interpreter)));
+        context.<Command<?>>set("car", new SimpleValue<>(new CommandListFirst<>(interpreter)));
+        context.<Command<?>>set("rest", new SimpleValue<>(new CommandListRest<>(interpreter)));
+        context.<Command<?>>set("cdr", new SimpleValue<>(new CommandListRest<>(interpreter)));
+        context.<Command<?>>set("insert", new SimpleValue<>(new CommandListInsert<>(interpreter)));
+        context.<Command<?>>set("at", new SimpleValue<>(new CommandAt<>(interpreter)));
+        context.<Command<?>>set("split", new SimpleValue<>(new CommandListSplit<>(interpreter)));
+        context.<Command<?>>set("setl", new SimpleValue<>(new CommandListSet<>(interpreter)));
+        context.<Command<?>>set("last", new SimpleValue<>(new CommandListLast<>(interpreter)));
 
         context.<Command<?>>set("shift", new SimpleValue<>(new CommandShift<>(interpreter)));
         context.<Command<?>>set("arg", new SimpleValue<>(new CommandArg<>(interpreter)));

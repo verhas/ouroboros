@@ -63,4 +63,12 @@ public interface Context {
      * @return the object that contains all the local variables
      */
     ObjectValue bottom();
+
+    /**
+     * Get the closure of the context.
+     *
+     * The closure of the context is the object that contains all the variables in the context.
+     * @return the closure of the context
+     */
+    ObjectValue closure();
 }

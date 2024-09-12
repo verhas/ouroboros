@@ -37,6 +37,17 @@ class ExecutorContext implements Context {
     }
 
     @Override
+    public ObjectValue closure() {
+        final var closure = new ObjectValue.Implementation();
+        stack.forEach(
+                variables -> variables.fields().forEach(
+                        (name, value) -> closure.fields().put(name, value)
+                )
+        );
+        return closure;
+    }
+
+    @Override
     public <T> void set(String name, Value<T> value) {
         if (stack.isEmpty()) {
             stack.add(new ObjectValue.Implementation());

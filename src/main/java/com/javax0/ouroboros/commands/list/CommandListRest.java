@@ -7,12 +7,13 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
 /**
- * command_list_rest
- * {%COMMAND list.rest%}
- * A list method that returns a new list that contains all the elements of the original list except the first one.
+ * command_rest
+ * {%COMMAND rest, cdr%}
+ * This command returns a new list that contains all the elements of the list except the first one.
  * If the list is empty, then the command throws an exception.
- * The command is defined on the list object.
- * The command does not have any argument.
+ * The argument is the list.
+ *
+ * The command is also registered as `cdr` to follow the LISP tradition.
  * <p>
  * {%EXAMPLE/list_rest%}
  * <p>
@@ -27,7 +28,7 @@ public class CommandListRest<T> extends AbstractCommand<ListValue<T>> {
 
     @Override
     public Value<ListValue<T>> execute(Context context) {
-        final var list = context.variable("this").map(Value::get)
+        final var list = nextArgument(context)
                 .orElseThrow(() -> new IllegalArgumentException("There is no argument to the command 'rest"));
         switch (list) {
             case ListValue<?> lv -> {

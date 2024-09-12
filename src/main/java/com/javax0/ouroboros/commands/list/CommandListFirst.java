@@ -6,10 +6,12 @@ import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
 /**
- * command_list_first
- * {%COMMAND list.first%}
+ * command_first
+ * {%COMMAND first, car%}
  * <p>
- * This method is defined on every list object that returns the first element of the list.
+ * Fetch and return the first element of a list.
+ * The argument is the list.
+ * The command is also registered as `car` to follow the LISP tradition.
  * <p>
  * {%EXAMPLE/list_first%}
  * <p>
@@ -25,7 +27,7 @@ public class CommandListFirst<T> extends AbstractCommand<T> {
 
     @Override
     public Value<T> execute(Context context) {
-        final var list = context.variable("this").map(Value::get)
+        final var list = nextArgument(context)
                 .orElseThrow(() -> new IllegalArgumentException("There is no argument to the command 'first"));
         switch (list) {
             case ListValue<?> lv -> {

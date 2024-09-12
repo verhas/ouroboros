@@ -16,12 +16,6 @@ import java.util.Map;
  * When it is a block, then the commands in the block are evaluated individually and the results are added to the list.
  * If the argument is a single command, then the command is evaluated and the result is the initial single element of the list.
  * <p>
- * The list is also an object and has methods:
- * <p>
- *
- * {%#replaceLines replace="~.*\"(\\w+)\".*~* $1~"
- * {%@snip list_methods%}%}
- * <p>
  * These are documented as commands, but you can invoke them as methods of the list object using the command `call`.
  *
  * {%EXAMPLE/list%}
@@ -34,7 +28,6 @@ public class CommandList<T> extends AbstractCommand<ListValue<T>> {
     public CommandList(Interpreter interpreter) {
         set(interpreter);
     }
-
 
     @Override
     public Value<ListValue<T>> execute(Context context) {
