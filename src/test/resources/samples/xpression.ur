@@ -44,16 +44,19 @@ It also stores the state of the source in the global variable $source as it was 
 needs to restore.
 """
 set fetch '{
+  set value {}
   while { $space } {}
   set src string source
+  set f '{ setg $source src setg $nextToken value }
+  set g '{ setn value string shift }
   switch
-  { setf $$ value string $keyword    }{ setg $source src setg $nextToken value }
-  { setf $$ value string $string     }{ setg $source src setg $nextToken value }
-  { setf $$ value string $number     }{ setg $source src setg $nextToken value }
-  { setf $$ value string eSymbol     }{ setg $source src setg $nextToken value }
-  { setf $$ value string $symbol     }{ setg $source src setg $nextToken value }
-  { setf $$ value string $block      }{ setg $source src setg $nextToken value }
-  { setf $$ value string $blockClose }{ setg $source src setg $nextToken value }
+  { g $keyword    } {f}
+  { g $string     } {f}
+  { g $number     } {f}
+  { g eSymbol     } {f}
+  { g $symbol     } {f}
+  { g $block      } {f}
+  { g $blockClose } {f}
   {}
 }
 

@@ -6,6 +6,7 @@ module com.javax0.ouroboros {
     exports com.javax0.ouroboros;
     exports com.javax0.ouroboros.interpreter;
     exports com.javax0.ouroboros.registries;
+    exports com.javax0.ouroboros.cmd;
     provides com.javax0.ouroboros.ContextAgent with LexerRegistry, CommandsRegistry, BlockFetchRegistry;
     uses com.javax0.ouroboros.ContextAgent;
 }

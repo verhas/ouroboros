@@ -4,10 +4,14 @@ import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.utils.SafeCast;
 
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ServiceLoader;
+
+import static java.nio.file.Files.readAllBytes;
 
 public class SimpleExecutor implements Interpreter {
     final ExecutorContext context = new ExecutorContext();
@@ -28,6 +32,29 @@ public class SimpleExecutor implements Interpreter {
     }
 
     private final List<List<Block>> stack = new ArrayList<>();
+
+    private final List<Path> includePath = new ArrayList<>();
+
+    public void includePath(Path path) {
+        includePath.add(path);
+    }
+
+    @Override
+    public void include(String fn) {
+        try {
+            for (var path : includePath) {
+                final var file = path.resolve(fn);
+                if (Files.exists(file)) {
+                    final var input = new String(readAllBytes(file));
+                    final var source = source();
+                    source.update(input + source);
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public Source source() {
@@ -145,7 +172,7 @@ public class SimpleExecutor implements Interpreter {
         source.set(this);
         Block result;
         while ((result = pop()) != null) {
-            context.set("$it",new SimpleValue<>(result));
+            context.set("$it", new SimpleValue<>(result));
             evaluate(context, result);
         }
     }

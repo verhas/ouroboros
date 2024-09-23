@@ -1,5 +1,7 @@
 package com.javax0.ouroboros;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -18,4 +20,11 @@ public class DebugUtils {
         return sb.toString();
     }
 
+    public static Path projectRoot() {
+        var p = Path.of(".").toAbsolutePath().normalize();
+        while (p != null && !Files.exists(p.resolve("pom.xml"))) {
+            p = p.getParent();
+        }
+        return p;
+    }
 }

@@ -79,6 +79,8 @@ public interface Interpreter {
      */
     void output(String message);
 
+    void include(String fn);
+
     interface State {
     }
 }
