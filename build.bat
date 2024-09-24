@@ -2,9 +2,6 @@
 REM Exit on error
 set -e
 
-REM Create packaging resources (if not already created)
-call setup-packaging-resources.bat
-
 REM Run jpackage to create the installer
 jpackage --input target ^
     --name ur ^
