@@ -32,7 +32,7 @@ public class TestMain {
                     """);
             final var args = new String[]{"--include=" + target.toAbsolutePath(), main.toAbsolutePath().toString()};
             App.main(args);
-            Assertions.assertEquals("this is the main file\nThis is an included file!", baos.toString());
+            Assertions.assertEquals("this is the main file\nThis is an included file!", baos.toString().replaceAll("\r", ""));
         } finally {
             System.setOut(save);
         }
@@ -46,7 +46,7 @@ public class TestMain {
              final var out = new PrintStream(baos)) {
             System.setOut(out);
             App.main(new String[]{"--version"});
-            Assertions.assertEquals("Ouroboros [ur] version 0.1\n", baos.toString());
+            Assertions.assertEquals("Ouroboros [ur] version 0.1\n", baos.toString().replaceAll("\r", ""));
         } finally {
             System.setOut(save);
         }
@@ -69,7 +69,7 @@ public class TestMain {
                       --output FILE  Write output to file.
                       --help         Display this help message and exit.
                     
-                    """, baos.toString());
+                    """, baos.toString().replaceAll("\r", ""));
         } finally {
             System.setOut(save);
         }
