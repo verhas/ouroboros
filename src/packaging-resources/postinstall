@@ -1,0 +1,2 @@
+#!/bin/sh
+ln -s "/Applications/ur.app/Contents/MacOS/ur" /usr/local/bin/ur

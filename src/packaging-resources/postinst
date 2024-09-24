@@ -1,0 +1,2 @@
+#!/bin/sh
+ln -s /opt/ur/bin/ur /usr/local/bin/ur
