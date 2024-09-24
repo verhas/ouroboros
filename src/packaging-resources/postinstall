@@ -1,2 +1,5 @@
 #!/bin/sh
+if [ -e /usr/local/bin/ur ]; then
+    rm /usr/local/bin/ur
+fi
 ln -s "/Applications/ur.app/Contents/MacOS/ur" /usr/local/bin/ur

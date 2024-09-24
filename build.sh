@@ -22,9 +22,6 @@ case "$(uname -s)" in
     Darwin*)
         create_package pkg
         ;;
-    CYGWIN*|MINGW32*|MSYS*|MINGW*)
-        create_package exe
-        ;;
     *)
         echo "Unsupported operating system"
         exit 1
