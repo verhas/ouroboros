@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CommandSource extends AbstractCommand<Source> {
 
     public CommandSource(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
 

@@ -22,7 +22,7 @@ import java.util.Optional;
  */
 public class CommandSet extends AbstractCommand<Object> {
     public CommandSet(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

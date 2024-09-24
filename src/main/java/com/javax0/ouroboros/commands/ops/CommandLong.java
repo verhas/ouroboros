@@ -19,7 +19,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandLong extends AbstractCommand<Long> {
 
     public CommandLong(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

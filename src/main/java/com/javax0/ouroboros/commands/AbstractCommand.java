@@ -13,10 +13,9 @@ import java.util.function.Function;
 public abstract class AbstractCommand<T> implements Command<T> {
 
 
-    protected Interpreter interpreter;
+    final protected Interpreter interpreter;
 
-    @Override
-    public void set(Interpreter interpreter) {
+    protected AbstractCommand(Interpreter interpreter) {
         this.interpreter = interpreter;
     }
 

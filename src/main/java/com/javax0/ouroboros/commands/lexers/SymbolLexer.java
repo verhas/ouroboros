@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.commands.lexers;
 
 import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
@@ -20,6 +21,10 @@ import com.javax0.ouroboros.commands.base.BareWord;
  * @param <T>
  */
 public class SymbolLexer<T> extends AbstractCommand<BareWord<T>> {
+
+    public SymbolLexer(Interpreter interpreter) {
+        super(interpreter);
+    }
 
     @Override
     public Value<BareWord<T>> execute(Context context) {

@@ -15,7 +15,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  */
 public class CommandToupper extends AbstractCommand<String> {
     public CommandToupper(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

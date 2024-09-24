@@ -9,8 +9,6 @@ import java.util.List;
  */
 public interface Command<T> extends Block {
 
-    void set(Interpreter interpreter);
-
     /**
      * Execute the command.
      *

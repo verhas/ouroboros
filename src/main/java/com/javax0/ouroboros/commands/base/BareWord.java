@@ -20,7 +20,7 @@ public class BareWord<T> extends AbstractCommand<T> implements Value<String> {
     private final String word;
 
     public BareWord(Interpreter interpreter, final String value) {
-        set(interpreter);
+super(interpreter);
         this.word = value;
     }
 

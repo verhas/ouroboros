@@ -6,9 +6,6 @@ import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.Value;
 
 public class CommandBlockClose implements Command<Void> {
-    @Override
-    public void set(Interpreter interpreter) {
-    }
 
     @Override
     public Value<Void> execute(Context context) {

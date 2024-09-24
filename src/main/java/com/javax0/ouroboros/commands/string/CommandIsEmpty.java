@@ -15,7 +15,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandIsEmpty extends AbstractCommand<Boolean> {
 
     public CommandIsEmpty(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
     @Override
     public Value<Boolean> execute(Context context) {

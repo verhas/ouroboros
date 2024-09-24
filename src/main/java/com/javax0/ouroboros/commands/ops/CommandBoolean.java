@@ -22,7 +22,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandBoolean extends AbstractCommand<Boolean> {
 
     public CommandBoolean(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

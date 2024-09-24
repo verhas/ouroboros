@@ -56,7 +56,7 @@ import java.util.Optional;
  */
 public class CommandSetf extends AbstractCommand<Object> {
     public CommandSetf(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

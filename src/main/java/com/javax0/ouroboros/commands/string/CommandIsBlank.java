@@ -14,7 +14,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  */
 public class CommandIsBlank extends AbstractCommand<Boolean> {
     public CommandIsBlank(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
 

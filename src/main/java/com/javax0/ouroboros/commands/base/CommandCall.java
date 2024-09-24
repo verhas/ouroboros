@@ -26,7 +26,7 @@ import java.util.Optional;
  */
 public class CommandCall<T> extends AbstractCommand<T> {
     public CommandCall(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.commands.lexers;
 
 import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
@@ -10,7 +11,7 @@ import com.javax0.ouroboros.commands.base.BareWord;
  * command_lexer
  * {%COMMAND lexers%}
  * <p>
- * Lexical analysers are also commands in the interpreter.
+ * Lexical analyzers are also commands in the interpreter.
  * They read the source code and decide if they can read a token from the source.
  * If they can, they read the token and return it after modifying the source, chopping off the consumed part.
  * <p>
@@ -40,6 +41,10 @@ import com.javax0.ouroboros.commands.base.BareWord;
  * @param <T>
  */
 public class BareWordLexer<T> extends AbstractCommand<BareWord<T>> {
+
+    public BareWordLexer(Interpreter interpreter) {
+        super(interpreter);
+    }
 
     @Override
     public Value<BareWord<T>> execute(Context context) {

@@ -24,7 +24,7 @@ import com.javax0.ouroboros.utils.SafeCast;
  */
 public class CommandListInsert<T> extends AbstractCommand<T> {
     public CommandListInsert(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

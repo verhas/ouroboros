@@ -21,7 +21,7 @@ import java.util.Optional;
 public class CommandWhile<T> extends AbstractCommand<T> {
 
     public CommandWhile(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

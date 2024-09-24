@@ -15,7 +15,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  */
 public class CommandReplaceFirst extends AbstractCommand<String> {
     public CommandReplaceFirst(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

@@ -20,7 +20,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  */
 public class CommandSubstring extends AbstractCommand<String> {
     public CommandSubstring(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

@@ -23,7 +23,7 @@ import java.util.List;
 public class CommandEval<T> extends AbstractCommand<T> {
 
     public CommandEval(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

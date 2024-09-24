@@ -32,7 +32,7 @@ import java.math.BigInteger;
 public abstract class AbstractCommandBinop<T> extends AbstractCommand<T> {
 
     public AbstractCommandBinop(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     T binop(Long left, Long right) {

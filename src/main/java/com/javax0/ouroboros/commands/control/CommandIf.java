@@ -24,7 +24,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandIf<T> extends AbstractCommand<T> {
 
     public CommandIf(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

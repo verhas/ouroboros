@@ -17,7 +17,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandReplaceAll extends AbstractCommand<String> {
 
     public CommandReplaceAll(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
     @Override
     public Value<String> execute(Context context) {

@@ -151,15 +151,24 @@ public class SimpleExecutor implements Interpreter {
         return new SimpleState(stack.removeLast(), context.up());
     }
 
-    // TODO: limit the stack recursion in case there is some hiccup with the tree structure
+    private int recursiveDepth = 0;
+
     @Override
     public <T> Value<T> evaluate(Context context, Block block) {
         if (block == null) {
             return null;
         }
         if (block instanceof Command<?> command) {
-            command.set(this);
-            return (Value<T>) command.execute(context);
+            try {
+                final var maxDepth = context.variable("$maxCallStackSize").map(Value::get).map(SafeCast.to(it -> (Long) it)).orElse(1000L);
+                recursiveDepth++;
+                if (recursiveDepth > maxDepth) {
+                    throw new IllegalArgumentException("Recursion depth exceeded: " + recursiveDepth);
+                }
+                return (Value<T>) command.execute(context);
+            }finally {
+                recursiveDepth--;
+            }
         } else {
             throw new IllegalArgumentException("Block is not a command: " + block);
         }
@@ -169,7 +178,6 @@ public class SimpleExecutor implements Interpreter {
     public void execute(String input) {
         final var source = new Source(this, input);
         push(source);
-        source.set(this);
         Block result;
         while ((result = pop()) != null) {
             context.set("$it", new SimpleValue<>(result));

@@ -20,7 +20,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  */
 public class CommandListLast<T> extends AbstractCommand<T> {
     public CommandListLast(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

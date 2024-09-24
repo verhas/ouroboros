@@ -41,7 +41,7 @@ public class CommandBlock<T> extends AbstractCommand<T> {
     }
 
     public CommandBlock(Interpreter interpreter, Block block) {
-        this.interpreter = interpreter;
+        super(interpreter);
         this.block = block;
     }
 

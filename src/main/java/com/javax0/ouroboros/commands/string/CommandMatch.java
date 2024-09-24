@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public class CommandMatch extends AbstractCommand<Boolean> {
     public CommandMatch(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
     @Override
     public Value<Boolean> execute(Context context) {

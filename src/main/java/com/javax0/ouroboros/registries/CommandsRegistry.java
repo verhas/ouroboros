@@ -1,6 +1,9 @@
 package com.javax0.ouroboros.registries;
 
-import com.javax0.ouroboros.*;
+import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.ContextAgent;
+import com.javax0.ouroboros.Interpreter;
+import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.commands.base.*;
 import com.javax0.ouroboros.commands.control.CommandIf;
 import com.javax0.ouroboros.commands.control.CommandSwitch;
@@ -9,84 +12,106 @@ import com.javax0.ouroboros.commands.list.*;
 import com.javax0.ouroboros.commands.ops.*;
 import com.javax0.ouroboros.commands.string.*;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class CommandsRegistry implements ContextAgent {
+
+    private static class Registerer {
+        final Context context;
+        final Interpreter interpreter;
+
+        private Registerer(Context context, Interpreter interpreter) {
+            this.context = context;
+            this.interpreter = interpreter;
+        }
+
+        void command(String name, Class<?> commandClass) {
+            try {
+                final var command = commandClass.getConstructor(Interpreter.class).newInstance(interpreter);
+                context.set(name, new SimpleValue<>(command));
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                     InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        void register(String name, Object obj) {
+            context.set(name, new SimpleValue<>(obj));
+        }
+    }
+
+
     @Override
     public void register(Context context, Interpreter interpreter) {
-        context.<Command<?>>set("puts", new SimpleValue<>(new CommandPuts(interpreter)));
-        context.<Command<?>>set("add", new SimpleValue<>(new CommandAdd<>(interpreter)));
-        context.<Command<?>>set("sub", new SimpleValue<>(new CommandSub<>(interpreter)));
-        context.<Command<?>>set("mul", new SimpleValue<>(new CommandMul<>(interpreter)));
-        context.<Command<?>>set("div", new SimpleValue<>(new CommandDiv<>(interpreter)));
-        context.<Command<?>>set("mod", new SimpleValue<>(new CommandMod<>(interpreter)));
-        context.<Command<?>>set("eq", new SimpleValue<>(new CommandEq(interpreter)));
-        context.<Command<?>>set("ne", new SimpleValue<>(new CommandNe(interpreter)));
-        context.<Command<?>>set("le", new SimpleValue<>(new CommandLe(interpreter)));
-        context.<Command<?>>set("ge", new SimpleValue<>(new CommandGe(interpreter)));
-        context.<Command<?>>set("lt", new SimpleValue<>(new CommandLt(interpreter)));
-        context.<Command<?>>set("gt", new SimpleValue<>(new CommandGt(interpreter)));
-        context.<Command<?>>set("and", new SimpleValue<>(new CommandAnd(interpreter)));
-        context.<Command<?>>set("or", new SimpleValue<>(new CommandOr(interpreter)));
-        context.<Command<?>>set("if", new SimpleValue<>(new CommandIf<>(interpreter)));
-        context.<Command<?>>set("switch", new SimpleValue<>(new CommandSwitch<>(interpreter)));
-        context.<Command<?>>set("while", new SimpleValue<>(new CommandWhile<>(interpreter)));
-        context.<Command<?>>set("include", new SimpleValue<>(new CommandInclude(interpreter)));
-        context.<Command<?>>set("error", new SimpleValue<>(new CommandError(interpreter)));
+        var registerer = new Registerer(context, interpreter);
+        registerer.command("puts", CommandPuts.class);
+        registerer.command("add", CommandAdd.class);
+        registerer.command("sub",  CommandSub.class);
+        registerer.command("mul",  CommandMul.class);
+        registerer.command("div",  CommandDiv.class);
+        registerer.command("mod",  CommandMod.class);
+        registerer.command("eq",  CommandEq.class);
+        registerer.command("ne",  CommandNe.class);
+        registerer.command("le",  CommandLe.class);
+        registerer.command("ge",  CommandGe.class);
+        registerer.command("lt",  CommandLt.class);
+        registerer.command("gt",  CommandGt.class);
+        registerer.command("and",  CommandAnd.class);
+        registerer.command("or",  CommandOr.class);
+        registerer.command("if",  CommandIf.class);
+        registerer.command("switch",  CommandSwitch.class);
+        registerer.command("while",  CommandWhile.class);
+        registerer.command("include",  CommandInclude.class);
+        registerer.command("error",  CommandError.class);
+        registerer.command("set",  CommandSet.class);
+        registerer.command("setg",  CommandSetg.class);
+        registerer.command("setn",  CommandSetn.class);
+        registerer.command("setf",  CommandSetf.class);
+        registerer.command("sets",  CommandSets.class);
+        registerer.command("field",  CommandField.class);
+        registerer.command("call",  CommandCall.class);
+        registerer.command("source",  CommandSource.class);
+        registerer.command("length",  CommandLength.class);
+        registerer.command("indexOf",  CommandIndexOf.class);
+        registerer.command("isBlank",  CommandIsBlank.class);
+        registerer.command("isEmpty",  CommandIsEmpty.class);
+        registerer.command("replace",  CommandReplace.class);
+        registerer.command("replaceAll",  CommandReplaceAll.class);
+        registerer.command("replaceFirst",  CommandReplaceFirst.class);
+        registerer.command("substring",  CommandSubstring.class);
+        registerer.command("lc",  CommandTolower.class);
+        registerer.command("uc",  CommandToupper.class);
+        registerer.command("trim",  CommandTrim.class);
+        registerer.command("fixup",  CommandFixup.class);
+        registerer.command("BigInteger",  CommandBigInteger.class);
+        registerer.command("BigDecimal",  CommandBigDecimal.class);
+        registerer.command("long",  CommandLong.class);
+        registerer.command("double",  CommandDouble.class);
+        registerer.command("bool",  CommandBoolean.class);
+        registerer.command("not",  CommandNot.class);
+        registerer.command("string",  CommandString.class);
+        registerer.command("bw",  CommandBW.class);
+        registerer.command("quote",  CommandQuote.class);
+        registerer.command("closure",  CommandClosure.class);
+        registerer.command("'",  CommandQuote.class);
+        registerer.command("list",  CommandList.class);
+        registerer.command("first",  CommandListFirst.class);
+        registerer.command("car",  CommandListFirst.class);
+        registerer.command("rest",  CommandListRest.class);
+        registerer.command("cdr",  CommandListRest.class);
+        registerer.command("insert",  CommandListInsert.class);
+        registerer.command("at",  CommandAt.class);
+        registerer.command("split",  CommandListSplit.class);
+        registerer.command("setl",  CommandListSet.class);
+        registerer.command("last",  CommandListLast.class);
+        registerer.command("shift",  CommandShift.class);
+        registerer.command("arg",  CommandArg.class);
+        registerer.command("eval",  CommandEval.class);
+        registerer.command("object",  CommandObject.class);
+        registerer.command("copy",  CommandCopy.class);
 
-        context.<Command<?>>set("set", new SimpleValue<>(new CommandSet(interpreter)));
-        context.<Command<?>>set("setg", new SimpleValue<>(new CommandSetg(interpreter)));
-        context.<Command<?>>set("setn", new SimpleValue<>(new CommandSetn(interpreter)));
-        context.<Command<?>>set("setf", new SimpleValue<>(new CommandSetf(interpreter)));
-        context.<Command<?>>set("sets", new SimpleValue<>(new CommandSets(interpreter)));
-
-        context.<Command<?>>set("field", new SimpleValue<>(new CommandField<>(interpreter)));
-        context.<Command<?>>set("call", new SimpleValue<>(new CommandCall<>(interpreter)));
-        context.<Command<?>>set("source", new SimpleValue<>(new CommandSource(interpreter)));
-
-        context.<Command<?>>set("length", new SimpleValue<>(new CommandLength(interpreter)));
-        context.<Command<?>>set("indexOf", new SimpleValue<>(new CommandIndexOf(interpreter)));
-        context.<Command<?>>set("isBlank", new SimpleValue<>(new CommandIsBlank(interpreter)));
-        context.<Command<?>>set("isEmpty", new SimpleValue<>(new CommandIsEmpty(interpreter)));
-        context.<Command<?>>set("replace", new SimpleValue<>(new CommandReplace(interpreter)));
-        context.<Command<?>>set("replaceAll", new SimpleValue<>(new CommandReplaceAll(interpreter)));
-        context.<Command<?>>set("replaceFirst", new SimpleValue<>(new CommandReplaceFirst(interpreter)));
-        context.<Command<?>>set("substring", new SimpleValue<>(new CommandSubstring(interpreter)));
-        context.<Command<?>>set("lc", new SimpleValue<>(new CommandTolower(interpreter)));
-        context.<Command<?>>set("uc", new SimpleValue<>(new CommandToupper(interpreter)));
-        context.<Command<?>>set("trim", new SimpleValue<>(new CommandTrim(interpreter)));
-
-        context.<Command<?>>set("fixup", new SimpleValue<>(new CommandFixup(interpreter)));
-
-
-        context.<Command<?>>set("BigInteger", new SimpleValue<>(new CommandBigInteger(interpreter)));
-        context.<Command<?>>set("BigDecimal", new SimpleValue<>(new CommandBigDecimal(interpreter)));
-        context.<Command<?>>set("long", new SimpleValue<>(new CommandLong(interpreter)));
-        context.<Command<?>>set("double", new SimpleValue<>(new CommandDouble(interpreter)));
-        context.<Command<?>>set("bool", new SimpleValue<>(new CommandBoolean(interpreter)));
-        context.<Command<?>>set("not", new SimpleValue<>(new CommandNot(interpreter)));
-        context.<Command<?>>set("string", new SimpleValue<>(new CommandString(interpreter)));
-        context.<Command<?>>set("bw", new SimpleValue<>(new CommandBW<>(interpreter)));
-        context.<Command<?>>set("quote", new SimpleValue<>(new CommandQuote<>(interpreter)));
-        context.<Command<?>>set("closure", new SimpleValue<>(new CommandClosure<>(interpreter)));
-        context.<Command<?>>set("'", new SimpleValue<>(new CommandQuote<>(interpreter)));
-        context.<Command<?>>set("list", new SimpleValue<>(new CommandList<>(interpreter)));
-        context.<Command<?>>set("first", new SimpleValue<>(new CommandListFirst<>(interpreter)));
-        context.<Command<?>>set("car", new SimpleValue<>(new CommandListFirst<>(interpreter)));
-        context.<Command<?>>set("rest", new SimpleValue<>(new CommandListRest<>(interpreter)));
-        context.<Command<?>>set("cdr", new SimpleValue<>(new CommandListRest<>(interpreter)));
-        context.<Command<?>>set("insert", new SimpleValue<>(new CommandListInsert<>(interpreter)));
-        context.<Command<?>>set("at", new SimpleValue<>(new CommandAt<>(interpreter)));
-        context.<Command<?>>set("split", new SimpleValue<>(new CommandListSplit<>(interpreter)));
-        context.<Command<?>>set("setl", new SimpleValue<>(new CommandListSet<>(interpreter)));
-        context.<Command<?>>set("last", new SimpleValue<>(new CommandListLast<>(interpreter)));
-
-        context.<Command<?>>set("shift", new SimpleValue<>(new CommandShift<>(interpreter)));
-        context.<Command<?>>set("arg", new SimpleValue<>(new CommandArg<>(interpreter)));
-        context.<Command<?>>set("eval", new SimpleValue<>(new CommandEval<>(interpreter)));
-        context.<Command<?>>set("object", new SimpleValue<>(new CommandObject(interpreter)));
-        context.<Command<?>>set("copy", new SimpleValue<>(new CommandCopy<>(interpreter)));
-
-        context.set("null", new SimpleValue<>(null));
-        context.set("true", new SimpleValue<>(true));
-        context.set("false", new SimpleValue<>(false));
+        registerer.register("null", null);
+        registerer.register("true", true);
+        registerer.register("false", false);
     }
 }

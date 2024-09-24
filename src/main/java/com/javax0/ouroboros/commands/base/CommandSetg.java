@@ -14,7 +14,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  */
 public class CommandSetg extends AbstractCommand<Object> {
     public CommandSetg(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

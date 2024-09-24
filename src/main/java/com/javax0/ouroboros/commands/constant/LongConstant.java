@@ -12,6 +12,7 @@ import com.javax0.ouroboros.SimpleValue;
  */
 public class LongConstant extends Constant<Long> implements NumericConstant {
     public LongConstant(final Long value) {
+        super(null);
         this.value = new SimpleValue<>(value);
     }
 

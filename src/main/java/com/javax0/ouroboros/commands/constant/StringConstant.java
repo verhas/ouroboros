@@ -12,6 +12,7 @@ import com.javax0.ouroboros.SimpleValue;
  */
 public class StringConstant extends Constant<String> {
     public StringConstant(final String value) {
+        super(null);
         this.value = new SimpleValue<>(value);
     }
 

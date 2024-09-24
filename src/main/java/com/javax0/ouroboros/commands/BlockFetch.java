@@ -16,7 +16,7 @@ import com.javax0.ouroboros.commands.list.ListValue;
 public class BlockFetch extends AbstractCommand<Block> {
 
     public BlockFetch(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

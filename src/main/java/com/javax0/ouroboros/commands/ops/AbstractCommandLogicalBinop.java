@@ -5,7 +5,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 
 public abstract class AbstractCommandLogicalBinop extends AbstractCommand<Boolean> {
     public AbstractCommandLogicalBinop(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     abstract boolean binop(boolean left, boolean right);

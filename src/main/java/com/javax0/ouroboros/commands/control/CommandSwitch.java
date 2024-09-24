@@ -32,7 +32,7 @@ import java.util.Optional;
 public class CommandSwitch<T> extends AbstractCommand<T> {
 
     public CommandSwitch(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

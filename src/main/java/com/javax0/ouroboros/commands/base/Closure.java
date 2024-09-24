@@ -13,9 +13,9 @@ public class Closure<T> extends AbstractCommand<T> {
     final ObjectValue variables;
 
     public Closure(Interpreter interpreter, Block code, ObjectValue variables) {
+        super(interpreter);
         this.code = code;
         this.variables = variables;
-        set(interpreter);
     }
 
     @Override

@@ -22,7 +22,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  */
 public class CommandListSplit<T> extends AbstractCommand<ListValue<ListValue<T>>> {
     public CommandListSplit(Interpreter interpreter) {
-        set(interpreter);
+        super(interpreter);
     }
 
     @Override

@@ -22,7 +22,7 @@ import com.javax0.ouroboros.utils.SafeCast;
 
 public class CommandCopy<T> extends AbstractCommand<T> {
     public CommandCopy(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

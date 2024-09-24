@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class CommandFixup extends AbstractCommand<Void> {
 
     public CommandFixup(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.commands.lexers;
 
 import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
@@ -31,6 +32,10 @@ public class NumericLexer extends AbstractCommand<NumericConstant> {
             Pattern.compile("^([+-]?0[Xx][\\da-fA-F]*(?:\\.[\\da-fA-F]*)?[pP][+-]?\\d+[fFdD]?)")
             ,
     };
+
+    public NumericLexer(Interpreter interpreter) {
+        super(interpreter);
+    }
 
 
     public static Long parseLong(String s) {

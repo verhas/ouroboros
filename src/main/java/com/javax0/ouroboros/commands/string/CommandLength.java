@@ -13,7 +13,7 @@ import com.javax0.ouroboros.commands.list.ListValue;
  */
 public class CommandLength extends AbstractCommand<Long> {
     public CommandLength(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
 

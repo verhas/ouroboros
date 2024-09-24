@@ -15,7 +15,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandSets extends AbstractCommand<Void> {
 
     public CommandSets(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
 

@@ -29,7 +29,7 @@ import java.util.Optional;
  */
 public class CommandObject extends AbstractCommand<ObjectValue> {
     public CommandObject(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

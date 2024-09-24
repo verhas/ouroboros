@@ -21,7 +21,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandQuote<T> extends AbstractCommand<T> {
 
     public CommandQuote(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

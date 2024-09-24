@@ -15,7 +15,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandTrim extends AbstractCommand<String> {
 
     public CommandTrim(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
     @Override
     public Value<String> execute(Context context) {

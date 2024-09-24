@@ -41,7 +41,7 @@ import com.javax0.ouroboros.utils.SafeCast;
 public class CommandClosure<T> extends AbstractCommand<Closure<T>> {
 
     public CommandClosure(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

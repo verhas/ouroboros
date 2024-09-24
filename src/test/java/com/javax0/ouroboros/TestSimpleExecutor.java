@@ -810,6 +810,7 @@ public class TestSimpleExecutor {
                 b c
                 """, "hilow");
     }
+
     @DisplayName("test closure redefining puts")
     @Test
     void testClosurePutsRedef() throws Exception {
@@ -818,6 +819,27 @@ public class TestSimpleExecutor {
                 puts "hi"
                 puts "low"
                 """, "hi\nlow\n");
+    }
+
+    @DisplayName("test max call stack size")
+    @Test
+    void testInfiniteRecursion() throws Exception {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> AssertUtils.output("""
+                set f '{ f }
+                f
+                """));
+    }
+
+    @DisplayName("test limited max call stack size")
+    @Test
+    void testLimitedRecursion() throws Exception {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> AssertUtils.output("""
+                set a '{ }
+                set b '{ b }
+                set c '{ b }
+                set $maxCallStackSize 2
+                c
+                """));
     }
 
 }

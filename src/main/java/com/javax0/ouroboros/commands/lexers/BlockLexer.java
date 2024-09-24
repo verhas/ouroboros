@@ -25,6 +25,10 @@ import java.util.Optional;
  */
 public class BlockLexer<T> extends AbstractCommand<CommandBlock<T>> {
 
+    public BlockLexer(Interpreter interpreter) {
+        super(interpreter);
+    }
+
     @Override
     public Value<CommandBlock<T>> execute(Context context) {
         final var source = interpreter.source();

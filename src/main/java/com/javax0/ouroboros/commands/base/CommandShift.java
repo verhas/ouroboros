@@ -21,7 +21,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandShift<T> extends AbstractCommand<T> {
 
     public CommandShift(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

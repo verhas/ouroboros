@@ -18,7 +18,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  */
 public class CommandAt<T> extends AbstractCommand<T> {
     public CommandAt(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

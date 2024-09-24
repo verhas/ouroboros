@@ -26,7 +26,7 @@ import java.util.Map;
 public class CommandList<T> extends AbstractCommand<ListValue<T>> {
 
     public CommandList(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

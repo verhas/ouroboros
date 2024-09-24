@@ -15,7 +15,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
  */
 public class CommandIndexOf extends AbstractCommand<Long> {
     public CommandIndexOf(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
 

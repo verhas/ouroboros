@@ -17,7 +17,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandDouble extends AbstractCommand<Double> {
 
     public CommandDouble(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

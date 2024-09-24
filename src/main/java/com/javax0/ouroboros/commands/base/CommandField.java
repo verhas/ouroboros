@@ -22,7 +22,7 @@ import java.util.Optional;
  */
 public class CommandField<T> extends AbstractCommand<T> {
     public CommandField(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

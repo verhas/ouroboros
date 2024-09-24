@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.commands.lexers;
 
 import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
@@ -21,6 +22,10 @@ import com.javax0.ouroboros.commands.pseudo.CommandBlockClose;
 public class BlockCloseLexer<T> extends AbstractCommand<CommandBlockClose> {
 
     private static final Value<CommandBlockClose> instance = new SimpleValue<>(new CommandBlockClose());
+
+    public BlockCloseLexer(Interpreter interpreter) {
+        super(interpreter);
+    }
 
     @Override
     public Value<CommandBlockClose> execute(Context context) {

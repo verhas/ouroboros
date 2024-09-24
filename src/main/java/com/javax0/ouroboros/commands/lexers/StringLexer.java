@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.commands.lexers;
 
 import com.javax0.ouroboros.Context;
+import com.javax0.ouroboros.Interpreter;
 import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
@@ -21,6 +22,10 @@ public class StringLexer extends AbstractCommand<StringConstant> {
     public static final String MULTI_LINE_STRING_DELIMITER = "\"\"\"";
     private static final int MLSD_LENGTH = MULTI_LINE_STRING_DELIMITER.length();
     private static final char ENCLOSING_CH = '"';
+
+    public StringLexer(Interpreter interpreter) {
+        super(interpreter);
+    }
 
     private static String getString(StringBuilder input) {
         if (input.length() < 2) throw new IllegalArgumentException("String has to be at least two characters long.");

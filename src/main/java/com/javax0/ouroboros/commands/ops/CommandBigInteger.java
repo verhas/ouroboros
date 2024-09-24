@@ -22,7 +22,7 @@ import java.math.BigInteger;
 public class CommandBigInteger extends AbstractCommand<BigInteger> {
 
     public CommandBigInteger(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

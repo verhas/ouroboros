@@ -16,7 +16,7 @@ import com.javax0.ouroboros.commands.AbstractCommand;
 public class CommandNot extends AbstractCommand<Boolean> {
 
     public CommandNot(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override

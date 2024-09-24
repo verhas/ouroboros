@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 public class CommandBigDecimal extends AbstractCommand<BigDecimal> {
 
     public CommandBigDecimal(Interpreter interpreter) {
-        set(interpreter);
+super(interpreter);
     }
 
     @Override
