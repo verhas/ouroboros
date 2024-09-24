@@ -73,6 +73,6 @@ jobs:
       - name: "Upload Package Artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: ur-package-windows
+          name: ur-package-macos
           path: |
             output/*.pkg

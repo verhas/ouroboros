@@ -1,8 +1,4 @@
 @echo off
-REM Exit on error
-set -e
-
-REM Run jpackage to create the installer
 jpackage --input target ^
     --name ur ^
     --app-version 1.0.0 ^
