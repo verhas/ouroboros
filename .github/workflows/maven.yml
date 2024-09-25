@@ -76,8 +76,8 @@ jobs:
           name: ur-package-macos
           path: |
             output/*.pkg
-  macos-latest-large:
-    runs-on: macos-latest-large
+  macos-13:
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 21
