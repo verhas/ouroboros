@@ -26,9 +26,9 @@ public interface Interpreter {
     void execute(String input);
 
     /**
-     * Push a block on the stack. Commands usually call this method when they fetched too many blocks from the stack.
-     * For example an 'if' command may fetch the condition block and the then block from the stack. After that it
-     * fetches the next block, which may be an 'else' or 'elseif' string, but if it is not, then the command has to
+     * Push a block on the stack. Commands usually call this method after they fetched too many blocks from the stack.
+     * For example, an implementation of the 'if' command may fetch the condition block and the then block from the stack.
+     * After that it fetches the next block, which may be an 'else' or 'elseif' string, but if it is not, then the command has to
      * push back the block that was fetched as the next block.
      * <p>
      * Commands can create arbitrary blocks to push back. It is not a must that they push back the block that was

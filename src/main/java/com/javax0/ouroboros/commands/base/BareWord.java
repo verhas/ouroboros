@@ -36,7 +36,7 @@ super(interpreter);
 
     @Override
     public Value<T> execute(Context context) {
-        final var object = context.variable(word).orElseThrow(() -> new IllegalArgumentException("Variable " + word + " is not defined")).get();
+        final var object = context.variable(word).orElseThrow(() -> new IllegalArgumentException("Variable '" + word + "' is not defined")).get();
         return switch (object) {
             case Command<?> command -> (Value<T>) command.execute(context);
             case Value<?> value -> (Value<T>) new SimpleValue<>(value);

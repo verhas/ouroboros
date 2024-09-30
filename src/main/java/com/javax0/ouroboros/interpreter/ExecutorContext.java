@@ -15,6 +15,7 @@ class ExecutorContext implements Context {
     ExecutorContext() {
         stack.add(new ObjectValue.Implementation());
         stack.getFirst().fields().put("$", new SimpleValue<>(stack.getFirst()));
+        stack.getFirst().fields().put("$stack", new SimpleValue<>(stack));
     }
 
     @Override

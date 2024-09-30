@@ -639,13 +639,14 @@ public class TestSimpleExecutor {
         assertOutput("""
                 set fetch '{
                   while { $space } {}
+                  set value {}
                   switch
-                  { setf $$ value string $keyword }{ value }
-                  { setf $$ value string $string }{ value }
-                  { setf $$ value string $number }{ value }
-                  { setf $$ value string $symbol }{ value }
-                  { setf $$ value string $block }{ value }
-                  { setf $$ value string $blockClose }{ value }
+                  { setn value string $keyword }{ value }
+                  { setn value string $string }{ value }
+                  { setn value string $number }{ value }
+                  { setn value string $block }{ value }
+                  { setn value string $blockClose }{ value }
+                  { setn value string $symbol }{ value }
                   {}
                 }
                 {
@@ -839,6 +840,17 @@ public class TestSimpleExecutor {
                 set c '{ b }
                 set $maxCallStackSize 2
                 c
+                """));
+    }
+
+
+    @DisplayName("test access to program")
+    @Test
+    void testProgramAccess() throws Exception {
+        Assertions.assertEquals("7",AssertUtils.output("""
+                fixup
+                setl first $program 0 7
+                puts 55
                 """));
     }
 

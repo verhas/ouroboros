@@ -1,9 +1,13 @@
 package com.javax0.ouroboros.interpreter;
 
 import com.javax0.ouroboros.*;
+import com.javax0.ouroboros.commands.AbstractCommand;
+import com.javax0.ouroboros.commands.constant.*;
 import com.javax0.ouroboros.utils.SafeCast;
 
 import java.io.PrintStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -18,6 +22,17 @@ public class SimpleExecutor implements Interpreter {
 
     public SimpleExecutor() {
         ServiceLoader.load(ContextAgent.class).forEach(agent -> agent.register(context, this));
+/*
+snippet var.program
+=H `$program`
+
+This variable references the actual code.
+The code is a list of list of blocks `List<List<Block>>`.
+Using this variable, you can read and manipulate the code that was not executed yet
+
+end snippet
+ */
+        context.set("$program", new SimpleValue<>(stack));
     }
 
     private PrintStream out = System.out;
@@ -31,7 +46,7 @@ public class SimpleExecutor implements Interpreter {
         out.print(message);
     }
 
-    private final List<List<Block>> stack = new ArrayList<>();
+    private final List<List<Object>> stack = new ArrayList<>();
 
     private final List<Path> includePath = new ArrayList<>();
 
@@ -89,13 +104,15 @@ public class SimpleExecutor implements Interpreter {
             return null;
         }
         final var local = stack.getLast();
-        final var last = local.getLast();
+        final Object last = local.getLast();
         if (last instanceof Source) {
             final var fetch = getFetcher();
             return Optional.ofNullable(fetch.execute(context)).map(Value::get).orElse(null);
         }
-        return local.removeLast();
+        local.removeLast();
+        return AbstractCommand.convertToBLock(last);
     }
+
 
     private void purgeStack() {
         if (!stack.isEmpty()) {
@@ -130,7 +147,7 @@ public class SimpleExecutor implements Interpreter {
         return context.down();
     }
 
-    private record SimpleState(List<Block> blocks, ObjectValue variables) implements State {
+    private record SimpleState(List<Object> blocks, ObjectValue variables) implements State {
     }
 
     @Override
@@ -166,7 +183,7 @@ public class SimpleExecutor implements Interpreter {
                     throw new IllegalArgumentException("Recursion depth exceeded: " + recursiveDepth);
                 }
                 return (Value<T>) command.execute(context);
-            }finally {
+            } finally {
                 recursiveDepth--;
             }
         } else {

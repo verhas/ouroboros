@@ -112,6 +112,9 @@ Variables can be assigned with the `set` command.
 Variables are always local to the block they are defined in.
 If you want to redefine a variable at the top level, you can use the `setg` command.
 The name `setg` stands for "set global".
+Using `set` on the global level is the same as `setg`.
+
+When you use the command `setn` update a variable already defined in a different block, it will update the variable in the block where it was defined.
 
 You can also set a field of an object with the `setf` command.
 In this case the first parameter is the object, and the second is the field name followed by the value.
@@ -202,6 +205,9 @@ Finally, we print the field `name` of the object using the command `field` and `
 The language handles any data type that commands can handle.
 The commands that come with the interpreter build in handle `Long`, `Double`, `String` and `Boolean`, objects and lists off the shelf.
 
+`BigDecimal` and `BigInteger` are also supported, but you cannot specify literal constants for them.
+To do that,am dededededededededededed you can alter the lexical analyzer or simply use the commands `BigInteger` and `BigDecimal`.
+These each consume a string argument and return the corresponding object.
 
 === Blocks
 
@@ -271,7 +277,7 @@ It will result in an exception:
 [source]
 ----
 OUTPUT BEFORE ERROR: 
-ERROR: Variable a is not defined
+ERROR: Variable 'a' is not defined
 ----
 
 
@@ -842,6 +848,7 @@ Finally, if you find it cumbersome to write `clsoure` and `'` all the time, you 
 [source]
 ----
 set ` '{ closure arg }
+setg $symbolChars add $symbolChars "`"
 set puts `{puts "--" puts shift puts "--\n" }
 puts "Hello, World!"
 puts "Hello, Ouroboros!"
@@ -861,6 +868,11 @@ will result in
 
 ----
 
+
+In the example, the `$symbolChars` gets the back-tick ``pass:[`]`` character appended to the value.
+This global variable contains the charatcers that should be interpteted as symbols alone.
+This will make the use of ``pass:[`{]`` as two symbols instead of one and allows you to use these in the example
+without a space in between.
 
 === copy
 
@@ -1163,6 +1175,10 @@ will result in
 ----
 
 
+=== include
+Include a file in the input.
+
+
 === indexOf
 Returnt he index of the string in the second string where it appears in the second string or -1 if the first string
 is not part of the second.
@@ -1242,7 +1258,7 @@ The command returns the length of the string or a list.
 
 === lexers
 
-Lexical analysers are also commands in the interpreter.
+Lexical analyzers are also commands in the interpreter.
 They read the source code and decide if they can read a token from the source.
 If they can, they read the token and return it after modifying the source, chopping off the consumed part.
 
@@ -1274,6 +1290,13 @@ That way blocks can be nested.
 
 A lexer that consumes the closing block character '}'.
 It returns a CommandBlockClose command, which should and never will execute.
+It is a technical placeholder.
+
+
+=== lexer: $blockOpen
+
+A lexer that consumes the opening block character '{'.
+It returns a CommandBlockOpen command, which should and never will execute.
 It is a technical placeholder.
 
 
@@ -1414,6 +1437,10 @@ Now if we set the field `b` of the object `C` to an empty object, the field `b` 
 
 
 
+            "version",
+            "output",
+            "include",
+            "help"
 
 === puts
 Print the value as a string.
@@ -1731,6 +1758,8 @@ The difference between this command and set is that this command will first sear
 If there is already a variable with the given name, it will alter the value of that variable instead of creating a
 new one shadowing it in the local block.
 
+If the variable was not defined it will define it in the current.
+
  * Example:
 
 
@@ -1924,7 +1953,7 @@ The command executes the two blocks one after the other while the result of the 
 
 The language can redefine itself.
 Since the end of the code is not tokenized and is available as a string, you can write code that modifies the source extending the original syntax.
-The following example will treat every new line as a command closing empty block.
+The following example will treat every new line as a command closing an empty block.
 
 The operator commands, like `add`, `mult`, `div` and so on can either take two arguments or multiple arguments.
 If their first argument is  `*` they will take all the remaining arguments until the end of the block or until an empty block is the next argument.
@@ -1971,3 +2000,45 @@ That way this program will result in:
 
 
 You can also find other examples in the test cases, for example, `src/test/resources/samples/xpression.ur` contains a script that defines numerical expression parser.
+
+=== Introspect Variables
+
+Variables defined in the interpreter that allows the modification of the code are the followings:
+
+==== `$program`
+
+This variable references the actual code.
+The code is a list of list of blocks `List<List<Block>>`.
+Using this variable, you can read and manipulate the code that was not executed yet
+
+        =H `$number`
+
+        This variable references the lexer that recognizes a whole block.
+        This analyzer is more like a syntax analyzer than a lexer.
+        It will call the interpreter recursively to call the lexers for the commands in the block until it finds a block close.
+        =H `$blockClose`
+
+        This variable references the lexer that recognizes a block end.
+        =H `$blockOpen`
+
+        This variable references the lexer that recognizes a block start.
+        This lexer is called by the lexer that recognizes a block and is not in the list of alternative lexers.
+        =H `$keyword`
+
+        This variable references the lexer that recognizes a bare word.
+        It is called keyword, but bear in mind that there are no keywords in UR.
+
+        =H `$number`
+
+        This variable references the lexer that recognizes a number.
+        =H `$number`
+
+        This variable references the lexer that recognizes a space.
+        =H `$string`
+
+        This variable references the lexer that recognizes a string.
+        =H `$symbol`
+
+        This variable references the lexer that recognizes a symbol.
+        This lexer will accept a string that contains symbol characters.
+        Everything is a symbol character that is not a Java identifier character, not white space, not a digit, and not a block start or end character.

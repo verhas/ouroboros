@@ -2,6 +2,7 @@ package com.javax0.ouroboros.commands;
 
 import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.base.BareWord;
+import com.javax0.ouroboros.commands.constant.*;
 import com.javax0.ouroboros.commands.lexers.NumericLexer;
 import com.javax0.ouroboros.utils.SafeCast;
 
@@ -74,6 +75,9 @@ public abstract class AbstractCommand<T> implements Command<T> {
     }
 
     protected Boolean toBoolean(Object value) {
+        return convertToBoolean(value);
+    }
+    public static Boolean convertToBoolean(Object value) {
         return switch (value) {
             case Integer i -> i != 0;
             case Long l -> l != 0;
@@ -87,7 +91,11 @@ public abstract class AbstractCommand<T> implements Command<T> {
         };
     }
 
+
     protected Long toLong(Object value) {
+        return convertToLong(value);
+    }
+    public static Long convertToLong(Object value) {
         return switch (value) {
             case Integer i -> (long) i;
             case Long l -> l;
@@ -109,6 +117,9 @@ public abstract class AbstractCommand<T> implements Command<T> {
     }
 
     protected Double toDouble(Object value) {
+        return convertToDouble(value);
+    }
+    public static Double convertToDouble(Object value) {
         return switch (value) {
             case Integer i -> i.doubleValue();
             case Long l -> l.doubleValue();
@@ -130,6 +141,9 @@ public abstract class AbstractCommand<T> implements Command<T> {
     }
 
     protected BigInteger toBigInteger(Object value) {
+        return converToBigInteger(value);
+    }
+    public static BigInteger converToBigInteger(Object value) {
         return switch (value) {
             case Integer i -> BigInteger.valueOf(i);
             case Long l -> BigInteger.valueOf(l);
@@ -151,6 +165,9 @@ public abstract class AbstractCommand<T> implements Command<T> {
     }
 
     protected BigDecimal toBigDecimal(Object value) {
+        return converToBigDecimal(value);
+    }
+    public static BigDecimal converToBigDecimal(Object value) {
         return switch (value) {
             case Integer i -> BigDecimal.valueOf(i);
             case Long l -> BigDecimal.valueOf(l);
@@ -172,6 +189,9 @@ public abstract class AbstractCommand<T> implements Command<T> {
     }
 
     protected String toString(Object value) {
+        return convertToString(value);
+    }
+    public static String convertToString(Object value) {
         return switch (value) {
             case Integer i -> Integer.toString(i);
             case Long l -> Long.toString(l);
@@ -181,6 +201,23 @@ public abstract class AbstractCommand<T> implements Command<T> {
             case Boolean b -> Boolean.toString(b);
             case String s -> s;
             case null, default -> "" + value;
+        };
+    }
+
+    public static Block convertToBLock(Object value){
+        return switch (value) {
+            case Long v -> new LongConstant(v);
+            case Integer v -> new LongConstant(convertToLong(v));
+            case Short v -> new LongConstant(convertToLong(v));
+            case Byte v -> new LongConstant(convertToLong(v));
+            case Character v -> new LongConstant(convertToLong(v));
+            case Float v -> new DoubleConstant(convertToDouble(v));
+            case Double v -> new DoubleConstant(v);
+            case BigInteger v -> new BigIntegerConstant(v);
+            case BigDecimal v -> new BigDecimalConstant(v);
+            case String s -> new StringConstant(s);
+            case Block block -> block;
+            default -> new ObjectConstant(value);
         };
     }
 

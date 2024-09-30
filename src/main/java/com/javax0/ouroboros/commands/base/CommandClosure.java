@@ -34,6 +34,11 @@ import com.javax0.ouroboros.utils.SafeCast;
  * Finally, if you find it cumbersome to write `clsoure` and `'` all the time, you can define a symbol for the combination like in the following example.
  * <p>
  * {%EXAMPLE/closure_quote%}
+ * <p>
+ * In the example, the `$symbolChars` gets the back-tick ``pass:[`]`` character appended to the value.
+ * This global variable contains the characters that should be interpteted as symbols alone.
+ * This will make the use of ``pass:[`{]`` as two symbols instead of one and allows you to use these in the example
+ * without a space in between.
  * end
  *
  * @param <T> the type of the value
@@ -41,7 +46,7 @@ import com.javax0.ouroboros.utils.SafeCast;
 public class CommandClosure<T> extends AbstractCommand<Closure<T>> {
 
     public CommandClosure(Interpreter interpreter) {
-super(interpreter);
+        super(interpreter);
     }
 
     @Override

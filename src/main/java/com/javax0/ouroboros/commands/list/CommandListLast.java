@@ -2,8 +2,11 @@ package com.javax0.ouroboros.commands.list;
 
 import com.javax0.ouroboros.Context;
 import com.javax0.ouroboros.Interpreter;
+import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
+
+import java.util.List;
 
 /**
  * command_last
@@ -33,6 +36,12 @@ super(interpreter);
                     throw new IllegalArgumentException("The list is empty");
                 }
                 return (Value<T>) lv.values().get(lv.values().size() - 1);
+            }
+            case List<?> lv -> {
+                if (lv.isEmpty()) {
+                    throw new IllegalArgumentException("The list is empty");
+                }
+                return (Value<T>) new SimpleValue<>(lv.getLast());
             }
             default -> throw new IllegalStateException("Unexpected value: " + list);
         }

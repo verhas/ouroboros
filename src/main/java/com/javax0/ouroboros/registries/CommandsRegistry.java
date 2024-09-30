@@ -94,6 +94,7 @@ public class CommandsRegistry implements ContextAgent {
         registerer.command("quote",  CommandQuote.class);
         registerer.command("closure",  CommandClosure.class);
         registerer.command("'",  CommandQuote.class);
+        registerer.register("$symbolChars","'");
         registerer.command("list",  CommandList.class);
         registerer.command("first",  CommandListFirst.class);
         registerer.command("car",  CommandListFirst.class);

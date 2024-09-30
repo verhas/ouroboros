@@ -29,7 +29,7 @@ public interface ObjectValue extends Value<Map<String,Value<?>>> {
                 }
                 sb.append('"').append(key).append('"').append(": ");
                 final var pad = sb.length();
-                sb.append(padTo(pad, key.equals("$") || key.equals("$$") ? key : "" + get(key).get()));
+                sb.append(padTo(pad, key.startsWith("$") ? key : "" + get(key).get()));
                 s = ", ";
             }
             return " {" + sb.toString() + "}";

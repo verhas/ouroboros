@@ -19,6 +19,8 @@ import java.util.Optional;
  * If there is already a variable with the given name, it will alter the value of that variable instead of creating a
  * new one shadowing it in the local block.
  * <p>
+ * If the variable was not defined it will define it in the current.
+ * <p>
  * {%EXAMPLE/setn1%}
  * <p>
  * {%EXPLANATION/setn1_explanation%}
@@ -26,7 +28,7 @@ import java.util.Optional;
  */
 public class CommandSetn extends AbstractCommand<Object> {
     public CommandSetn(Interpreter interpreter) {
-super(interpreter);
+        super(interpreter);
     }
 
     @Override
@@ -35,7 +37,7 @@ super(interpreter);
                 .orElseThrow(() -> new IllegalArgumentException("The first argument of 'set' should be a name"));
         final var value = Optional.ofNullable(interpreter.evaluate(context, interpreter.pop())).orElse(new SimpleValue<>(null));
         final var opt = context.variable(name);
-        if( opt.isPresent() ){
+        if (opt.isPresent()) {
             opt.get().set(value.get());
         } else {
             context.set(name, value);

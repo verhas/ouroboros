@@ -87,6 +87,9 @@ Variables can be assigned with the `set` command.
 Variables are always local to the block they are defined in.
 If you want to redefine a variable at the top level, you can use the `setg` command.
 The name `setg` stands for "set global".
+Using `set` on the global level is the same as `setg`.
+
+When you use the command `setn` update a variable already defined in a different block, it will update the variable in the block where it was defined.
 
 You can also set a field of an object with the `setf` command.
 In this case the first parameter is the object, and the second is the field name followed by the value.
@@ -130,6 +133,9 @@ Finally, we print the field `name` of the object using the command `field` and `
 The language handles any data type that commands can handle.
 The commands that come with the interpreter build in handle `Long`, `Double`, `String` and `Boolean`, objects and lists off the shelf.
 
+`BigDecimal` and `BigInteger` are also supported, but you cannot specify literal constants for them.
+To do that,am dededededededededededed you can alter the lexical analyzer or simply use the commands `BigInteger` and `BigDecimal`.
+These each consume a string argument and return the corresponding object.
 
 === Blocks
 
@@ -239,7 +245,7 @@ The command set is minimal, but it can be extended.
 
 The language can redefine itself.
 Since the end of the code is not tokenized and is available as a string, you can write code that modifies the source extending the original syntax.
-The following example will treat every new line as a command closing empty block.
+The following example will treat every new line as a command closing an empty block.
 
 The operator commands, like `add`, `mult`, `div` and so on can either take two arguments or multiple arguments.
 If their first argument is  `*` they will take all the remaining arguments until the end of the block or until an empty block is the next argument.
@@ -269,3 +275,9 @@ That way this program will result in:
 
 You can also find other examples in the test cases, for example, {%@file (format="`$name`") src/test/resources/samples/xpression.ur%} contains a script that defines numerical expression parser.
 
+=== Introspect Variables
+
+Variables defined in the interpreter that allows the modification of the code are the followings:
+
+{%!#replaceLines replace="/^=H/====/"
+{%@snip (poly) var.*%}%}

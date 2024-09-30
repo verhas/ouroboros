@@ -37,7 +37,12 @@ public class BlockLexer<T> extends AbstractCommand<CommandBlock<T>> {
         }
         final var input = source.execute(context).get();
         final var blocks = new ArrayList<Block>();
-        if (!input.isEmpty() && input.charAt(0) == '{') {
+        final var blockOpenFetcher = context.variable("$blockOpen")
+                .map(Value::get)
+                .map(SafeCast.to(it -> (Command<Block>) it))
+                .orElseThrow(() -> new IllegalArgumentException("No block open"));
+
+        if (!input.isEmpty() && blockOpenFetcher.execute(context) != null ) {
             source.update(input.substring(1));
             final var fetch = getFetcher(context);
             while (!source.get().isEmpty()) {

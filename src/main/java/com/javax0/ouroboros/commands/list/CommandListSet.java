@@ -6,6 +6,8 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+import java.util.List;
+
 /**
  * command_setl
  * {%COMMAND setl%}
@@ -41,6 +43,12 @@ public class CommandListSet<T> extends AbstractCommand<T> {
                     throw new IllegalArgumentException("The list is empty");
                 }
                 return (Value<T>) lv.set(index, value);
+            }
+            case List lv -> {
+                if (lv.isEmpty()) {
+                    throw new IllegalArgumentException("The list is empty");
+                }
+                return (Value<T>) lv.set(index,value.get());
             }
             default -> throw new IllegalStateException("Unexpected value: " + list);
         }

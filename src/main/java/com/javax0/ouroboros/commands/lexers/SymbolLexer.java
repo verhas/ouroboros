@@ -1,11 +1,9 @@
 package com.javax0.ouroboros.commands.lexers;
 
-import com.javax0.ouroboros.Context;
-import com.javax0.ouroboros.Interpreter;
-import com.javax0.ouroboros.SimpleValue;
-import com.javax0.ouroboros.Value;
+import com.javax0.ouroboros.*;
 import com.javax0.ouroboros.commands.AbstractCommand;
 import com.javax0.ouroboros.commands.base.BareWord;
+import com.javax0.ouroboros.utils.SafeCast;
 
 /**
  * command_lexer_symbol
@@ -36,6 +34,16 @@ public class SymbolLexer<T> extends AbstractCommand<BareWord<T>> {
         if (startAsANumber(input)) {
             return null;
         }
+        final var singleCharacterSymbol = context.variable("$symbolChars")
+                .map(Value::get)
+                .map(SafeCast.to(String.class))
+                .orElse("");
+        if( singleCharacterSymbol.indexOf(input.charAt(0)) != -1 ){
+            final var word = input.substring(0, 1);
+            final var rest = input.substring(1);
+            source.update(rest);
+            return new SimpleValue<>(new BareWord<>(interpreter, word));
+        }
         int i = 0;
         while (isSymbolCharacter(input, i)) {
             i++;
@@ -58,11 +66,12 @@ public class SymbolLexer<T> extends AbstractCommand<BareWord<T>> {
             return false;
         }
         final var ch = input.charAt(i);
-        return !Character.isJavaIdentifierStart(ch) &&
-                !Character.isJavaIdentifierPart(ch) &&
-                !Character.isWhitespace(ch) &&
-                !Character.isDigit(ch) &&
-                ch != '{' &&
-                ch != '}';
+        return !Character.isJavaIdentifierStart(ch)
+                && !Character.isJavaIdentifierPart(ch)
+                && !Character.isWhitespace(ch)
+                && !Character.isDigit(ch)
+                //&& ch != '{'
+                //&& ch != '}'
+                ;
     }
 }

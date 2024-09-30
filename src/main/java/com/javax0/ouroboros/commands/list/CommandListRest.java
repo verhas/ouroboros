@@ -6,6 +6,8 @@ import com.javax0.ouroboros.SimpleValue;
 import com.javax0.ouroboros.Value;
 import com.javax0.ouroboros.commands.AbstractCommand;
 
+import java.util.List;
+
 /**
  * command_rest
  * {%COMMAND rest, cdr%}
@@ -38,6 +40,16 @@ public class CommandListRest<T> extends AbstractCommand<ListValue<T>> {
                 final var newList = new ListValue<T>(interpreter);
                 for (int i = 1; i < lv.values().size(); i++) {
                     newList.values().add((Value<T>) lv.values().get(i));
+                }
+                return new SimpleValue<>(newList);
+            }
+            case List<?> lv -> {
+                if (lv.isEmpty()) {
+                    throw new IllegalArgumentException("The list is empty");
+                }
+                final var newList = new ListValue<T>(interpreter);
+                for (int i = 1; i < lv.size(); i++) {
+                    newList.values().add(Value.<T>of((T)lv.get(i)));
                 }
                 return new SimpleValue<>(newList);
             }

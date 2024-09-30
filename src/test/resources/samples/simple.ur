@@ -459,6 +459,7 @@ end snippet
 --------------------------------
 snippet closure_quote.ur
 set ` '{ closure arg }
+setg $symbolChars add $symbolChars "`"
 set puts `{puts "--" puts shift puts "--\n" }
 puts "Hello, World!"
 puts "Hello, Ouroboros!"
