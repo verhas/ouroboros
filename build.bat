@@ -4,8 +4,7 @@ cd /d "%~dp0"
 
 REM Read the version from the VERSION file
 set /p VERSION=<VERSION
-
-echo Version=%VERSION%
+set /p VERSIONS=<VERSIONS
 
 REM Loop over the installer types to create both exe and msi installers
 for %%I in (exe msi) do (
@@ -14,7 +13,7 @@ for %%I in (exe msi) do (
         --vendor "Peter Verhas" ^
         --name ur ^
         --app-version %VERSION% ^
-        --main-jar ouroboros-%VERSION%.jar ^
+        --main-jar ouroboros-%VERSIONS%.jar ^
         --main-class com.javax0.ouroboros.cmd.App ^
         --type %%I ^
         --dest output ^

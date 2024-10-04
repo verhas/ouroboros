@@ -10,10 +10,12 @@ public class TestGetVersionFromPom {
 
     @Test
     void testGetVersionFromPom() throws Exception {
-        Files.writeString(Paths.get("VERSION"), Files.readString(Paths.get("pom.xml")).lines()
+        final var version = Files.readString(Paths.get("pom.xml")).lines()
                 .filter(line -> line.contains("<version>"))
-                .map(line -> line.replaceAll(".*<version>(.*?)(?:-SNAPSHOT)?</version>.*", "$1"))
+                .map(line -> line.replaceAll(".*<version>(.*)</version>.*", "$1"))
                 .limit(1)
-                .collect(Collectors.joining("")));
+                .collect(Collectors.joining(""));
+        Files.writeString(Paths.get("VERSIONS"), version);
+        Files.writeString(Paths.get("VERSION"), version.replaceAll("-SNAPSHOT", ""));
     }
 }

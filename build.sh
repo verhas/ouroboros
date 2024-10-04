@@ -1,12 +1,17 @@
 #!/bin/bash
 
+VERSION=`cat VERSION`
+export VERSION
+VERSIONS=`cat VERSIONS`
+export VERSIONS
+
 # Function to create package based on the operating system
 create_package() {
     local INSTALLER_TYPE=$1
     jpackage --input target \
         --name ur \
-        --app-version 1.0.0 \
-        --main-jar ouroboros-1.0.0-SNAPSHOT.jar \
+        --app-version $VERSION \
+        --main-jar ouroboros-$VERSIONS.jar \
         --main-class com.javax0.ouroboros.cmd.App \
         --type $INSTALLER_TYPE \
         --dest output \
