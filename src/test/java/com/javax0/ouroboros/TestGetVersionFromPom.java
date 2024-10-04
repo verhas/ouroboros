@@ -16,6 +16,7 @@ public class TestGetVersionFromPom {
                 .limit(1)
                 .collect(Collectors.joining(""));
         Files.writeString(Paths.get("VERSIONS"), version);
+        Files.writeString(Paths.get("target/classes/META-INF/version"), version);
         Files.writeString(Paths.get("VERSION"), version.replaceAll("-SNAPSHOT", ""));
     }
 }

@@ -4,7 +4,9 @@ import com.javax0.ouroboros.interpreter.SimpleExecutor;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
@@ -25,17 +27,27 @@ public class App {
         if (params.get("help").isPresent()) {
             System.out.println("""
                     
-                    Usage: ouroboros [options] [file]
+                     Usage: ouroboros [options] [file]
                     
-                    Options:
-                      --version      Print version information and exit.
-                      --output FILE  Write output to file.
+                     Options:
+                       --version      Print version information and exit.
+                       --output FILE  Write output to file.
+                       --include PATH the list of include paths separated by\s""" + pathSeparator() + """
+                    
                       --help         Display this help message and exit.
                     """);
             return;
         }
         if (params.get("version").isPresent()) {
-            System.out.println("Ouroboros [ur] version 0.1");
+            String version = null;
+            try (final var res = App.class.getClassLoader().getResourceAsStream("META-INF/version")) {
+                if (res != null) {
+                    version = new String(res.readAllBytes(), StandardCharsets.UTF_8);
+                }
+            } catch (IOException e) {
+                version = null;
+            }
+            System.out.println("Ouroboros [ur] version " + version);
             return;
         }
 
@@ -55,7 +67,7 @@ public class App {
             executor.setOutput(out);
             if (params.get("include").isPresent()) {
                 final var includes = params.get("include").get();
-                final var includePath = includes.split(":");
+                final var includePath = includes.split(pathSeparator());
                 for (var include : includePath) {
                     executor.includePath(Paths.get(include));
                 }
@@ -68,6 +80,16 @@ public class App {
             }
         } else {
             System.out.println("No program to execute");
+        }
+    }
+
+    private static String pathSeparator() {
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        if (osName.contains("win")) {
+            return ";";
+        } else {
+            return ":";
         }
     }
 }

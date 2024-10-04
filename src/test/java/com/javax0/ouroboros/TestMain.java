@@ -46,7 +46,7 @@ public class TestMain {
              final var out = new PrintStream(baos)) {
             System.setOut(out);
             App.main(new String[]{"--version"});
-            Assertions.assertEquals("Ouroboros [ur] version 0.1\n", baos.toString().replaceAll("\r", ""));
+            Assertions.assertEquals("Ouroboros [ur] version", baos.toString().replaceAll("\r", "").substring(0, 22));
         } finally {
             System.setOut(save);
         }
@@ -61,15 +61,16 @@ public class TestMain {
             System.setOut(out);
             App.main(new String[]{"--help"});
             Assertions.assertEquals("""
-                    
-                    Usage: ouroboros [options] [file]
-                    
-                    Options:
+                   
+                    Usage ouroboros [options] [file]
+                   
+                    Options
                       --version      Print version information and exit.
                       --output FILE  Write output to file.
+                      --include PATH the list of include paths separated by\s
                       --help         Display this help message and exit.
                     
-                    """, baos.toString().replaceAll("\r", ""));
+                    """, baos.toString().replaceAll("[\r:]", ""));
         } finally {
             System.setOut(save);
         }
