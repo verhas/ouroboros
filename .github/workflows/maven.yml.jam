@@ -23,7 +23,7 @@ jobs:
   ubuntu-latest:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v{%checkoutVersion%}
+    - uses: actions/checkout@{%checkoutVersion%}
     - name: Set up JDK {%javaVersion%}
       uses: actions/setup-java@{%setupJavaVersion%}
       with:
@@ -44,7 +44,7 @@ jobs:
   windows-latest:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v{%checkoutVersion%}
+      - uses: actions/checkout@{%checkoutVersion%}
       - name: Set up JDK {%javaVersion%}
         uses: actions/setup-java@{%setupJavaVersion%}
         with:
@@ -64,7 +64,7 @@ jobs:
   macos-latest:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v{%checkoutVersion%}
+      - uses: actions/checkout@{%checkoutVersion%}
       - name: Set up JDK {%javaVersion%}
         uses: actions/setup-java@{%setupJavaVersion%}
         with:
@@ -84,7 +84,7 @@ jobs:
   macos-13:
     runs-on: macos-13
     steps:
-      - uses: actions/checkout@v{%checkoutVersion%}
+      - uses: actions/checkout@{%checkoutVersion%}
       - name: Set up JDK {%javaVersion%}
         uses: actions/setup-java@{%setupJavaVersion%}
         with:
