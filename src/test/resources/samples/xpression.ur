@@ -37,8 +37,7 @@ expression5 ::=
   variable         |
   '+' expression4  |
   '-' expression4  ;
-
-snippet xpression.ur """
+"""
 """
 Fetch the next token and store it in the global variable '$nextToken'.
 It also stores the state of the source in the global variable $source as it was before the fetch in case the caller
@@ -205,3 +204,4 @@ puts ((6+2)*3 % 7)
 end snippet
 --------------------------------
 """
+
