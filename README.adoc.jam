@@ -279,5 +279,5 @@ You can also find other examples in the test cases, for example, {%@file (format
 
 Variables defined in the interpreter that allows the modification of the code are the followings:
 
-{%!#replaceLines replace="/^=H/====/"
+{%!#replaceLines replace="/^\\s*=H/====/" replace="/^\\s*//"
 {%@snip (poly) var.*%}%}

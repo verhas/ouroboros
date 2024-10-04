@@ -870,7 +870,7 @@ will result in
 
 
 In the example, the `$symbolChars` gets the back-tick ``pass:[`]`` character appended to the value.
-This global variable contains the charatcers that should be interpteted as symbols alone.
+This global variable contains the characters that should be interpteted as symbols alone.
 This will make the use of ``pass:[`{]`` as two symbols instead of one and allows you to use these in the example
 without a space in between.
 
@@ -2005,40 +2005,49 @@ You can also find other examples in the test cases, for example, `src/test/resou
 
 Variables defined in the interpreter that allows the modification of the code are the followings:
 
+
+==== `$block`
+
+This variable references the lexer that recognizes a whole block.
+This analyzer is more like a syntax analyzer than a lexer.
+It will call the interpreter recursively to call the lexers for the commands in the block until it finds a block close.
+
+==== `$blockClose`
+
+This variable references the lexer that recognizes a block end.
+
+==== `$blockOpen`
+
+This variable references the lexer that recognizes a block start.
+This lexer is called by the lexer that recognizes a block and is not in the list of alternative lexers.
+
+==== `$keyword`
+
+This variable references the lexer that recognizes a bare word.
+It is called keyword, but bear in mind that there are no keywords in UR.
+
+
+==== `$number`
+
+This variable references the lexer that recognizes a number.
+
 ==== `$program`
 
 This variable references the actual code.
 The code is a list of list of blocks `List<List<Block>>`.
 Using this variable, you can read and manipulate the code that was not executed yet
 
-        =H `$number`
 
-        This variable references the lexer that recognizes a whole block.
-        This analyzer is more like a syntax analyzer than a lexer.
-        It will call the interpreter recursively to call the lexers for the commands in the block until it finds a block close.
-        =H `$blockClose`
+==== `$space`
 
-        This variable references the lexer that recognizes a block end.
-        =H `$blockOpen`
+This variable references the lexer that recognizes a space.
 
-        This variable references the lexer that recognizes a block start.
-        This lexer is called by the lexer that recognizes a block and is not in the list of alternative lexers.
-        =H `$keyword`
+==== `$string`
 
-        This variable references the lexer that recognizes a bare word.
-        It is called keyword, but bear in mind that there are no keywords in UR.
+This variable references the lexer that recognizes a string.
 
-        =H `$number`
+==== `$symbol`
 
-        This variable references the lexer that recognizes a number.
-        =H `$number`
-
-        This variable references the lexer that recognizes a space.
-        =H `$string`
-
-        This variable references the lexer that recognizes a string.
-        =H `$symbol`
-
-        This variable references the lexer that recognizes a symbol.
-        This lexer will accept a string that contains symbol characters.
-        Everything is a symbol character that is not a Java identifier character, not white space, not a digit, and not a block start or end character.
+This variable references the lexer that recognizes a symbol.
+This lexer will accept a string that contains symbol characters.
+Everything is a symbol character that is not a Java identifier character, not white space, not a digit, and not a block start or end character.

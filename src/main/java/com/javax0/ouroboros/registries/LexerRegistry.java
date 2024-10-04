@@ -29,6 +29,7 @@ public class LexerRegistry implements ContextAgent {
         final var registerer = new Registerer(context, interpreter, lexers);
         /*
         snippet var_keyword
+
         =H `$keyword`
 
         This variable references the lexer that recognizes a bare word.
@@ -39,6 +40,7 @@ public class LexerRegistry implements ContextAgent {
         registerer.register("$keyword", new BareWordLexer<>(interpreter));
         /*
         snippet var_string
+
         =H `$string`
 
         This variable references the lexer that recognizes a string.
@@ -47,6 +49,7 @@ public class LexerRegistry implements ContextAgent {
         registerer.register("$string", new StringLexer(interpreter));
         /*
         snippet var_number
+
         =H `$number`
 
         This variable references the lexer that recognizes a number.
@@ -55,7 +58,8 @@ public class LexerRegistry implements ContextAgent {
         registerer.register("$number", new NumericLexer(interpreter));
         /*
         snippet var_space
-        =H `$number`
+
+        =H `$space`
 
         This variable references the lexer that recognizes a space.
         end snippet
@@ -63,7 +67,8 @@ public class LexerRegistry implements ContextAgent {
         registerer.register("$space", new SpaceLexer<>(interpreter));
         /*
         snippet var_block
-        =H `$number`
+
+        =H `$block`
 
         This variable references the lexer that recognizes a whole block.
         This analyzer is more like a syntax analyzer than a lexer.
@@ -73,6 +78,7 @@ public class LexerRegistry implements ContextAgent {
         registerer.register("$block", new BlockLexer<>(interpreter));
         /*
         snippet var_blockOpen
+
         =H `$blockOpen`
 
         This variable references the lexer that recognizes a block start.
@@ -82,6 +88,7 @@ public class LexerRegistry implements ContextAgent {
         context.<BlockOpenLexer>set("$blockOpen",Value.of(new BlockOpenLexer(interpreter)));
         /*
         snippet var_blockClose
+
         =H `$blockClose`
 
         This variable references the lexer that recognizes a block end.
@@ -90,6 +97,7 @@ public class LexerRegistry implements ContextAgent {
         registerer.register("$blockClose", new BlockCloseLexer<>(interpreter));
         /*
         snippet var_symbol
+
         =H `$symbol`
 
         This variable references the lexer that recognizes a symbol.

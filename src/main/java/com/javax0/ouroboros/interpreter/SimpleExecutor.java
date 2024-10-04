@@ -23,7 +23,8 @@ public class SimpleExecutor implements Interpreter {
     public SimpleExecutor() {
         ServiceLoader.load(ContextAgent.class).forEach(agent -> agent.register(context, this));
 /*
-snippet var.program
+snippet var_program
+
 =H `$program`
 
 This variable references the actual code.
