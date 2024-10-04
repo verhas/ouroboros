@@ -2,7 +2,8 @@ echo off
 
 cd /d "%~dp0"
 
-FOR /F "usebackq delims=" %%i IN (`powershell -NoProfile -Command "[xml](Get-Content 'pom.xml').project.version.Trim() -replace '-SNAPSHOT',''"`) DO SET "VERSION=%%i"
+REM Read the version from the VERSION file
+set /p VERSION=<VERSION
 
 echo Version=%VERSION%
 
