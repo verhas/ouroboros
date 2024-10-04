@@ -2,7 +2,7 @@ echo off
 
 cd /d "%~dp0"
 
-FOR /F "delims=" %%i IN ('powershell -Command "$content = Get-Content -Raw ''pom.xml''; $content -match ''<version>(.*?)</version>'' | Out-Null; $version = $Matches[1]; $version -replace ''-SNAPSHOT'',''''"') DO SET "VERSION=%%i"
+FOR /F "usebackq delims=" %%i IN (`powershell -NoProfile -Command "[xml](Get-Content 'pom.xml').project.version.Trim() -replace '-SNAPSHOT',''"`) DO SET "VERSION=%%i"
 
 echo Version=%VERSION%
 
