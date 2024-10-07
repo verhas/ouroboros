@@ -60,17 +60,12 @@ public class TestMain {
              final var out = new PrintStream(baos)) {
             System.setOut(out);
             App.main(new String[]{"--help"});
-            Assertions.assertEquals("""
-                   
-                    Usage ouroboros [options] [file]
-                   
-                    Options
-                      --version      Print version information and exit.
-                      --output FILE  Write output to file.
-                      --include PATH the list of include paths separated by\s
-                      --help         Display this help message and exit.
-                    
-                    """, baos.toString().replaceAll("[\r\n:]", ""));
+            Assertions.assertEquals("Usage ouroboros [options] [file]Options" +
+                            "  --version      Print version information and exit." +
+                            "  --output FILE  Write output to file." +
+                            "  --include PATH the list of include paths separated by" +
+                            "   --help         Display this help message and exit."
+                    , baos.toString().replaceAll("[\r\n:]", ""));
         } finally {
             System.setOut(save);
         }
