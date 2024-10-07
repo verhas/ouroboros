@@ -70,7 +70,7 @@ public class TestMain {
                       --include PATH the list of include paths separated by\s
                       --help         Display this help message and exit.
                     
-                    """, baos.toString().replaceAll("[\r:]", ""));
+                    """, baos.toString().replaceAll("[\r\n:]", ""));
         } finally {
             System.setOut(save);
         }

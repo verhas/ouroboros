@@ -1,6 +1,7 @@
 package com.javax0.ouroboros.cmd;
 
-import com.javax0.ouroboros.interpreter.SimpleExecutor;
+ import com.javax0.ouroboros.cmd.CmdParser;
+ import com.javax0.ouroboros.interpreter.SimpleExecutor;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,6 +38,9 @@ public class App {
                       --help         Display this help message and exit.
                     """);
             return;
+
+
+
         }
         if (params.get("version").isPresent()) {
             String version = null;
